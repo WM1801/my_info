@@ -1,0 +1,160 @@
+= Работа с gpio в режиме выхода
+
+:doctype: article
+:title-page:         # включает титульный лист для article
+:toc: left
+:toc-title: Оглавление
+:toclevels: 3
+:sectnums:
+:icons: font
+:source-highlighter: rouge
+:figure-caption: Рисунок
+:table-caption: Таблица
+:example-caption: Пример
+:listing-caption: Листинг
+
+Документация:
+
+* https://origin.kernel.org/doc/html/latest/driver-api/gpio/driver.html "Официальная документация по GPIO"
+
+Практическая часть реализуется при работе с платой `LicheeRV Nano`
+
+== Определяемся кто есть кто
+
+=== Смотрим доступные порты   
+[bash, console]
+----
+# ls /sys/class/gpio/
+export       gpiochip384  gpiochip448  unexport
+gpiochip352  gpiochip416  gpiochip480
+----
+Мы видим `gpiochipХХХ` и она привязана к адресу порта, сам пин определяется смещением относительно базового, то есть нулевого пина. Количество пинов до 32 (смещение от 0 до 31). 
+То есть пин GPIOX_15 = gpiochipХХХ + 15
+
+== Определяемся с портом 
+Выполняем следующий код, мы получили адрес, 
+[bash, console]
+----
+# cat /sys/class/gpio/gpiochip480/label
+3020000.gpio
+----
+далее зайдя в руководство на процессор и сопоставив информацию, получаем четкое понимание (пример из руководства на SG2002)
+
+image::image/gpio2.PNG[Адреса]
+
+соответствие номеров буквам 
+
+image::image/gpio1.PNG[Соответствие адресов банкам gpio]
+
+== Использование как выхода 
+
+=== Теперь пробуем переключать используем устаревший способ 
+
+----
+1. "Экспортируем" пин 495 (сообщаем ядру, что будем его использовать)
+Если пин уже используется, эта команда выдаст ошибку "Device or resource busy"
+# echo 495 | tee /sys/class/gpio/export
+495
+2. Настраиваем пин как ВЫХОД (out)
+# echo out | tee /sys/class/gpio/gpio495/direction
+out
+3. Записываем значение 0 (LOW / выключить)
+# echo 0 | tee /sys/class/gpio/gpio495/value
+0
+4. Записываем значение 1 (HIGH / включить)
+# echo 1 | tee /sys/class/gpio/gpio495/value
+1
+5. 
+echo 495 | sudo tee /sys/class/gpio/unexport
+----
+
+[NOTE]
+====
+1. Для текущего варианта записи может понадобится sudo 
+2. Также возможно задавать в таком синтаксисе, но необходим root
+[bash, console] 
+----
+echo 1 > /sys/class/gpio/gpio495/value
+----
+====
+и так у меня один пин под номером 15 работает, а 17 не управляется но он судя по схеме еще может быть задействован как uart0, что очень вероятно и как pwm5, при этом вывод в консоль у обоих пинов аналогичен. 
+
+
+== Использование пина как входа
+Данный код я не проверял
+Разбор отличий:
+
+* direction: Вместо out мы пишем in. Это физически переключает внутреннюю схему контроллера на прием сигнала.
+
+* Чтение (cat): Вместо того чтобы записывать (echo) значение в файл value, мы его читаем с помощью команды cat. Если на пине высокий уровень (HIGH), ты увидишь 1, если низкий (LOW) — 0.
+
+----
+# 1. "Экспортируем" пин 495 (сообщаем ядру, что будем его использовать)
+echo 495 | sudo tee /sys/class/gpio/export
+
+# 2. Настраиваем пин как ВХОД (in)
+echo in | sudo tee /sys/class/gpio/gpio495/direction
+
+# 3. Читаем текущее значение пина (вернет 0 или 1)
+cat /sys/class/gpio/gpio495/value
+
+# ... можно читать много раз, например, в цикле ...
+
+# 4. Освобождаем пин (обязательно!)
+echo 495 | sudo tee /sys/class/gpio/unexport
+----
+
+*Но нельзя делать* бесконечный цикл с cat для опроса кнопки. Это "съест" 100% процессорного времени.
+В Linux GPIO есть механизм прерываний (edge detection). Можно сказать ядру: "Разбуди мою программу только тогда, когда сигнал изменится". Для этого используется файл edge:
+
+----
+# Доступные значения для edge:
+# none   - прерывания отключены (по умолчанию)
+# rising - сработает при изменении с 0 на 1 (нажатие кнопки)
+# falling- сработает при изменении с 1 на 0 (отпускание кнопки)
+# both   - сработает при любом изменении
+
+# Настраиваем пин на реакцию на восходящий фронт (0 -> 1)
+echo rising | sudo tee /sys/class/gpio/gpio495/edge
+----
+После настройки edge, в языках программирования (C, Python) или через утилиты (например, inotifywait в bash) ты можно эффективно "ждать" изменения сигнала, не нагружая процессор.
+
+
+
+
+
+[bash, console]
+----
+
+# cat /sys/kernel/debug/gpio 2> /dev/null
+gpiochip4: GPIOs 352-383, parent: platform/5021000.gpio, 5021000.gpio:
+ gpio-353 (                    |snsr-rst-gpio       ) in  lo
+ gpio-355 (                    |GTP INT IRQ         ) in  lo IRQ
+ gpio-356 (                    |GTP RST PORT        ) out hi
+
+gpiochip3: GPIOs 384-415, parent: platform/3023000.gpio, 3023000.gpio:
+
+gpiochip2: GPIOs 416-447, parent: platform/3022000.gpio, 3022000.gpio:
+
+gpiochip1: GPIOs 448-479, parent: platform/3021000.gpio, 3021000.gpio:
+ gpio-449 (                    |scl                 ) out hi
+ gpio-450 (                    |sda                 ) in  lo
+ gpio-454 (                    |cviusb-otg          ) in  hi IRQ
+
+gpiochip0: GPIOs 480-511, parent: platform/3020000.gpio, 3020000.gpio:
+ gpio-493 (                    |cvi-cd              ) in  lo IRQ ACTIVE LOW
+ gpio-494 (                    |led-user            ) out lo
+ gpio-510 (                    |User Key            ) in  hi IRQ ACTIVE LOW
+
+----
+
+Таким образом мы видим пин  `gpio-494` который задействован драйвером led. 
+Пытаемся управлять им напрямую, по старому протоколу в последних версиях ядро это осуществляется через библиотеку 
+----
+# echo 494 > /sys/class/gpio/export
+sh: write error: Resource busy
+# echo out > /sys/class/gpio/gpio494/direction
+-sh: can't create /sys/class/gpio/gpio494/direction: nonexistent directory
+
+----
+ 

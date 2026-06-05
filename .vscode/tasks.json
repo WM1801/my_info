@@ -1,0 +1,19 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Asciidoctor PDF",
+            "type": "shell",
+            "command": "C:\\Ruby40-x64\\bin\\asciidoctor-pdf.bat",
+            "args": [
+                "-a", "pdf-theme=default-with-fallback-font",
+                "${relativeFile}"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        }
+    ]
+}
