@@ -1,0 +1,71 @@
+=  Модификация DTB на SD-карте 
+:doctype: article
+:title-page:
+:toc:
+:toc-title: Оглавление
+:toclevels: 3
+:sectnums:
+:icons: font
+:source-highlighter: rouge
+:figure-caption: Рисунок
+:table-caption: Таблица
+:example-caption: Пример
+:listing-caption: Листинг
+:pdf-theme: default-with-fallback-font
+:author: Владислав Богданов
+:email: vla-bogdano@ya.ru
+:revdate: 2026-06-05
+
+toc::[]
+
+
+== Введение 
+Есть у нас образ и нужно нам поменять конфигурацию железа. 
+Если ты хочешь сделать всё "по уму" и на уровне ядра, тебе не нужно пересобирать весь образ. Тебе нужно изменить только скомпилированный файл Device Tree (.dtb), который лежит на загрузочной SD-карте.
+
+
+== Как это делается:
+
+. *Вытащи SD-карту* из LicheeRV Nano и вставь её в картридер на своем ПК (Linux/Ubuntu).
+
+. *Найди загрузочный раздел* (обычно он первый, FAT32, называется boot).
+
+. *Найди там файл с расширением .dtb* (для LicheeRV Nano он может называться sg2002-licheervnano.dtb или похоже).
+
+. *Декомпилируй его* в текст на своем ПК:
++
+[source, bash]
+----
+sudo apt install device-tree-compiler
+dtc -I dtb -O dts -o base.dts sg2002-licheervnano.dtb
+----
+
+. *Открой base.dts* в текстовом редакторе и найди узел uart1 (или serial@...).
++
+Ты увидишь что-то вроде:
++
+[source, dts]
+----
+uart1: serial@... {
+    ...
+    pinctrl-names = "default";
+    pinctrl-0 = <&uart1_pins>; // <-- Вот он, виновник!
+    status = "okay";
+};
+----
+
+. *Измени файл:* 
+  ** Либо удали строку pinctrl-0, 
+  ** Либо добавь status = "disabled", если UART1 тебе вообще не нужен.
+
+. *Скомпилируй обратно:*
++
+[source, bash]
+----
+dtc -I dts -O dtb -o sg2002-licheervnano.dtb base.dts
+----
+
+. *Замени* старый .dtb файл на SD-карте новым, вставь карту в плату и загрузись.
+
+
+Этот метод требует наличия ПК, но он дает 100% гарантию, что ядро с самого рождения будет знать, что пин PA19 — это GPIO, и даже не попытается назначить его на UART.
