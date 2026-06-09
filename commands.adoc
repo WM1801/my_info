@@ -1,0 +1,42 @@
+= Полезные команды
+:doctype: article
+:title-page:
+:toc:
+:toc-title: Оглавление
+:toclevels: 3
+:sectnums:
+:icons: font
+:source-highlighter: rouge
+:figure-caption: Рисунок
+:table-caption: Таблица
+:example-caption: Пример
+:listing-caption: Листинг
+:pdf-theme: default-with-fallback-font
+:author: Владислав Богданов
+:email: vla-bogdano@ya.ru
+:revdate: 2026-06-08
+
+toc::[]
+
+
+
+
+== Команды дающие понимание о системе
+----
+# 1. Проверяем права доступа к /dev/mem
+ls -l /dev/mem
+
+# 2. Проверяем, включен ли STRICT_DEVMEM
+cat /proc/config.gz 2>/dev/null | gunzip | grep STRICT_DEVMEM
+# или
+dmesg | grep -i "strict_devmem"
+
+# 3. Пробуем прочитать "запрещенный" адрес (ядро)
+devmem 0x80000000
+
+# 4. Пробуем прочитать несуществующий адрес
+devmem 0xFFFFFFFF
+
+# 5. Смотрим, какие регионы памяти доступны
+cat /proc/iomem | head -50
+----
