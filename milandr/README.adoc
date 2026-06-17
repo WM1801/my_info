@@ -1,0 +1,251 @@
+= Сборка и прошивка Миландр 1986ВЕ9х через Docker
+:toc:
+:toc-placement!:
+:icons: font
+:source-highlighter: rouge
+:toc-title: Содержание
+
+toc::[]
+
+== Описание проекта
+
+Проект предназначен для сборки и прошивки микроконтроллера *Миландр 1986ВЕ9х* (Cortex-M3) с использованием Docker-контейнера. Это обеспечивает:
+
+* ✅ Воспроизводимость сборки на любой машине
+* ✅ Изоляцию тулчейна от основной системы
+* ✅ Возможность работы с разными версиями компилятора
+* ✅ Прошивку через J-Link (SWD/JTAG) внутри контейнера
+
+== Структура проекта
+
+[source]
+----
+~/prj/milandr/
+├── Dockerfile              # Рецепт Docker-образа
+├── README.adoc             # Эта документация
+├── flashBoi35.sh           # Скрипт сборки и прошивки
+└── project/
+    └── mfi_su35/
+        ├── CMSIS/          # CMSIS библиотеки
+        ├── SPL/            # Standard Peripheral Library
+        ├── src/            # Исходный код проекта
+        ├── python/         # Python-скрипты
+        └── make_files/
+            ├── makefile            # Основной Makefile
+            ├── jlink.cfg           # Конфиг J-Link (JTAG)
+            ├── jlink-swd.cfg       # Конфиг J-Link (SWD)
+            ├── mdr32f9q2i.cfg      # Конфиг таргета Миландр
+            ├── MDR32F9Qx.ld        # Linker script
+            ├── add_checksum.py     # Скрипт добавления контрольной суммы
+            └── CommandFile.jlink   # Скрипт для JLinkExe
+----
+
+== Установка Docker
+
+=== Шаг 1. Установка Docker Engine
+
+[source,bash]
+----
+sudo apt-get update
+sudo apt-get install -y docker.io
+sudo systemctl enable docker
+sudo systemctl start docker
+----
+
+=== Шаг 2. Добавление пользователя в группу docker
+
+Чтобы не использовать `sudo` при каждом запуске Docker:
+
+[source,bash]
+----
+sudo usermod -aG docker $USER
+----
+
+IMPORTANT: После выполнения команды необходимо *перезайти в систему* или выполнить `sudo reboot`.
+
+=== Шаг 3. Проверка
+
+[source,bash]
+----
+groups          # Должна быть группа docker
+docker ps       # Должно работать без sudo
+----
+
+== Сборка Docker-образа
+
+=== Dockerfile
+
+[source,dockerfile]
+----
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
+    gcc-arm-none-eabi \
+    build-essential \
+    cmake \
+    make \
+    git \
+    python3 \
+    python3-pip \
+    python-is-python3 \
+    openocd \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN pip3 install --no-cache-dir \
+    intelhex \
+    pyserial \
+    crcmod
+
+WORKDIR /project
+
+CMD ["/bin/bash"]
+----
+
+=== Команды для работы с образом
+
+[cols="2,3",options="header"]
+|===
+|Команда |Описание
+
+|`docker build -t milandr-build-env .`
+|Собрать образ из Dockerfile
+
+|`docker images`
+|Посмотреть список образов
+
+|`docker rmi milandr-build-env`
+|Удалить образ
+
+|`docker run --rm milandr-build-env bash`
+|Запустить интерактивную сессию
+|===
+
+== Конфигурации OpenOCD
+
+=== jlink.cfg (JTAG, по умолчанию)
+
+[source,tcl]
+----
+#
+# SEGGER J-Link
+#
+adapter driver jlink
+
+# Опционально: указать серийный номер
+# jlink serial 123456789
+----
+
+=== jlink-swd.cfg (SWD)
+
+[source,tcl]
+----
+#
+# SEGGER J-Link (SWD mode)
+#
+adapter driver jlink
+transport select swd
+----
+
+== Скрипт flashBoi35.sh
+
+Основной скрипт для сборки и прошивки проекта.
+
+=== Использование
+
+[source,bash]
+----
+./flashBoi35.sh [опции]
+----
+
+=== Опции
+
+[cols="1,2,2",options="header"]
+|===
+|Опция |Описание |Пример
+
+|`-i, --interface <swd\|jtag>`
+|Выбор интерфейса отладки
+|`-i swd`
+
+|`-s, --skip-build`
+|Пропустить сборку (только прошивка)
+|`-s`
+
+|`-h, --help`
+|Показать справку
+|`-h`
+|===
+
+=== Примеры использования
+
+[source,bash]
+----
+# Сборка и прошивка через JTAG (по умолчанию)
+./flashBoi35.sh
+
+# Сборка и прошивка через SWD
+./flashBoi35.sh -i swd
+
+# Только прошивка через JTAG (без сборки)
+./flashBoi35.sh -s
+
+# Только прошивка через SWD (без сборки)
+./flashBoi35.sh -s -i swd
+
+# Показать справку
+./flashBoi35.sh --help
+----
+
+=== Алгоритм работы скрипта
+
+. Проверка подключения J-Link через `lsusb`
+. Сборка проекта через `make` (если не указан `-s`)
+. Прошивка через OpenOCD с выбранным конфигом
+. Вывод сообщения об успешном завершении
+
+== Ручные команды Docker
+
+=== Сборка проекта
+
+[source,bash]
+----
+docker run --rm \
+  -v $(pwd)/project:/project \
+  -w /project/mfi_su35/make_files \
+  milandr-build-env \
+  make
+----
+
+=== Очистка проекта
+
+[source,bash]
+----
+docker run --rm \
+  -v $(pwd)/project:/project \
+  -w /project/mfi_su35/make_files \
+  milandr-build-env \
+  make clean
+----
+
+=== Прошивка через OpenOCD
+
+[source,bash]
+----
+docker run --rm \
+  --privileged \
+  --net=host \
+  -v /dev/bus/usb:/dev/bus/usb \
+  -v $(pwd)/project:/project \
+  -w /project/mfi_su35/make_files \
+  milandr-build-env \
+  make prog
+----
+
+=== Прошивка с выбором интерфейса
+
+[source,bash]
+----
+# Через SWD
+docker run --rm --
