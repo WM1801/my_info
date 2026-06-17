@@ -1,0 +1,8 @@
+si 1
+speed 4000
+r
+hwinfo
+loadfile mdr_firmware_1_0.hex, 0x08000000
+r
+go
+exit
