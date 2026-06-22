@@ -1,0 +1,571 @@
+= Руководство по навигации и поиску в исходниках ядра Linux
+:author: Преподаватель по программированию под Linux
+:revdate: 2026-06-19
+:toc: left
+:toclevels: 3
+:sectnums:
+:icons: font
+:source-highlighter: highlight.js
+
+== Введение
+
+Разработка модулей ядра Linux требует умения эффективно работать с исходным кодом и документацией. Ядро содержит миллионы строк кода, тысячи функций и обширную документацию. Умение быстро находить нужные API, понимать их назначение и правильно использовать — ключевой навык разработчика ядра.
+
+В этом руководстве мы рассмотрим все доступные методы поиска и навигации по исходникам ядра Linux, от онлайн-инструментов до локальных утилит.
+
+== Онлайн-инструменты для навигации
+
+=== Elixir Bootlin
+
+https://elixir.bootlin.com/linux/[Elixir Bootlin] — это наиболее мощный инструмент для навигации по исходникам ядра Linux. Он предоставляет:
+
+* Полнотекстовый поиск по всем версиям ядра
+* Перекрестные ссылки между определениями и использованиями
+* Навигацию по структуре каталогов
+* Просмотр истории изменений файлов
+
+==== Основные возможности
+
+===== Поиск функций
+
+Для поиска функции введите её название в поисковую строку. Например, поиск `ktime_get` покажет:
+
+* *Definitions* — где функция определена (реализация)
+* *Declarations* — где функция объявлена (в заголовочных файлах)
+* *References* — где функция используется в коде
+
+===== Навигация по подсистемам
+
+Перейдите в нужный каталог через навигационное меню:
+
+[source,text]
+----
+source/
+├── arch/           # Архитектурно-зависимый код
+├── drivers/        # Драйверы устройств
+│   ├── usb/       # USB драйверы
+│   ├── spi/       # SPI драйверы
+│   ├── i2c/       # I2C драйверы
+│   └── gpio/      # GPIO драйверы
+├── include/        # Заголовочные файлы
+│   └── linux/     # Основные API ядра
+├── kernel/         # Ядро системы
+├── mm/             # Управление памятью
+└── Documentation/  # Документация
+----
+
+===== Пример использования
+
+. Перейдите на https://elixir.bootlin.com/linux/latest/source
+. Выберите версию ядра (например, `v6.6`)
+. Введите в поиск `ktime_get_real`
+. Изучите:
+  * Определение в `include/linux/timekeeping.h`
+  * Реализацию в `kernel/time/timekeeping.c`
+  * Примеры использования в `drivers/`
+
+=== Kernel.org Documentation
+
+Официальная документация ядра доступна по адресу:
+
+https://www.kernel.org/doc/html/latest/[https://www.kernel.org/doc/html/latest/]
+
+Основные разделы:
+
+* *Driver API* — API для разработки драйверов
+* *Core API* — основные функции ядра
+* *Subsystem APIs* — документация по подсистемам
+* *Development Process* — процесс разработки ядра
+
+== Локальная работа с исходниками
+
+=== Установка исходников
+
+==== Ubuntu/Debian
+
+[source,bash]
+----
+# Установка исходников текущей версии ядра
+sudo apt-get install linux-source
+
+# Исходники будут в /usr/src/
+cd /usr/src/linux-source-*
+
+# Распаковка (если необходимо)
+tar xf linux-source-*.tar.xz
+----
+
+==== Fedora/RHEL
+
+[source,bash]
+----
+sudo dnf install kernel-source
+cd /usr/src/kernels/$(uname -r)
+----
+
+==== Скачивание с kernel.org
+
+[source,bash]
+----
+# Скачивание конкретной версии
+wget https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.6.tar.xz
+tar xf linux-6.6.tar.xz
+cd linux-6.6
+----
+
+=== Генерация документации
+
+Ядро содержит встроенную документацию в формате reStructuredText. Для генерации HTML-документации:
+
+[source,bash]
+----
+# Установка зависимостей (Ubuntu/Debian)
+sudo apt-get install python3-sphinx python3-sphinx-rtd-theme
+
+# Генерация документации
+cd /path/to/linux-source
+make htmldocs
+
+# Открытие документации
+firefox Documentation/output/index.html
+----
+
+=== Инструменты навигации
+
+==== ctags для Vim
+
+[source,bash]
+----
+# Генерация файла tags
+cd /path/to/linux-source
+make tags
+
+# Использование в Vim
+vim include/linux/timekeeping.h
+# Перейти к определению: Ctrl+]
+# Вернуться назад: Ctrl+T
+# Поиск по тегу: :tag ktime_get
+----
+
+==== ctags для Emacs
+
+[source,bash]
+----
+# Генерация файла TAGS
+cd /path/to/linux-source
+make TAGS
+
+# Использование в Emacs
+emacs include/linux/timekeeping.h
+# Перейти к определению: M-.
+# Вернуться назад: M-,
+----
+
+==== VS Code
+
+[source,bash]
+----
+# Установка расширения C/C++ от Microsoft
+# Открытие папки с исходниками ядра
+code /path/to/linux-source
+
+# VS Code автоматически создаст IntelliSense базу
+# Ctrl+Click на функции → переход к определению
+# F12 → переход к определению
+# Shift+F12 → найти все использования
+----
+
+==== cscope
+
+[source,bash]
+----
+# Генерация базы cscope
+cd /path/to/linux-source
+make cscope
+
+# Использование
+cscope -d
+# В интерактивном меню:
+# 1. Найти это определение C-символа
+# 2. Найти где этот символ используется
+# 3. Найти вызовы этой функции
+----
+
+== Структура документации ядра
+
+=== Основные разделы
+
+Документация ядра организована следующим образом:
+
+[source,text]
+----
+Documentation/
+├── driver-api/          # API для драйверов устройств
+│   ├── basics.rst      # Основы написания драйверов
+│   ├── usb/            # USB подсистема
+│   ├── pci/            # PCI подсистема
+│   ├── spi/            # SPI подсистема
+│   ├── i2c/            # I2C подсистема
+│   ├── gpio/           # GPIO подсистема
+│   └── input/          # Input устройства
+├── core-api/           # Основные API ядра
+│   ├── kernel-api.rst  # API ядра
+│   ├── memory-allocation.rst  # Выделение памяти
+│   └── timekeeping.rst # Работа со временем
+├── admin-guide/        # Руководство администратора
+├── userspace-api/      # API пользовательского пространства
+└── dev-tools/          # Инструменты разработки
+----
+
+=== Чтение документации
+
+==== Просмотр reStructuredText файлов
+
+[source,bash]
+----
+# Установка утилиты для просмотра rst
+sudo apt-get install python3-docutils
+
+# Конвертация в HTML
+rst2html Documentation/core-api/timekeeping.rst > timekeeping.html
+
+# Или использование pandoc
+pandoc Documentation/core-api/timekeeping.rst -o timekeeping.html
+----
+
+==== Поиск в документации
+
+[source,bash]
+----
+# Поиск по ключевым словам
+grep -r "ktime" Documentation/ | grep "\.rst:"
+
+# Поиск в конкретном разделе
+grep -r "timekeeping" Documentation/core-api/
+
+# Поиск с контекстом
+grep -B2 -A5 "ktime_get" Documentation/core-api/timekeeping.rst
+----
+
+== Практические методы поиска
+
+=== Поиск по подсистеме
+
+Если вы пишете драйвер для конкретной подсистемы, изучите существующие драйверы:
+
+[source,bash]
+----
+# Список SPI драйверов
+ls drivers/spi/
+
+# Изучение простого драйвера
+cat drivers/spi/spi-bitbang.c | head -100
+
+# Поиск использования конкретных API
+grep -r "spi_transfer" drivers/spi/ | head -20
+----
+
+=== Поиск по типу функции
+
+==== Функции выделения памяти
+
+[source,bash]
+----
+# Поиск в заголовочных файлах
+grep -r "^void \*kmalloc" include/linux/
+
+# Поиск всех вариантов kmalloc
+grep -r "kmalloc\|kzalloc\|kcalloc" include/linux/slab.h
+
+# Примеры использования
+grep -r "kmalloc.*GFP_KERNEL" drivers/ | head -10
+----
+
+==== Функции работы со временем
+
+[source,bash]
+----
+# Поиск функций ktime
+grep -r "^ktime_t ktime_" include/linux/timekeeping.h
+
+# Поиск всех ktime функций
+grep -r "ktime_" include/linux/ktime.h | grep "static inline"
+----
+
+==== Функции синхронизации
+
+[source,bash]
+----
+# Поиск мьютексов
+grep -r "mutex_lock\|mutex_unlock" include/linux/mutex.h
+
+# Поиск спинлоков
+grep -r "spin_lock\|spin_unlock" include/linux/spinlock.h
+
+# Поиск семафоров
+grep -r "down\|up" include/linux/semaphore.h
+----
+
+=== Анализ экспортируемых символов
+
+[source,bash]
+----
+# Поиск всех экспортируемых символов в модуле
+nm /lib/modules/$(uname -r)/kernel/drivers/usb/core/usbcore.ko | grep " T "
+
+# Поиск конкретной функции
+nm /lib/modules/$(uname -r)/kernel/drivers/usb/core/usbcore.ko | grep usb_register
+
+# Просмотр информации о модуле
+modinfo /lib/modules/$(uname -r)/kernel/drivers/usb/core/usbcore.ko
+----
+
+=== Поиск в mailing lists
+
+Обсуждения новых API и изменений часто происходят в mailing lists:
+
+[source,bash]
+----
+# Поиск на lore.kernel.org
+# https://lore.kernel.org/
+
+# Поиск по функции
+# Введите в поиск: "ktime_get_real"
+
+# Поиск по теме
+# Введите: "subject:timekeeping API"
+----
+
+== Чтение kerneldoc
+
+=== Формат kerneldoc
+
+Многие функции ядра имеют встроенную документацию:
+
+[source,c]
+----
+/**
+ * ktime_get_real - get the real (wall-) time in ktime_t
+ *
+ * Returns the real time since Unix epoch (1970-01-01 00:00:00 UTC).
+ * This is similar to gettimeofday() in user space.
+ *
+ * WARNING: This clock can jump backwards due to NTP adjustments!
+ * Do not use it for measuring time intervals!
+ *
+ * Return: ktime_t value representing real time.
+ */
+ktime_t ktime_get_real(void)
+{
+    // ...
+}
+----
+
+=== Извлечение kerneldoc
+
+[source,bash]
+----
+# Использование скрипта kernel-doc
+scripts/kernel-doc -rst include/linux/timekeeping.h | less
+
+# Генерация документации для конкретной функции
+scripts/kernel-doc -rst -function ktime_get_real include/linux/timekeeping.h
+
+# Генерация всей документации
+scripts/kernel-doc -rst include/linux/timekeeping.h > timekeeping.rst
+----
+
+== Практические примеры
+
+=== Пример 1: Поиск API для работы с GPIO
+
+. Определите подсистему: GPIO
+. Откройте документацию: `Documentation/driver-api/gpio/`
+. Изучите заголовочный файл: `include/linux/gpio.h`
+. Найдите примеры использования:
++
+[source,bash]
+----
+grep -r "gpio_request\|gpiod_get" drivers/gpio/ | head -20
+----
++
+. Изучите простой драйвер GPIO:
++
+[source,bash]
+----
+cat drivers/gpio/gpio-mockup.c
+----
+
+=== Пример 2: Поиск API для работы с памятью
+
+. Откройте документацию: `Documentation/core-api/memory-allocation.rst`
+. Изучите заголовочный файл: `include/linux/slab.h`
+. Найдите функции выделения памяти:
++
+[source,bash]
+----
+grep -r "^void \*kmalloc\|^void \*kzalloc" include/linux/slab.h
+----
++
+. Изучите примеры использования:
++
+[source,bash]
+----
+grep -r "kmalloc.*GFP_KERNEL" drivers/usb/ | head -10
+----
+
+=== Пример 3: Поиск API для работы со временем
+
+. Откройте документацию: `Documentation/core-api/timekeeping.rst`
+. Изучите заголовочные файлы:
++
+[source,bash]
+----
+cat include/linux/timekeeping.h | grep "ktime_t ktime_"
+cat include/linux/ktime.h | grep "static inline"
+----
++
+. Найдите примеры использования:
++
+[source,bash]
+----
+grep -r "ktime_get\|ktime_to_ns" drivers/ | head -20
+----
+
+== Полезные ресурсы
+
+=== Онлайн-ресурсы
+
+* https://elixir.bootlin.com/linux/[Elixir Bootlin] — навигация по исходникам
+* https://www.kernel.org/doc/html/latest/[Kernel Documentation] — официальная документация
+* https://lwn.net/[LWN.net] — статьи и анализ
+* https://lore.kernel.org/[Lore Kernel Mailing List Archive] — архив mailing lists
+* https://kernelnewbies.org/[Kernel Newbies] — ресурсы для начинающих
+
+=== Книги
+
+* *Linux Device Drivers, 3rd Edition* — Jonathan Corbet, Alessandro Rubini, Greg Kroah-Hartman
+* *Linux Kernel Development, 3rd Edition* — Robert Love
+* *Professional Linux Kernel Architecture* — Wolfgang Mauerer
+* *Understanding the Linux Kernel* — Daniel P. Bovet, Marco Cesati
+
+=== Видео-ресурсы
+
+* Linux Plumbers Conference — доклады разработчиков ядра
+* Kernel Recipes — практические советы
+* Linux Foundation Training — обучающие курсы
+
+== Советы и рекомендации
+
+=== Общие рекомендации
+
+[TIP]
+====
+* Всегда проверяйте версию ядра, для которой написана документация
+* Изучайте несколько примеров драйверов, а не только один
+* Используйте `git log` для понимания истории изменений API
+* Читайте комментарии в коде — они часто содержат важную информацию
+====
+
+=== Избегание типичных ошибок
+
+[WARNING]
+====
+* Не используйте устаревшие API (проверяйте `deprecated` в документации)
+* Не копируйте код из старых версий ядра без проверки актуальности
+* Не игнорируйте предупреждения компилятора — они часто указывают на проблемы
+* Всегда проверяйте возвращаемые значения функций
+====
+
+=== Эффективные рабочие процессы
+
+. *Начинайте с документации* — прочитайте соответствующий раздел в `Documentation/`
+. *Изучайте примеры* — найдите 2-3 простых драйвера в вашей подсистеме
+. *Используйте Elixir Bootlin* — для быстрого поиска и навигации
+. *Читайте kerneldoc* — встроенная документация часто содержит важную информацию
+. *Тестируйте на реальных устройствах* — эмуляторы не всегда корректно воспроизводят поведение
+
+== Заключение
+
+Эффективная работа с документацией и исходниками ядра Linux — это навык, который развивается с опытом. Используйте комбинацию онлайн-инструментов, локальной навигации и изучения примеров для быстрого освоения новых API.
+
+Помните: ядро Linux разрабатывается сообществом, и всегда есть готовые решения для большинства задач. Ваша цель — найти их и правильно использовать, а не изобретать велосипед.
+
+[NOTE]
+====
+Если вы застряли или не можете найти нужную информацию:
+
+* Задайте вопрос в mailing list соответствующей подсистемы
+* Поиските ответ на Stack Overflow с тегом `linux-kernel`
+* Проверьте архивы lore.kernel.org
+* Обратитесь к сообществу на IRC (канал #kernel-newbies на Libera.Chat)
+====
+
+== Приложение A: Шпаргалка по командам
+
+=== Поиск в исходниках
+
+[source,bash]
+----
+# Поиск функции в заголовочных файлах
+grep -r "function_name" include/linux/ | grep "\.h:"
+
+# Поиск использования функции
+grep -r "function_name" drivers/ | head -20
+
+# Поиск с контекстом
+grep -B2 -A5 "function_name" file.c
+
+# Поиск всех функций, начинающихся с префикса
+grep -r "^prefix_" include/linux/ | grep "\.h:"
+----
+
+=== Генерация тегов
+
+[source,bash]
+----
+# Для Vim
+make tags
+
+# Для Emacs
+make TAGS
+
+# Для cscope
+make cscope
+----
+
+=== Работа с документацией
+
+[source,bash]
+----
+# Генерация HTML документации
+make htmldocs
+
+# Извлечение kerneldoc
+scripts/kernel-doc -rst file.h
+
+# Поиск в документации
+grep -r "keyword" Documentation/
+----
+
+== Приложение B: Полезные алиасы
+
+Добавьте эти алиасы в ваш `~/.bashrc` или `~/.zshrc`:
+
+[source,bash]
+----
+# Быстрый переход к исходникам ядра
+alias ksrc='cd /path/to/linux-source'
+
+# Поиск функции в ядре
+alias kgrep='grep -r --include="*.h" --include="*.c"'
+
+# Открытие Elixir Bootlin
+alias elixir='firefox https://elixir.bootlin.com/linux/latest/source'
+
+# Открытие документации ядра
+alias kdoc='firefox https://www.kernel.org/doc/html/latest/'
+
+# Поиск kerneldoc
+alias kdoc-extract='scripts/kernel-doc -rst'
+----

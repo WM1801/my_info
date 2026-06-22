@@ -1,0 +1,88 @@
+= Символы ядра (Kernel Symbols)
+:doctype: article
+:title-page:
+:toc:
+:toc-title: Оглавление
+:toclevels: 3
+:sectnums:
+:icons: font
+:source-highlighter: rouge
+:figure-caption: Рисунок
+:table-caption: Таблица
+:example-caption: Пример
+:listing-caption: Листинг
+:pdf-theme: default-with-fallback-font
+:author: Владислав Богданов
+:email: vla-bogdano@ya.ru
+:revdate: 2026-06-16
+
+toc::[]
+
+
+Когда разработчики Linux пишут код ядра, они пишут его на языке C. Там есть тысячи функций: sys_read, do_fork, tcp_sendmsg и переменные. Когда этот код компилируется, он превращается в машинные нули и единицы, которые загружаются в оперативную память по определенным адресам (например, 0xffffffff812a4b50).
+Но людям (и отладчикам) невозможно запомнить hex-адреса. Поэтому компилятор создает таблицу, где каждому адресу присваивается человекочитаемое имя. Это имя и есть символ ядра.
+
+Суть: Это данные, метаданные, словарь или карта. 
+
+Это связь "Имя <-> Адрес в памяти".
+
+Аналогия: Это как адресная книга или меню в ресторане. В меню написано: "Суп дневной — стол №5". "Суп дневной" — это символ, а "стол №5" — это адрес в памяти.
+
+Загружая модуль драйвера функции описанные в нем подгружаются в данный файл. 
+
+
+вот модуль 
+----
+
+----
+
+теперь 
+
+----
+// загружаем модуль 
+// так 
+sudo insmod hello.ko
+//или так 
+sudo modprobe ./hello.ko
+// смотрим по названию функции 
+sudo cat /proc/kallsyms | grep "my_alert"
+sudo cat /proc/kallsyms | grep "my_number"
+sudo cat /proc/kallsyms | grep "my_time"
+sudo cat /proc/kallsyms | grep "create_file"
+
+
+sudo cat /proc/kallsyms | grep "\[hello\]"
+
+ffffffffc0c9928c r __UNIQUE_ID_note_317	[hello]
+ffffffffc0c992a4 r __UNIQUE_ID_note_316	[hello]
+ffffffffc0a89230 t my_alert	[hello]
+ffffffffc0c97040 d __this_module	[hello]
+ffffffffc0a89100 t my_number	[hello]
+ffffffffc0a890d0 t cleanup_module	[hello]
+ffffffffc0a89220 t __pfx_my_alert	[hello]
+ffffffffc0a89010 t init_module	[hello]
+ffffffffc0a89260 t __pfx_create_file	[hello]
+ffffffffc0a89130 t __pfx_my_time	[hello]
+ffffffffc0a890f0 t __pfx_my_number	[hello]
+ffffffffc0a89000 t __pfx_init_module	[hello]
+ffffffffc0a89140 t my_time	[hello]
+ffffffffc0a890c0 t __pfx_cleanup_module	[hello]
+ffffffffc0a89270 t create_file	[hello]
+
+// без sudo адреса равны 000000000000000
+----
+
+у каждой функции есть "двойник" с префиксом __pfx_:
+----
+t __pfx_my_alert   [hello]
+t my_alert         [hello]
+----
+
+Это ядро автоматически добавляет маленькие префиксные функции (prefix functions) для механизма CFI (Control Flow Integrity).
+
+*Зачем это нужно?*
+
+CFI проверяет, что вызов функции происходит по правильному адресу. ___pfx_my_alert_ — это крошечная "обёртка" перед твоей функцией, которая содержит метку для проверки. Когда кто-то вызывает my_alert, CFI сначала проверяет префикс.
+
+
+*Тебе как разработчику драйвера:* Просто игнорируй их. Это внутренняя кухня ядра. Твои функции — это те, что без __pfx_.
