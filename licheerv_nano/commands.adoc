@@ -15,7 +15,7 @@
 :author: Владислав Богданов
 :email: vla-bogdano@ya.ru
 :revdate: 2026-06-08
-:keywords: licheerv_nano, commands, devmem, memory, debug
+:keywords: licheerv_nano, commands, devmem, memory, debug, tail
 
 toc::[]
 
@@ -40,7 +40,12 @@ devmem 0xFFFFFFFF
 
 # 5. Смотрим, какие регионы памяти доступны
 cat /proc/iomem | head -50
+
+# 6. Команда для просмотра системных сообщений ядра Linux в реальном времени
+tail -f /var/log/kern.log 
+
 ----
 
 == Утилиты 
 . *valgrind* - проверка на утечки памяти 
+

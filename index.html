@@ -42,7 +42,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <body>
 <div class="container">
 <h1>Catalog of notes</h1>
-<p class="subtitle">11 articles - click tags to filter</p>
+<p class="subtitle">12 articles - click tags to filter</p>
 <div class="search-box">
 <input type="text" id="search" placeholder="Search by title, description or tag..." autocomplete="off">
 </div>
@@ -66,7 +66,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="devmem" onclick="toggleTag('devmem')">devmem (1)</span>
 <span class="tag-btn" data-tag="docker" onclick="toggleTag('docker')">docker (1)</span>
 <span class="tag-btn" data-tag="documentation" onclick="toggleTag('documentation')">documentation (1)</span>
-<span class="tag-btn" data-tag="driver" onclick="toggleTag('driver')">driver (2)</span>
+<span class="tag-btn" data-tag="driver" onclick="toggleTag('driver')">driver (3)</span>
 <span class="tag-btn" data-tag="dtb" onclick="toggleTag('dtb')">dtb (1)</span>
 <span class="tag-btn" data-tag="dtc" onclick="toggleTag('dtc')">dtc (2)</span>
 <span class="tag-btn" data-tag="dto" onclick="toggleTag('dto')">dto (1)</span>
@@ -80,7 +80,8 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="jlink" onclick="toggleTag('jlink')">jlink (1)</span>
 <span class="tag-btn" data-tag="kallsyms" onclick="toggleTag('kallsyms')">kallsyms (1)</span>
 <span class="tag-btn" data-tag="kasan" onclick="toggleTag('kasan')">kasan (1)</span>
-<span class="tag-btn" data-tag="kernel" onclick="toggleTag('kernel')">kernel (4)</span>
+<span class="tag-btn" data-tag="kernel" onclick="toggleTag('kernel')">kernel (5)</span>
+<span class="tag-btn" data-tag="kernel_symvol" onclick="toggleTag('kernel_symvol')">kernel_symvol (1)</span>
 <span class="tag-btn" data-tag="kgdb" onclick="toggleTag('kgdb')">kgdb (1)</span>
 <span class="tag-btn" data-tag="kprobe" onclick="toggleTag('kprobe')">kprobe (1)</span>
 <span class="tag-btn" data-tag="libgpiod" onclick="toggleTag('libgpiod')">libgpiod (1)</span>
@@ -88,7 +89,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="makefile" onclick="toggleTag('makefile')">makefile (1)</span>
 <span class="tag-btn" data-tag="memory" onclick="toggleTag('memory')">memory (1)</span>
 <span class="tag-btn" data-tag="milandr" onclick="toggleTag('milandr')">milandr (1)</span>
-<span class="tag-btn" data-tag="module" onclick="toggleTag('module')">module (3)</span>
+<span class="tag-btn" data-tag="module" onclick="toggleTag('module')">module (4)</span>
 <span class="tag-btn" data-tag="navigation" onclick="toggleTag('navigation')">navigation (1)</span>
 <span class="tag-btn" data-tag="oops" onclick="toggleTag('oops')">oops (1)</span>
 <span class="tag-btn" data-tag="openocd" onclick="toggleTag('openocd')">openocd (1)</span>
@@ -105,6 +106,8 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="syscall" onclick="toggleTag('syscall')">syscall (1)</span>
 <span class="tag-btn" data-tag="sysfs" onclick="toggleTag('sysfs')">sysfs (3)</span>
 <span class="tag-btn" data-tag="sysvinit" onclick="toggleTag('sysvinit')">sysvinit (1)</span>
+<span class="tag-btn" data-tag="tail" onclick="toggleTag('tail')">tail (1)</span>
+<span class="tag-btn" data-tag="параметры_модуля" onclick="toggleTag('параметры_модуля')">параметры_модуля (1)</span>
 </div>
 <div id="sections">
 <div class="section">
@@ -183,6 +186,20 @@ h1{font-size:1.8rem;margin-bottom:4px}
  &middot; <span class="file-badge">pdf</span> <a href="inzenerka_tech\driver linux_1.pdf">open PDF</a>
 </div>
 </div>
+<div class="card" data-tags='["kernel","driver","module","kernel_symvol","параметры_модуля"]' data-search="Разработка драйверов в Linux, 2 Материал написан на основе курса "Разработка модулей ядра Linux (Linux Kernel developer)" от https://inzhenerka.tech/ и собраных данных в интернете.">
+<div class="card-title"><a href="inzenerka_tech\driver linux_2.pdf" target="_blank">Разработка драйверов в Linux, 2</a></div>
+<div class="card-desc">Материал написан на основе курса "Разработка модулей ядра Linux (Linux Kernel developer)" от https://inzhenerka.tech/ и собраных данных в интернете.</div>
+<div class="card-tags">
+<span class="card-tag" data-tag="kernel" onclick="toggleTag('kernel')">kernel</span>
+<span class="card-tag" data-tag="driver" onclick="toggleTag('driver')">driver</span>
+<span class="card-tag" data-tag="module" onclick="toggleTag('module')">module</span>
+<span class="card-tag" data-tag="kernel_symvol" onclick="toggleTag('kernel_symvol')">kernel_symvol</span>
+<span class="card-tag" data-tag="параметры_модуля" onclick="toggleTag('параметры_модуля')">параметры_модуля</span>
+</div>
+<div class="card-meta"><span class="file-badge">adoc</span> <a href="inzenerka_tech\driver linux_2.adoc">inzenerka_tech\driver linux_2.adoc</a>
+ &middot; <span class="file-badge">pdf</span> <a href="inzenerka_tech\driver linux_2.pdf">open PDF</a>
+</div>
+</div>
 </div>
 </div>
 <div class="section">
@@ -223,7 +240,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <div class="section">
 <div class="section-title">licheerv nano</div>
 <div class="cards">
-<div class="card" data-tags='["licheerv_nano","commands","devmem","memory","debug"]' data-search="Полезные команды # 1. Проверяем права доступа к /dev/mem">
+<div class="card" data-tags='["licheerv_nano","commands","devmem","memory","debug","tail"]' data-search="Полезные команды # 1. Проверяем права доступа к /dev/mem">
 <div class="card-title"><a href="licheerv_nano\commands.pdf" target="_blank">Полезные команды</a></div>
 <div class="card-desc"># 1. Проверяем права доступа к /dev/mem</div>
 <div class="card-tags">
@@ -232,6 +249,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="card-tag" data-tag="devmem" onclick="toggleTag('devmem')">devmem</span>
 <span class="card-tag" data-tag="memory" onclick="toggleTag('memory')">memory</span>
 <span class="card-tag" data-tag="debug" onclick="toggleTag('debug')">debug</span>
+<span class="card-tag" data-tag="tail" onclick="toggleTag('tail')">tail</span>
 </div>
 <div class="card-meta"><span class="file-badge">adoc</span> <a href="licheerv_nano\commands.adoc">licheerv_nano\commands.adoc</a>
  &middot; <span class="file-badge">pdf</span> <a href="licheerv_nano\commands.pdf">open PDF</a>

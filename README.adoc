@@ -39,6 +39,9 @@ toc::[]
 * xref:inzenerka_tech/driver linux_1.adoc[Разработка драйверов в Linux, 1] — Материал написан на основе курса "Разработка модулей ядра Linux (Linux Kernel developer)" от https://inzhenerka.tech/ и собраных данных в интернете.
   *Теги:* `kernel, driver, module, makefile, debugging, ftrace, kprobe, kgdb, kasan, oops`
 
+* xref:inzenerka_tech/driver linux_2.adoc[Разработка драйверов в Linux, 2] — Материал написан на основе курса "Разработка модулей ядра Linux (Linux Kernel developer)" от https://inzhenerka.tech/ и собраных данных в интернете.
+  *Теги:* `kernel, driver, module, kernel_symvol, параметры_модуля`
+
 === kernel
 
 * xref:kernel/read_documentation.adoc[Руководство по навигации и поиску в исходниках ядра Linux] — Разработка модулей ядра Linux требует умения эффективно работать с исходным кодом и документацией. Ядро содержит миллионы строк кода, тысячи функций и обширную документацию. Умение быстро находить нуж...
@@ -50,7 +53,7 @@ toc::[]
 === licheerv nano
 
 * xref:licheerv_nano/commands.adoc[Полезные команды] — # 1. Проверяем права доступа к /dev/mem
-  *Теги:* `licheerv_nano, commands, devmem, memory, debug`
+  *Теги:* `licheerv_nano, commands, devmem, memory, debug, tail`
 
 * xref:licheerv_nano/gpio_output.adoc[Работа с GPIO в Linux] — Данные заметки созданы как дополнительная напоминалка и могут нести ошибки и неверное понимание автором как теории, так и практических полученых данных, а потому если выпытаетесь повторить необходимо ...
   *Теги:* `gpio, licheerv_nano, pinmux, sysfs, libgpiod, gpiochip, output, input`
@@ -68,4 +71,4 @@ toc::[]
 
 ---
 
-Сгенерировано автоматически. Всего статей: 11.
+Сгенерировано автоматически. Всего статей: 12.
