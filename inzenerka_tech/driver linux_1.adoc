@@ -15,6 +15,7 @@
 :author: Владислав Богданов
 :email: vla-bogdano@ya.ru
 :revdate: 2026-06-16
+:keywords: kernel, driver, module, makefile, debugging, ftrace, kprobe, kgdb, kasan, oops
 
 toc::[]
 

@@ -1,4 +1,5 @@
 = Сборка и прошивка Миландр 1986ВЕ9х через Docker
+:keywords: milandr, 1986ve9x, cortex-m3, docker, openocd, jlink, firmware
 :toc:
 :toc-placement!:
 :icons: font

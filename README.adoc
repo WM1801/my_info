@@ -1,0 +1,53 @@
+= Каталог заметок
+:doctype: article
+:toc:
+:toc-title: Содержание
+:toclevels: 2
+:icons: font
+
+Заметки по embedded Linux, ядру, драйверам и микроконтроллерам.
+
+Для поиска используй `Ctrl+Shift+F` в VS Code по названию тега (например, `:keywords: gpio`).
+
+== device_tree
+
+* xref:device_tree/Device Tree Overlay.adoc[Device Tree Overlay] — создание DTO, configfs, pinmux
+  *Теги:* `device-tree`, `overlay`, `dto`, `configfs`, `pinmux`, `dtc`, `sg2002`
+
+* xref:device_tree/Modification DTB on SD card.adoc[Модификация DTB на SD-карте] — правка .dtb на boot-разделе, dtc
+  *Теги:* `device-tree`, `dtb`, `sd-card`, `boot`, `pinmux`, `dtc`, `licheerv_nano`
+
+== inzenerka_tech
+
+* xref:inzenerka_tech/driver linux.adoc[Разработка драйверов в Linux] — syscall, типы устройств, printk, procfs/sysfs
+  *Теги:* `kernel`, `driver`, `module`, `syscall`, `char-device`, `procfs`, `sysfs`, `printk`
+
+* xref:inzenerka_tech/driver linux_1.adoc[Разработка драйверов в Linux, ч.1] — Makefile, отладка: ftrace, kprobe, kgdb, KASAN, oops
+  *Теги:* `kernel`, `driver`, `module`, `makefile`, `debugging`, `ftrace`, `kprobe`, `kgdb`, `kasan`, `oops`
+
+== kernel
+
+* xref:kernel/kernel_symvol.adoc[Символы ядра (Kernel Symbols)] — kallsyms, CFI, экспорт символов модуля
+  *Теги:* `kernel`, `symbols`, `kallsyms`, `module`, `cfi`
+
+* xref:kernel/read_documentation.adoc[Руководство по навигации в исходниках ядра Linux] — Elixir Bootlin, ctags/cscope, поиск API
+  *Теги:* `kernel`, `documentation`, `elixir`, `bootlin`, `ctags`, `cscope`, `navigation`
+
+== licheerv_nano
+
+* xref:licheerv_nano/commands.adoc[Полезные команды] — devmem, /proc/iomem, отладка памяти
+  *Теги:* `licheerv_nano`, `commands`, `devmem`, `memory`, `debug`
+
+* xref:licheerv_nano/gpio_output.adoc[Работа с GPIO в Linux] — sysfs/libgpiod, pinmux, вход/выход, LicheeRV Nano
+  *Теги:* `gpio`, `licheerv_nano`, `pinmux`, `sysfs`, `libgpiod`, `gpiochip`, `output`, `input`
+
+* xref:licheerv_nano/gpio_pmw.adoc[Работа с GPIO в Linux в режиме ШИМ] — PWM sysfs, период/скважность, продвинутые режимы
+  *Теги:* `pwm`, `licheerv_nano`, `pinmux`, `sysfs`, `sg2002`
+
+* xref:licheerv_nano/Init script BusyBox.adoc[Создание скрипта инициализации для BusyBox] — S99 init, daemon, автозапуск приложения
+  *Теги:* `busybox`, `init`, `sysvinit`, `startup`, `daemon`, `licheerv_nano`
+
+== milandr
+
+* xref:milandr/README.adoc[Сборка и прошивка Миландр 1986ВЕ9х через Docker] — Docker + OpenOCD + J-Link
+  *Теги:* `milandr`, `1986ve9x`, `cortex-m3`, `docker`, `openocd`, `jlink`, `firmware`

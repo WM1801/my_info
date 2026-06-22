@@ -2,6 +2,7 @@
 :author: Преподаватель по программированию под Linux
 :revdate: 2026-06-19
 :toc: left
+:keywords: kernel, documentation, elixir, bootlin, ctags, cscope, navigation
 :toclevels: 3
 :sectnums:
 :icons: font

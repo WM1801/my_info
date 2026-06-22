@@ -15,6 +15,7 @@
 :author: Владислав Богданов
 :email: vla-bogdano@ya.ru
 :revdate: 2026-06-08
+:keywords: busybox, init, sysvinit, startup, daemon, licheerv_nano
 
 toc::[]
 
