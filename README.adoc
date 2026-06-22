@@ -1,53 +1,71 @@
-= Каталог заметок
+﻿= Каталог заметок
 :doctype: article
 :toc:
-:toc-title: Содержание
+:toc-placement!:
 :toclevels: 2
 :icons: font
+:keywords: catalog, index
 
 Заметки по embedded Linux, ядру, драйверам и микроконтроллерам.
 
-Для поиска используй `Ctrl+Shift+F` в VS Code по названию тега (например, `:keywords: gpio`).
+toc::[]
 
-== device_tree
+== Поиск
 
-* xref:device_tree/Device Tree Overlay.adoc[Device Tree Overlay] — создание DTO, configfs, pinmux
-  *Теги:* `device-tree`, `overlay`, `dto`, `configfs`, `pinmux`, `dtc`, `sg2002`
+* В VS Code: Ctrl+Shift+F по тегу (например, `:keywords: gpio`)
+* В браузере: открыть file:index.html[интерактивный каталог] — фильтрация по тегам и поиск
 
-* xref:device_tree/Modification DTB on SD card.adoc[Модификация DTB на SD-карте] — правка .dtb на boot-разделе, dtc
-  *Теги:* `device-tree`, `dtb`, `sd-card`, `boot`, `pinmux`, `dtc`, `licheerv_nano`
+== Добавление новой статьи
 
-== inzenerka_tech
+. Создай `.adoc` файл в нужной папке, обязательно укажи `:keywords:` с тегами в заголовке
+. (опционально) Сгенерируй PDF: Ctrl+Shift+B в VS Code (asciidoctor-pdf)
+. Обнови каталог: `powershell -File scripts/generate-index.ps1` — автоматически обновятся README.adoc и index.html
 
-* xref:inzenerka_tech/driver linux.adoc[Разработка драйверов в Linux] — syscall, типы устройств, printk, procfs/sysfs
-  *Теги:* `kernel`, `driver`, `module`, `syscall`, `char-device`, `procfs`, `sysfs`, `printk`
+== Статьи
 
-* xref:inzenerka_tech/driver linux_1.adoc[Разработка драйверов в Linux, ч.1] — Makefile, отладка: ftrace, kprobe, kgdb, KASAN, oops
-  *Теги:* `kernel`, `driver`, `module`, `makefile`, `debugging`, `ftrace`, `kprobe`, `kgdb`, `kasan`, `oops`
+=== device tree
 
-== kernel
+* xref:device_tree/Modification DTB on SD card.adoc[Модификация DTB на SD-карте] — Есть у нас образ и нужно нам поменять конфигурацию железа.
+  *Теги:* `device-tree, dtb, sd-card, boot, pinmux, dtc, licheerv_nano`
 
-* xref:kernel/kernel_symvol.adoc[Символы ядра (Kernel Symbols)] — kallsyms, CFI, экспорт символов модуля
-  *Теги:* `kernel`, `symbols`, `kallsyms`, `module`, `cfi`
+* xref:device_tree/Device Tree Overlay.adoc[Создание  Device Tree Overlay] — Информация может быть и скорее всего не точна и даже может обманывать, получена из интернета и ИИ.
+  *Теги:* `device-tree, overlay, dto, configfs, pinmux, dtc, sg2002`
 
-* xref:kernel/read_documentation.adoc[Руководство по навигации в исходниках ядра Linux] — Elixir Bootlin, ctags/cscope, поиск API
-  *Теги:* `kernel`, `documentation`, `elixir`, `bootlin`, `ctags`, `cscope`, `navigation`
+=== inzenerka tech
 
-== licheerv_nano
+* xref:inzenerka_tech/driver linux.adoc[Разработка драйверов в Linux] — Материал написан на основе курса "Разработка модулей ядра Linux (Linux Kernel developer)" от https://inzhenerka.tech/ и собраных данных в интернете.
+  *Теги:* `kernel, driver, module, syscall, char-device, procfs, sysfs, printk`
 
-* xref:licheerv_nano/commands.adoc[Полезные команды] — devmem, /proc/iomem, отладка памяти
-  *Теги:* `licheerv_nano`, `commands`, `devmem`, `memory`, `debug`
+* xref:inzenerka_tech/driver linux_1.adoc[Разработка драйверов в Linux, 1] — Материал написан на основе курса "Разработка модулей ядра Linux (Linux Kernel developer)" от https://inzhenerka.tech/ и собраных данных в интернете.
+  *Теги:* `kernel, driver, module, makefile, debugging, ftrace, kprobe, kgdb, kasan, oops`
 
-* xref:licheerv_nano/gpio_output.adoc[Работа с GPIO в Linux] — sysfs/libgpiod, pinmux, вход/выход, LicheeRV Nano
-  *Теги:* `gpio`, `licheerv_nano`, `pinmux`, `sysfs`, `libgpiod`, `gpiochip`, `output`, `input`
+=== kernel
 
-* xref:licheerv_nano/gpio_pmw.adoc[Работа с GPIO в Linux в режиме ШИМ] — PWM sysfs, период/скважность, продвинутые режимы
-  *Теги:* `pwm`, `licheerv_nano`, `pinmux`, `sysfs`, `sg2002`
+* xref:kernel/read_documentation.adoc[Руководство по навигации и поиску в исходниках ядра Linux] — Разработка модулей ядра Linux требует умения эффективно работать с исходным кодом и документацией. Ядро содержит миллионы строк кода, тысячи функций и обширную документацию. Умение быстро находить нуж...
+  *Теги:* `kernel, documentation, elixir, bootlin, ctags, cscope, navigation`
 
-* xref:licheerv_nano/Init script BusyBox.adoc[Создание скрипта инициализации для BusyBox] — S99 init, daemon, автозапуск приложения
-  *Теги:* `busybox`, `init`, `sysvinit`, `startup`, `daemon`, `licheerv_nano`
+* xref:kernel/kernel_symvol.adoc[Символы ядра (Kernel Symbols)] — Когда разработчики Linux пишут код ядра, они пишут его на языке C. Там есть тысячи функций: sys_read, do_fork, tcp_sendmsg и переменные. Когда этот код компилируется, он превращается в машинные нули и...
+  *Теги:* `kernel, symbols, kallsyms, module, cfi`
 
-== milandr
+=== licheerv nano
 
-* xref:milandr/README.adoc[Сборка и прошивка Миландр 1986ВЕ9х через Docker] — Docker + OpenOCD + J-Link
-  *Теги:* `milandr`, `1986ve9x`, `cortex-m3`, `docker`, `openocd`, `jlink`, `firmware`
+* xref:licheerv_nano/commands.adoc[Полезные команды] — # 1. Проверяем права доступа к /dev/mem
+  *Теги:* `licheerv_nano, commands, devmem, memory, debug`
+
+* xref:licheerv_nano/gpio_output.adoc[Работа с GPIO в Linux] — Данные заметки созданы как дополнительная напоминалка и могут нести ошибки и неверное понимание автором как теории, так и практических полученых данных, а потому если выпытаетесь повторить необходимо ...
+  *Теги:* `gpio, licheerv_nano, pinmux, sysfs, libgpiod, gpiochip, output, input`
+
+* xref:licheerv_nano/gpio_pmw.adoc[Работа с GPIO в Linux в режиме ШИМ] — И так сначала мы занимались ногодрыгом (gpio_output.pdf), достучались до пинов. Далее создали файл инициализирующий его режим gpio при загрузке системы.
+  *Теги:* `pwm, licheerv_nano, pinmux, sysfs, sg2002`
+
+* xref:licheerv_nano/Init script BusyBox.adoc[Создание скрипта инициализации для BusyBox] — Если ядро не позволяет менять Device Tree на лету, мы говорим системе: _"Сделай это через 2 секунды после загрузки, пока пользователь еще даже не успел залогиниться"_.
+  *Теги:* `busybox, init, sysvinit, startup, daemon, licheerv_nano`
+
+=== milandr
+
+* xref:milandr/README.adoc[Сборка и прошивка Миландр 1986ВЕ9х через Docker] — Проект предназначен для сборки и прошивки микроконтроллера *Миландр 1986ВЕ9х* (Cortex-M3) с использованием Docker-контейнера. Это обеспечивает:
+  *Теги:* `milandr, 1986ve9x, cortex-m3, docker, openocd, jlink, firmware`
+
+---
+
+Сгенерировано автоматически. Всего статей: 11.
