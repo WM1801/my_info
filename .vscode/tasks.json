@@ -11,11 +11,25 @@
                 "-a", "encoding=UTF-8",
                 "${relativeFile}"
             ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Generate Index",
+            "type": "shell",
+            "command": "powershell.exe",
+            "args": [
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                "${workspaceFolder}\\scripts\\generate-index.ps1"
+            ],
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
-            "problemMatcher": []
+            "problemMatcher": [], 
+            "dependsOn": ["Asciidoctor PDF"],
+            "dependsOrder": "sequence"
         }
     ]
 }
