@@ -15,7 +15,7 @@
 :author: Владислав Богданов
 :email: vla-bogdano@ya.ru
 :revdate: 2026-06-16
-:keywords: kernel, driver, module, kernel_symvol, параметры_модуля
+:keywords: kernel, driver, module, kernel_symvol, параметры_модуля, Module.symvers
 
 toc::[]
 

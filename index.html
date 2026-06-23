@@ -42,7 +42,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <body>
 <div class="container">
 <h1>Catalog of notes</h1>
-<p class="subtitle">12 articles - click tags to filter</p>
+<p class="subtitle">13 articles - click tags to filter</p>
 <div class="search-box">
 <input type="text" id="search" placeholder="Search by title, description or tag..." autocomplete="off">
 </div>
@@ -66,7 +66,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="devmem" onclick="toggleTag('devmem')">devmem (1)</span>
 <span class="tag-btn" data-tag="docker" onclick="toggleTag('docker')">docker (1)</span>
 <span class="tag-btn" data-tag="documentation" onclick="toggleTag('documentation')">documentation (1)</span>
-<span class="tag-btn" data-tag="driver" onclick="toggleTag('driver')">driver (3)</span>
+<span class="tag-btn" data-tag="driver" onclick="toggleTag('driver')">driver (4)</span>
 <span class="tag-btn" data-tag="dtb" onclick="toggleTag('dtb')">dtb (1)</span>
 <span class="tag-btn" data-tag="dtc" onclick="toggleTag('dtc')">dtc (2)</span>
 <span class="tag-btn" data-tag="dto" onclick="toggleTag('dto')">dto (1)</span>
@@ -81,7 +81,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="kallsyms" onclick="toggleTag('kallsyms')">kallsyms (1)</span>
 <span class="tag-btn" data-tag="kasan" onclick="toggleTag('kasan')">kasan (1)</span>
 <span class="tag-btn" data-tag="kernel" onclick="toggleTag('kernel')">kernel (5)</span>
-<span class="tag-btn" data-tag="kernel_symvol" onclick="toggleTag('kernel_symvol')">kernel_symvol (1)</span>
+<span class="tag-btn" data-tag="kernel_symvol" onclick="toggleTag('kernel_symvol')">kernel_symvol (2)</span>
 <span class="tag-btn" data-tag="kgdb" onclick="toggleTag('kgdb')">kgdb (1)</span>
 <span class="tag-btn" data-tag="kprobe" onclick="toggleTag('kprobe')">kprobe (1)</span>
 <span class="tag-btn" data-tag="libgpiod" onclick="toggleTag('libgpiod')">libgpiod (1)</span>
@@ -89,7 +89,8 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="makefile" onclick="toggleTag('makefile')">makefile (1)</span>
 <span class="tag-btn" data-tag="memory" onclick="toggleTag('memory')">memory (1)</span>
 <span class="tag-btn" data-tag="milandr" onclick="toggleTag('milandr')">milandr (1)</span>
-<span class="tag-btn" data-tag="module" onclick="toggleTag('module')">module (4)</span>
+<span class="tag-btn" data-tag="module" onclick="toggleTag('module')">module (5)</span>
+<span class="tag-btn" data-tag="module.symvers" onclick="toggleTag('module.symvers')">Module.symvers (2)</span>
 <span class="tag-btn" data-tag="navigation" onclick="toggleTag('navigation')">navigation (1)</span>
 <span class="tag-btn" data-tag="oops" onclick="toggleTag('oops')">oops (1)</span>
 <span class="tag-btn" data-tag="openocd" onclick="toggleTag('openocd')">openocd (1)</span>
@@ -186,7 +187,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
  &middot; <span class="file-badge">pdf</span> <a href="inzenerka_tech\driver linux_1.pdf">open PDF</a>
 </div>
 </div>
-<div class="card" data-tags='["kernel","driver","module","kernel_symvol","параметры_модуля"]' data-search="Разработка драйверов в Linux, 2 Материал написан на основе курса "Разработка модулей ядра Linux (Linux Kernel developer)" от https://inzhenerka.tech/ и собраных данных в интернете.">
+<div class="card" data-tags='["kernel","driver","module","kernel_symvol","параметры_модуля","module.symvers"]' data-search="Разработка драйверов в Linux, 2 Материал написан на основе курса "Разработка модулей ядра Linux (Linux Kernel developer)" от https://inzhenerka.tech/ и собраных данных в интернете.">
 <div class="card-title"><a href="inzenerka_tech\driver linux_2.pdf" target="_blank">Разработка драйверов в Linux, 2</a></div>
 <div class="card-desc">Материал написан на основе курса "Разработка модулей ядра Linux (Linux Kernel developer)" от https://inzhenerka.tech/ и собраных данных в интернете.</div>
 <div class="card-tags">
@@ -195,6 +196,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="card-tag" data-tag="module" onclick="toggleTag('module')">module</span>
 <span class="card-tag" data-tag="kernel_symvol" onclick="toggleTag('kernel_symvol')">kernel_symvol</span>
 <span class="card-tag" data-tag="параметры_модуля" onclick="toggleTag('параметры_модуля')">параметры_модуля</span>
+<span class="card-tag" data-tag="module.symvers" onclick="toggleTag('module.symvers')">Module.symvers</span>
 </div>
 <div class="card-meta"><span class="file-badge">adoc</span> <a href="inzenerka_tech\driver linux_2.adoc">inzenerka_tech\driver linux_2.adoc</a>
  &middot; <span class="file-badge">pdf</span> <a href="inzenerka_tech\driver linux_2.pdf">open PDF</a>
@@ -205,6 +207,19 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <div class="section">
 <div class="section-title">kernel</div>
 <div class="cards">
+<div class="card" data-tags='["driver","module","kernel_symvol","module.symvers"]' data-search="Module.symvers Module.symvers (Symbol Versions)* — это глобальный реестр (словарь) всех функций и переменных ядра, которые разрешено использовать внешним модулям.">
+<div class="card-title"><a href="kernel\Module_symvers.pdf" target="_blank">Module.symvers</a></div>
+<div class="card-desc">Module.symvers (Symbol Versions)* — это глобальный реестр (словарь) всех функций и переменных ядра, которые разрешено использовать внешним модулям.</div>
+<div class="card-tags">
+<span class="card-tag" data-tag="driver" onclick="toggleTag('driver')">driver</span>
+<span class="card-tag" data-tag="module" onclick="toggleTag('module')">module</span>
+<span class="card-tag" data-tag="kernel_symvol" onclick="toggleTag('kernel_symvol')">kernel_symvol</span>
+<span class="card-tag" data-tag="module.symvers" onclick="toggleTag('module.symvers')">Module.symvers</span>
+</div>
+<div class="card-meta"><span class="file-badge">adoc</span> <a href="kernel\Module_symvers.adoc">kernel\Module_symvers.adoc</a>
+ &middot; <span class="file-badge">pdf</span> <a href="kernel\Module_symvers.pdf">open PDF</a>
+</div>
+</div>
 <div class="card" data-tags='["kernel","documentation","elixir","bootlin","ctags","cscope","navigation"]' data-search="Руководство по навигации и поиску в исходниках ядра Linux Разработка модулей ядра Linux требует умения эффективно работать с исходным кодом и документацией. Ядро содержит миллионы строк кода, тысячи функций и обширную документацию. Умение быстро находить нуж...">
 <div class="card-title"><a href="kernel\read_documentation.pdf" target="_blank">Руководство по навигации и поиску в исходниках ядра Linux</a></div>
 <div class="card-desc">Разработка модулей ядра Linux требует умения эффективно работать с исходным кодом и документацией. Ядро содержит миллионы строк кода, тысячи функций и обширную документацию. Умение быстро находить нуж...</div>
