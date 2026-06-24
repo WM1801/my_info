@@ -4,32 +4,37 @@
         {
             "label": "Asciidoctor PDF",
             "type": "shell",
-            "command": "C:\\Ruby40-x64\\bin\\asciidoctor-pdf.bat",
-            "args": [
-                "-a", "pdf-theme=default-with-fallback-font",
-                "-a", "pdf-fontsdir=GEM_FONTS_DIR",
-                "-a", "encoding=UTF-8",
-                "${relativeFile}"
-            ],
+            "windows": {
+                "command": "cmd",
+                "args": [
+                    "/c",
+                    "\"C:\\Ruby40-x64\\bin\\asciidoctor-pdf.bat\" -a \"pdf-theme=default-with-fallback-font\" -a \"pdf-fontsdir=GEM_FONTS_DIR\" -a \"encoding=UTF-8\" \"${relativeFile}\" && powershell -File \"${workspaceFolder}\\scripts\\generate-index.ps1\""
+                ]
+            },
+            "linux": {
+                "command": "bash",
+                "args": [
+                    "-c",
+                    "docker run --rm -v \"${workspaceFolder}:/documents/\" asciidoctor/docker-asciidoctor asciidoctor-pdf -a pdf-theme=default-with-fallback-font \"${relativeFile}\" && \"${workspaceFolder}/scripts/generate-index.sh\""
+                ]
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
             "problemMatcher": []
         },
         {
             "label": "Generate Index",
             "type": "shell",
-            "command": "powershell.exe",
-            "args": [
-                "-ExecutionPolicy",
-                "Bypass",
-                "-File",
-                "${workspaceFolder}\\scripts\\generate-index.ps1"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
+            "windows": {
+                "command": "powershell",
+                "args": ["-File", "${workspaceFolder}\\scripts\\generate-index.ps1"]
             },
-            "problemMatcher": [], 
-            "dependsOn": ["Asciidoctor PDF"],
-            "dependsOrder": "sequence"
+            "linux": {
+                "command": "${workspaceFolder}/scripts/generate-index.sh"
+            },
+            "problemMatcher": []
         }
     ]
 }
