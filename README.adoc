@@ -1,4 +1,4 @@
-﻿= Каталог заметок
+= Каталог заметок
 :doctype: article
 :toc:
 :toc-placement!:
@@ -19,7 +19,7 @@ toc::[]
 
 . Создай `.adoc` файл в нужной папке, обязательно укажи `:keywords:` с тегами в заголовке
 . (опционально) Сгенерируй PDF: Ctrl+Shift+B в VS Code (asciidoctor-pdf)
-. Обнови каталог: `powershell -File scripts/generate-index.ps1` — автоматически обновятся README.adoc и index.html
+. Обнови каталог: `./scripts/generate-index.sh` — автоматически обновятся README.adoc и index.html
 
 == Статьи
 
@@ -69,6 +69,11 @@ toc::[]
 * xref:milandr/README.adoc[Сборка и прошивка Миландр 1986ВЕ9х через Docker] — Проект предназначен для сборки и прошивки микроконтроллера *Миландр 1986ВЕ9х* (Cortex-M3) с использованием Docker-контейнера. Это обеспечивает:
   *Теги:* `milandr, 1986ve9x, cortex-m3, docker, openocd, jlink, firmware`
 
+=== test
+
+* xref:test/test.adoc[test] — toc::[]
+  *Теги:* `test, testttt, test23`
+
 ---
 
-Сгенерировано автоматически. Всего статей: 12.
+Сгенерировано автоматически. Всего статей: 13.

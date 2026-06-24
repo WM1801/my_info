@@ -42,7 +42,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <body>
 <div class="container">
 <h1>Catalog of notes</h1>
-<p class="subtitle">12 articles - click tags to filter</p>
+<p class="subtitle">13 articles - click tags to filter</p>
 <div class="search-box">
 <input type="text" id="search" placeholder="Search by title, description or tag..." autocomplete="off">
 </div>
@@ -107,6 +107,9 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="sysfs" onclick="toggleTag('sysfs')">sysfs (3)</span>
 <span class="tag-btn" data-tag="sysvinit" onclick="toggleTag('sysvinit')">sysvinit (1)</span>
 <span class="tag-btn" data-tag="tail" onclick="toggleTag('tail')">tail (1)</span>
+<span class="tag-btn" data-tag="test" onclick="toggleTag('test')">test (1)</span>
+<span class="tag-btn" data-tag="test23" onclick="toggleTag('test23')">test23 (1)</span>
+<span class="tag-btn" data-tag="testttt" onclick="toggleTag('testttt')">testttt (1)</span>
 <span class="tag-btn" data-tag="параметры_модуля" onclick="toggleTag('параметры_модуля')">параметры_модуля (1)</span>
 </div>
 <div id="sections">
@@ -114,7 +117,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <div class="section-title">device tree</div>
 <div class="cards">
 <div class="card" data-tags='["device-tree","dtb","sd-card","boot","pinmux","dtc","licheerv_nano"]' data-search="Модификация DTB на SD-карте Есть у нас образ и нужно нам поменять конфигурацию железа.">
-<div class="card-title"><a href="device_tree\Modification DTB on SD card.pdf" target="_blank">Модификация DTB на SD-карте</a></div>
+<div class="card-title"><a href="device_tree/Modification DTB on SD card.pdf" target="_blank">Модификация DTB на SD-карте</a></div>
 <div class="card-desc">Есть у нас образ и нужно нам поменять конфигурацию железа.</div>
 <div class="card-tags">
 <span class="card-tag" data-tag="device-tree" onclick="toggleTag('device-tree')">device-tree</span>
@@ -125,12 +128,12 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="card-tag" data-tag="dtc" onclick="toggleTag('dtc')">dtc</span>
 <span class="card-tag" data-tag="licheerv_nano" onclick="toggleTag('licheerv_nano')">licheerv_nano</span>
 </div>
-<div class="card-meta"><span class="file-badge">adoc</span> <a href="device_tree\Modification DTB on SD card.adoc">device_tree\Modification DTB on SD card.adoc</a>
- &middot; <span class="file-badge">pdf</span> <a href="device_tree\Modification DTB on SD card.pdf">open PDF</a>
+<div class="card-meta"><span class="file-badge">adoc</span> <a href="device_tree/Modification DTB on SD card.adoc">device_tree/Modification DTB on SD card.adoc</a>
+ · <span class="file-badge">pdf</span> <a href="device_tree/Modification DTB on SD card.pdf">open PDF</a>
 </div>
 </div>
 <div class="card" data-tags='["device-tree","overlay","dto","configfs","pinmux","dtc","sg2002"]' data-search="Создание  Device Tree Overlay Информация может быть и скорее всего не точна и даже может обманывать, получена из интернета и ИИ.">
-<div class="card-title"><a href="device_tree\Device Tree Overlay.pdf" target="_blank">Создание  Device Tree Overlay</a></div>
+<div class="card-title"><a href="device_tree/Device Tree Overlay.pdf" target="_blank">Создание  Device Tree Overlay</a></div>
 <div class="card-desc">Информация может быть и скорее всего не точна и даже может обманывать, получена из интернета и ИИ.</div>
 <div class="card-tags">
 <span class="card-tag" data-tag="device-tree" onclick="toggleTag('device-tree')">device-tree</span>
@@ -141,8 +144,8 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="card-tag" data-tag="dtc" onclick="toggleTag('dtc')">dtc</span>
 <span class="card-tag" data-tag="sg2002" onclick="toggleTag('sg2002')">sg2002</span>
 </div>
-<div class="card-meta"><span class="file-badge">adoc</span> <a href="device_tree\Device Tree Overlay.adoc">device_tree\Device Tree Overlay.adoc</a>
- &middot; <span class="file-badge">pdf</span> <a href="device_tree\Device Tree Overlay.pdf">open PDF</a>
+<div class="card-meta"><span class="file-badge">adoc</span> <a href="device_tree/Device Tree Overlay.adoc">device_tree/Device Tree Overlay.adoc</a>
+ · <span class="file-badge">pdf</span> <a href="device_tree/Device Tree Overlay.pdf">open PDF</a>
 </div>
 </div>
 </div>
@@ -150,9 +153,9 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <div class="section">
 <div class="section-title">inzenerka tech</div>
 <div class="cards">
-<div class="card" data-tags='["kernel","driver","module","syscall","char-device","procfs","sysfs","printk"]' data-search="Разработка драйверов в Linux Материал написан на основе курса "Разработка модулей ядра Linux (Linux Kernel developer)" от https://inzhenerka.tech/ и собраных данных в интернете.">
-<div class="card-title"><a href="inzenerka_tech\driver linux.pdf" target="_blank">Разработка драйверов в Linux</a></div>
-<div class="card-desc">Материал написан на основе курса "Разработка модулей ядра Linux (Linux Kernel developer)" от https://inzhenerka.tech/ и собраных данных в интернете.</div>
+<div class="card" data-tags='["kernel","driver","module","syscall","char-device","procfs","sysfs","printk"]' data-search="Разработка драйверов в Linux Материал написан на основе курса &quot;Разработка модулей ядра Linux (Linux Kernel developer)&quot; от https://inzhenerka.tech/ и собраных данных в интернете.">
+<div class="card-title"><a href="inzenerka_tech/driver linux.pdf" target="_blank">Разработка драйверов в Linux</a></div>
+<div class="card-desc">Материал написан на основе курса &quot;Разработка модулей ядра Linux (Linux Kernel developer)&quot; от https://inzhenerka.tech/ и собраных данных в интернете.</div>
 <div class="card-tags">
 <span class="card-tag" data-tag="kernel" onclick="toggleTag('kernel')">kernel</span>
 <span class="card-tag" data-tag="driver" onclick="toggleTag('driver')">driver</span>
@@ -163,13 +166,13 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="card-tag" data-tag="sysfs" onclick="toggleTag('sysfs')">sysfs</span>
 <span class="card-tag" data-tag="printk" onclick="toggleTag('printk')">printk</span>
 </div>
-<div class="card-meta"><span class="file-badge">adoc</span> <a href="inzenerka_tech\driver linux.adoc">inzenerka_tech\driver linux.adoc</a>
- &middot; <span class="file-badge">pdf</span> <a href="inzenerka_tech\driver linux.pdf">open PDF</a>
+<div class="card-meta"><span class="file-badge">adoc</span> <a href="inzenerka_tech/driver linux.adoc">inzenerka_tech/driver linux.adoc</a>
+ · <span class="file-badge">pdf</span> <a href="inzenerka_tech/driver linux.pdf">open PDF</a>
 </div>
 </div>
-<div class="card" data-tags='["kernel","driver","module","makefile","debugging","ftrace","kprobe","kgdb","kasan","oops"]' data-search="Разработка драйверов в Linux, 1 Материал написан на основе курса "Разработка модулей ядра Linux (Linux Kernel developer)" от https://inzhenerka.tech/ и собраных данных в интернете.">
-<div class="card-title"><a href="inzenerka_tech\driver linux_1.pdf" target="_blank">Разработка драйверов в Linux, 1</a></div>
-<div class="card-desc">Материал написан на основе курса "Разработка модулей ядра Linux (Linux Kernel developer)" от https://inzhenerka.tech/ и собраных данных в интернете.</div>
+<div class="card" data-tags='["kernel","driver","module","makefile","debugging","ftrace","kprobe","kgdb","kasan","oops"]' data-search="Разработка драйверов в Linux, 1 Материал написан на основе курса &quot;Разработка модулей ядра Linux (Linux Kernel developer)&quot; от https://inzhenerka.tech/ и собраных данных в интернете.">
+<div class="card-title"><a href="inzenerka_tech/driver linux_1.pdf" target="_blank">Разработка драйверов в Linux, 1</a></div>
+<div class="card-desc">Материал написан на основе курса &quot;Разработка модулей ядра Linux (Linux Kernel developer)&quot; от https://inzhenerka.tech/ и собраных данных в интернете.</div>
 <div class="card-tags">
 <span class="card-tag" data-tag="kernel" onclick="toggleTag('kernel')">kernel</span>
 <span class="card-tag" data-tag="driver" onclick="toggleTag('driver')">driver</span>
@@ -182,13 +185,13 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="card-tag" data-tag="kasan" onclick="toggleTag('kasan')">kasan</span>
 <span class="card-tag" data-tag="oops" onclick="toggleTag('oops')">oops</span>
 </div>
-<div class="card-meta"><span class="file-badge">adoc</span> <a href="inzenerka_tech\driver linux_1.adoc">inzenerka_tech\driver linux_1.adoc</a>
- &middot; <span class="file-badge">pdf</span> <a href="inzenerka_tech\driver linux_1.pdf">open PDF</a>
+<div class="card-meta"><span class="file-badge">adoc</span> <a href="inzenerka_tech/driver linux_1.adoc">inzenerka_tech/driver linux_1.adoc</a>
+ · <span class="file-badge">pdf</span> <a href="inzenerka_tech/driver linux_1.pdf">open PDF</a>
 </div>
 </div>
-<div class="card" data-tags='["kernel","driver","module","kernel_symvol","параметры_модуля"]' data-search="Разработка драйверов в Linux, 2 Материал написан на основе курса "Разработка модулей ядра Linux (Linux Kernel developer)" от https://inzhenerka.tech/ и собраных данных в интернете.">
-<div class="card-title"><a href="inzenerka_tech\driver linux_2.pdf" target="_blank">Разработка драйверов в Linux, 2</a></div>
-<div class="card-desc">Материал написан на основе курса "Разработка модулей ядра Linux (Linux Kernel developer)" от https://inzhenerka.tech/ и собраных данных в интернете.</div>
+<div class="card" data-tags='["kernel","driver","module","kernel_symvol","параметры_модуля"]' data-search="Разработка драйверов в Linux, 2 Материал написан на основе курса &quot;Разработка модулей ядра Linux (Linux Kernel developer)&quot; от https://inzhenerka.tech/ и собраных данных в интернете.">
+<div class="card-title"><a href="inzenerka_tech/driver linux_2.pdf" target="_blank">Разработка драйверов в Linux, 2</a></div>
+<div class="card-desc">Материал написан на основе курса &quot;Разработка модулей ядра Linux (Linux Kernel developer)&quot; от https://inzhenerka.tech/ и собраных данных в интернете.</div>
 <div class="card-tags">
 <span class="card-tag" data-tag="kernel" onclick="toggleTag('kernel')">kernel</span>
 <span class="card-tag" data-tag="driver" onclick="toggleTag('driver')">driver</span>
@@ -196,8 +199,8 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="card-tag" data-tag="kernel_symvol" onclick="toggleTag('kernel_symvol')">kernel_symvol</span>
 <span class="card-tag" data-tag="параметры_модуля" onclick="toggleTag('параметры_модуля')">параметры_модуля</span>
 </div>
-<div class="card-meta"><span class="file-badge">adoc</span> <a href="inzenerka_tech\driver linux_2.adoc">inzenerka_tech\driver linux_2.adoc</a>
- &middot; <span class="file-badge">pdf</span> <a href="inzenerka_tech\driver linux_2.pdf">open PDF</a>
+<div class="card-meta"><span class="file-badge">adoc</span> <a href="inzenerka_tech/driver linux_2.adoc">inzenerka_tech/driver linux_2.adoc</a>
+ · <span class="file-badge">pdf</span> <a href="inzenerka_tech/driver linux_2.pdf">open PDF</a>
 </div>
 </div>
 </div>
@@ -206,7 +209,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <div class="section-title">kernel</div>
 <div class="cards">
 <div class="card" data-tags='["kernel","documentation","elixir","bootlin","ctags","cscope","navigation"]' data-search="Руководство по навигации и поиску в исходниках ядра Linux Разработка модулей ядра Linux требует умения эффективно работать с исходным кодом и документацией. Ядро содержит миллионы строк кода, тысячи функций и обширную документацию. Умение быстро находить нуж...">
-<div class="card-title"><a href="kernel\read_documentation.pdf" target="_blank">Руководство по навигации и поиску в исходниках ядра Linux</a></div>
+<div class="card-title"><a href="kernel/read_documentation.pdf" target="_blank">Руководство по навигации и поиску в исходниках ядра Linux</a></div>
 <div class="card-desc">Разработка модулей ядра Linux требует умения эффективно работать с исходным кодом и документацией. Ядро содержит миллионы строк кода, тысячи функций и обширную документацию. Умение быстро находить нуж...</div>
 <div class="card-tags">
 <span class="card-tag" data-tag="kernel" onclick="toggleTag('kernel')">kernel</span>
@@ -217,12 +220,12 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="card-tag" data-tag="cscope" onclick="toggleTag('cscope')">cscope</span>
 <span class="card-tag" data-tag="navigation" onclick="toggleTag('navigation')">navigation</span>
 </div>
-<div class="card-meta"><span class="file-badge">adoc</span> <a href="kernel\read_documentation.adoc">kernel\read_documentation.adoc</a>
- &middot; <span class="file-badge">pdf</span> <a href="kernel\read_documentation.pdf">open PDF</a>
+<div class="card-meta"><span class="file-badge">adoc</span> <a href="kernel/read_documentation.adoc">kernel/read_documentation.adoc</a>
+ · <span class="file-badge">pdf</span> <a href="kernel/read_documentation.pdf">open PDF</a>
 </div>
 </div>
 <div class="card" data-tags='["kernel","symbols","kallsyms","module","cfi"]' data-search="Символы ядра (Kernel Symbols) Когда разработчики Linux пишут код ядра, они пишут его на языке C. Там есть тысячи функций: sys_read, do_fork, tcp_sendmsg и переменные. Когда этот код компилируется, он превращается в машинные нули и...">
-<div class="card-title"><a href="kernel\kernel_symvol.pdf" target="_blank">Символы ядра (Kernel Symbols)</a></div>
+<div class="card-title"><a href="kernel/kernel_symvol.pdf" target="_blank">Символы ядра (Kernel Symbols)</a></div>
 <div class="card-desc">Когда разработчики Linux пишут код ядра, они пишут его на языке C. Там есть тысячи функций: sys_read, do_fork, tcp_sendmsg и переменные. Когда этот код компилируется, он превращается в машинные нули и...</div>
 <div class="card-tags">
 <span class="card-tag" data-tag="kernel" onclick="toggleTag('kernel')">kernel</span>
@@ -231,8 +234,8 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="card-tag" data-tag="module" onclick="toggleTag('module')">module</span>
 <span class="card-tag" data-tag="cfi" onclick="toggleTag('cfi')">cfi</span>
 </div>
-<div class="card-meta"><span class="file-badge">adoc</span> <a href="kernel\kernel_symvol.adoc">kernel\kernel_symvol.adoc</a>
- &middot; <span class="file-badge">pdf</span> <a href="kernel\kernel_symvol.pdf">open PDF</a>
+<div class="card-meta"><span class="file-badge">adoc</span> <a href="kernel/kernel_symvol.adoc">kernel/kernel_symvol.adoc</a>
+ · <span class="file-badge">pdf</span> <a href="kernel/kernel_symvol.pdf">open PDF</a>
 </div>
 </div>
 </div>
@@ -241,7 +244,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <div class="section-title">licheerv nano</div>
 <div class="cards">
 <div class="card" data-tags='["licheerv_nano","commands","devmem","memory","debug","tail"]' data-search="Полезные команды # 1. Проверяем права доступа к /dev/mem">
-<div class="card-title"><a href="licheerv_nano\commands.pdf" target="_blank">Полезные команды</a></div>
+<div class="card-title"><a href="licheerv_nano/commands.pdf" target="_blank">Полезные команды</a></div>
 <div class="card-desc"># 1. Проверяем права доступа к /dev/mem</div>
 <div class="card-tags">
 <span class="card-tag" data-tag="licheerv_nano" onclick="toggleTag('licheerv_nano')">licheerv_nano</span>
@@ -251,12 +254,12 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="card-tag" data-tag="debug" onclick="toggleTag('debug')">debug</span>
 <span class="card-tag" data-tag="tail" onclick="toggleTag('tail')">tail</span>
 </div>
-<div class="card-meta"><span class="file-badge">adoc</span> <a href="licheerv_nano\commands.adoc">licheerv_nano\commands.adoc</a>
- &middot; <span class="file-badge">pdf</span> <a href="licheerv_nano\commands.pdf">open PDF</a>
+<div class="card-meta"><span class="file-badge">adoc</span> <a href="licheerv_nano/commands.adoc">licheerv_nano/commands.adoc</a>
+ · <span class="file-badge">pdf</span> <a href="licheerv_nano/commands.pdf">open PDF</a>
 </div>
 </div>
 <div class="card" data-tags='["gpio","licheerv_nano","pinmux","sysfs","libgpiod","gpiochip","output","input"]' data-search="Работа с GPIO в Linux Данные заметки созданы как дополнительная напоминалка и могут нести ошибки и неверное понимание автором как теории, так и практических полученых данных, а потому если выпытаетесь повторить необходимо ...">
-<div class="card-title"><a href="licheerv_nano\gpio_output.pdf" target="_blank">Работа с GPIO в Linux</a></div>
+<div class="card-title"><a href="licheerv_nano/gpio_output.pdf" target="_blank">Работа с GPIO в Linux</a></div>
 <div class="card-desc">Данные заметки созданы как дополнительная напоминалка и могут нести ошибки и неверное понимание автором как теории, так и практических полученых данных, а потому если выпытаетесь повторить необходимо ...</div>
 <div class="card-tags">
 <span class="card-tag" data-tag="gpio" onclick="toggleTag('gpio')">gpio</span>
@@ -268,12 +271,12 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="card-tag" data-tag="output" onclick="toggleTag('output')">output</span>
 <span class="card-tag" data-tag="input" onclick="toggleTag('input')">input</span>
 </div>
-<div class="card-meta"><span class="file-badge">adoc</span> <a href="licheerv_nano\gpio_output.adoc">licheerv_nano\gpio_output.adoc</a>
- &middot; <span class="file-badge">pdf</span> <a href="licheerv_nano\gpio_output.pdf">open PDF</a>
+<div class="card-meta"><span class="file-badge">adoc</span> <a href="licheerv_nano/gpio_output.adoc">licheerv_nano/gpio_output.adoc</a>
+ · <span class="file-badge">pdf</span> <a href="licheerv_nano/gpio_output.pdf">open PDF</a>
 </div>
 </div>
 <div class="card" data-tags='["pwm","licheerv_nano","pinmux","sysfs","sg2002"]' data-search="Работа с GPIO в Linux в режиме ШИМ И так сначала мы занимались ногодрыгом (gpio_output.pdf), достучались до пинов. Далее создали файл инициализирующий его режим gpio при загрузке системы.">
-<div class="card-title"><a href="licheerv_nano\gpio_pmw.pdf" target="_blank">Работа с GPIO в Linux в режиме ШИМ</a></div>
+<div class="card-title"><a href="licheerv_nano/gpio_pmw.pdf" target="_blank">Работа с GPIO в Linux в режиме ШИМ</a></div>
 <div class="card-desc">И так сначала мы занимались ногодрыгом (gpio_output.pdf), достучались до пинов. Далее создали файл инициализирующий его режим gpio при загрузке системы.</div>
 <div class="card-tags">
 <span class="card-tag" data-tag="pwm" onclick="toggleTag('pwm')">pwm</span>
@@ -282,13 +285,13 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="card-tag" data-tag="sysfs" onclick="toggleTag('sysfs')">sysfs</span>
 <span class="card-tag" data-tag="sg2002" onclick="toggleTag('sg2002')">sg2002</span>
 </div>
-<div class="card-meta"><span class="file-badge">adoc</span> <a href="licheerv_nano\gpio_pmw.adoc">licheerv_nano\gpio_pmw.adoc</a>
- &middot; <span class="file-badge">pdf</span> <a href="licheerv_nano\gpio_pmw.pdf">open PDF</a>
+<div class="card-meta"><span class="file-badge">adoc</span> <a href="licheerv_nano/gpio_pmw.adoc">licheerv_nano/gpio_pmw.adoc</a>
+ · <span class="file-badge">pdf</span> <a href="licheerv_nano/gpio_pmw.pdf">open PDF</a>
 </div>
 </div>
-<div class="card" data-tags='["busybox","init","sysvinit","startup","daemon","licheerv_nano"]' data-search="Создание скрипта инициализации для BusyBox Если ядро не позволяет менять Device Tree на лету, мы говорим системе: _"Сделай это через 2 секунды после загрузки, пока пользователь еще даже не успел залогиниться"_.">
-<div class="card-title"><a href="licheerv_nano\Init script BusyBox.pdf" target="_blank">Создание скрипта инициализации для BusyBox</a></div>
-<div class="card-desc">Если ядро не позволяет менять Device Tree на лету, мы говорим системе: _"Сделай это через 2 секунды после загрузки, пока пользователь еще даже не успел залогиниться"_.</div>
+<div class="card" data-tags='["busybox","init","sysvinit","startup","daemon","licheerv_nano"]' data-search="Создание скрипта инициализации для BusyBox Если ядро не позволяет менять Device Tree на лету, мы говорим системе: _&quot;Сделай это через 2 секунды после загрузки, пока пользователь еще даже не успел залогиниться&quot;_.">
+<div class="card-title"><a href="licheerv_nano/Init script BusyBox.pdf" target="_blank">Создание скрипта инициализации для BusyBox</a></div>
+<div class="card-desc">Если ядро не позволяет менять Device Tree на лету, мы говорим системе: _&quot;Сделай это через 2 секунды после загрузки, пока пользователь еще даже не успел залогиниться&quot;_.</div>
 <div class="card-tags">
 <span class="card-tag" data-tag="busybox" onclick="toggleTag('busybox')">busybox</span>
 <span class="card-tag" data-tag="init" onclick="toggleTag('init')">init</span>
@@ -297,8 +300,8 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="card-tag" data-tag="daemon" onclick="toggleTag('daemon')">daemon</span>
 <span class="card-tag" data-tag="licheerv_nano" onclick="toggleTag('licheerv_nano')">licheerv_nano</span>
 </div>
-<div class="card-meta"><span class="file-badge">adoc</span> <a href="licheerv_nano\Init script BusyBox.adoc">licheerv_nano\Init script BusyBox.adoc</a>
- &middot; <span class="file-badge">pdf</span> <a href="licheerv_nano\Init script BusyBox.pdf">open PDF</a>
+<div class="card-meta"><span class="file-badge">adoc</span> <a href="licheerv_nano/Init script BusyBox.adoc">licheerv_nano/Init script BusyBox.adoc</a>
+ · <span class="file-badge">pdf</span> <a href="licheerv_nano/Init script BusyBox.pdf">open PDF</a>
 </div>
 </div>
 </div>
@@ -307,7 +310,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <div class="section-title">milandr</div>
 <div class="cards">
 <div class="card" data-tags='["milandr","1986ve9x","cortex-m3","docker","openocd","jlink","firmware"]' data-search="Сборка и прошивка Миландр 1986ВЕ9х через Docker Проект предназначен для сборки и прошивки микроконтроллера *Миландр 1986ВЕ9х* (Cortex-M3) с использованием Docker-контейнера. Это обеспечивает:">
-<div class="card-title"><a href="milandr\README.pdf" target="_blank">Сборка и прошивка Миландр 1986ВЕ9х через Docker</a></div>
+<div class="card-title"><a href="milandr/README.pdf" target="_blank">Сборка и прошивка Миландр 1986ВЕ9х через Docker</a></div>
 <div class="card-desc">Проект предназначен для сборки и прошивки микроконтроллера *Миландр 1986ВЕ9х* (Cortex-M3) с использованием Docker-контейнера. Это обеспечивает:</div>
 <div class="card-tags">
 <span class="card-tag" data-tag="milandr" onclick="toggleTag('milandr')">milandr</span>
@@ -318,15 +321,32 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="card-tag" data-tag="jlink" onclick="toggleTag('jlink')">jlink</span>
 <span class="card-tag" data-tag="firmware" onclick="toggleTag('firmware')">firmware</span>
 </div>
-<div class="card-meta"><span class="file-badge">adoc</span> <a href="milandr\README.adoc">milandr\README.adoc</a>
- &middot; <span class="file-badge">pdf</span> <a href="milandr\README.pdf">open PDF</a>
+<div class="card-meta"><span class="file-badge">adoc</span> <a href="milandr/README.adoc">milandr/README.adoc</a>
+ · <span class="file-badge">pdf</span> <a href="milandr/README.pdf">open PDF</a>
+</div>
+</div>
+</div>
+</div>
+<div class="section">
+<div class="section-title">test</div>
+<div class="cards">
+<div class="card" data-tags='["test","testttt","test23"]' data-search="test toc::[]">
+<div class="card-title"><a href="test/test.pdf" target="_blank">test</a></div>
+<div class="card-desc">toc::[]</div>
+<div class="card-tags">
+<span class="card-tag" data-tag="test" onclick="toggleTag('test')">test</span>
+<span class="card-tag" data-tag="testttt" onclick="toggleTag('testttt')">testttt</span>
+<span class="card-tag" data-tag="test23" onclick="toggleTag('test23')">test23</span>
+</div>
+<div class="card-meta"><span class="file-badge">adoc</span> <a href="test/test.adoc">test/test.adoc</a>
+ · <span class="file-badge">pdf</span> <a href="test/test.pdf">open PDF</a>
 </div>
 </div>
 </div>
 </div>
 </div>
 <div id="noResults" class="no-results" style="display:none">Nothing found. Try a different query.</div>
-<div class="footer">Generated from AsciiDoc &middot; <a href="README.adoc">README.adoc</a></div>
+<div class="footer">Generated from AsciiDoc · <a href="README.adoc">README.adoc</a></div>
 </div>
 <script>
 let activeTags=[];
