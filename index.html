@@ -71,23 +71,30 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="dtc" onclick="toggleTag('dtc')">dtc (2)</span>
 <span class="tag-btn" data-tag="dto" onclick="toggleTag('dto')">dto (1)</span>
 <span class="tag-btn" data-tag="elixir" onclick="toggleTag('elixir')">elixir (1)</span>
+<span class="tag-btn" data-tag="fifo" onclick="toggleTag('fifo')">fifo (1)</span>
+<span class="tag-btn" data-tag="filesystem" onclick="toggleTag('filesystem')">filesystem (1)</span>
 <span class="tag-btn" data-tag="firmware" onclick="toggleTag('firmware')">firmware (1)</span>
 <span class="tag-btn" data-tag="ftrace" onclick="toggleTag('ftrace')">ftrace (1)</span>
+<span class="tag-btn" data-tag="gcc" onclick="toggleTag('gcc')">gcc (1)</span>
 <span class="tag-btn" data-tag="gpio" onclick="toggleTag('gpio')">gpio (1)</span>
 <span class="tag-btn" data-tag="gpiochip" onclick="toggleTag('gpiochip')">gpiochip (1)</span>
 <span class="tag-btn" data-tag="init" onclick="toggleTag('init')">init (1)</span>
 <span class="tag-btn" data-tag="input" onclick="toggleTag('input')">input (1)</span>
+<span class="tag-btn" data-tag="ipc" onclick="toggleTag('ipc')">ipc (1)</span>
 <span class="tag-btn" data-tag="jlink" onclick="toggleTag('jlink')">jlink (1)</span>
 <span class="tag-btn" data-tag="kallsyms" onclick="toggleTag('kallsyms')">kallsyms (1)</span>
 <span class="tag-btn" data-tag="kasan" onclick="toggleTag('kasan')">kasan (1)</span>
-<span class="tag-btn" data-tag="kernel" onclick="toggleTag('kernel')">kernel (5)</span>
+<span class="tag-btn" data-tag="kernel" onclick="toggleTag('kernel')">kernel (6)</span>
 <span class="tag-btn" data-tag="kernel_symvol" onclick="toggleTag('kernel_symvol')">kernel_symvol (1)</span>
 <span class="tag-btn" data-tag="kgdb" onclick="toggleTag('kgdb')">kgdb (1)</span>
 <span class="tag-btn" data-tag="kprobe" onclick="toggleTag('kprobe')">kprobe (1)</span>
 <span class="tag-btn" data-tag="libgpiod" onclick="toggleTag('libgpiod')">libgpiod (1)</span>
+<span class="tag-btn" data-tag="library" onclick="toggleTag('library')">library (1)</span>
 <span class="tag-btn" data-tag="licheerv_nano" onclick="toggleTag('licheerv_nano')">licheerv_nano (5)</span>
-<span class="tag-btn" data-tag="makefile" onclick="toggleTag('makefile')">makefile (1)</span>
+<span class="tag-btn" data-tag="linux" onclick="toggleTag('linux')">linux (1)</span>
+<span class="tag-btn" data-tag="makefile" onclick="toggleTag('makefile')">makefile (2)</span>
 <span class="tag-btn" data-tag="memory" onclick="toggleTag('memory')">memory (1)</span>
+<span class="tag-btn" data-tag="message-queue" onclick="toggleTag('message-queue')">message-queue (1)</span>
 <span class="tag-btn" data-tag="milandr" onclick="toggleTag('milandr')">milandr (1)</span>
 <span class="tag-btn" data-tag="module" onclick="toggleTag('module')">module (4)</span>
 <span class="tag-btn" data-tag="navigation" onclick="toggleTag('navigation')">navigation (1)</span>
@@ -96,20 +103,21 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="output" onclick="toggleTag('output')">output (1)</span>
 <span class="tag-btn" data-tag="overlay" onclick="toggleTag('overlay')">overlay (1)</span>
 <span class="tag-btn" data-tag="pinmux" onclick="toggleTag('pinmux')">pinmux (4)</span>
+<span class="tag-btn" data-tag="pipe" onclick="toggleTag('pipe')">pipe (1)</span>
 <span class="tag-btn" data-tag="printk" onclick="toggleTag('printk')">printk (1)</span>
 <span class="tag-btn" data-tag="procfs" onclick="toggleTag('procfs')">procfs (1)</span>
 <span class="tag-btn" data-tag="pwm" onclick="toggleTag('pwm')">pwm (1)</span>
 <span class="tag-btn" data-tag="sd-card" onclick="toggleTag('sd-card')">sd-card (1)</span>
 <span class="tag-btn" data-tag="sg2002" onclick="toggleTag('sg2002')">sg2002 (2)</span>
+<span class="tag-btn" data-tag="shared" onclick="toggleTag('shared')">shared (1)</span>
+<span class="tag-btn" data-tag="shared-memory" onclick="toggleTag('shared-memory')">shared-memory (1)</span>
 <span class="tag-btn" data-tag="startup" onclick="toggleTag('startup')">startup (1)</span>
+<span class="tag-btn" data-tag="static" onclick="toggleTag('static')">static (1)</span>
 <span class="tag-btn" data-tag="symbols" onclick="toggleTag('symbols')">symbols (1)</span>
-<span class="tag-btn" data-tag="syscall" onclick="toggleTag('syscall')">syscall (1)</span>
+<span class="tag-btn" data-tag="syscall" onclick="toggleTag('syscall')">syscall (2)</span>
 <span class="tag-btn" data-tag="sysfs" onclick="toggleTag('sysfs')">sysfs (3)</span>
 <span class="tag-btn" data-tag="sysvinit" onclick="toggleTag('sysvinit')">sysvinit (1)</span>
 <span class="tag-btn" data-tag="tail" onclick="toggleTag('tail')">tail (1)</span>
-<span class="tag-btn" data-tag="test" onclick="toggleTag('test')">test (1)</span>
-<span class="tag-btn" data-tag="test23" onclick="toggleTag('test23')">test23 (1)</span>
-<span class="tag-btn" data-tag="testttt" onclick="toggleTag('testttt')">testttt (1)</span>
 <span class="tag-btn" data-tag="параметры_модуля" onclick="toggleTag('параметры_модуля')">параметры_модуля (1)</span>
 </div>
 <div id="sections">
@@ -201,6 +209,29 @@ h1{font-size:1.8rem;margin-bottom:4px}
 </div>
 <div class="card-meta"><span class="file-badge">adoc</span> <a href="inzenerka_tech/driver linux_2.adoc">inzenerka_tech/driver linux_2.adoc</a>
  · <span class="file-badge">pdf</span> <a href="inzenerka_tech/driver linux_2.pdf">open PDF</a>
+</div>
+</div>
+<div class="card" data-tags='["linux","kernel","gcc","makefile","library","static","shared","ipc","pipe","fifo","message-queue","shared-memory","filesystem","syscall"]' data-search="Теория по linux Включает в себя:">
+<div class="card-title"><a href="inzenerka_tech/linux.pdf" target="_blank">Теория по linux</a></div>
+<div class="card-desc">Включает в себя:</div>
+<div class="card-tags">
+<span class="card-tag" data-tag="linux" onclick="toggleTag('linux')">linux</span>
+<span class="card-tag" data-tag="kernel" onclick="toggleTag('kernel')">kernel</span>
+<span class="card-tag" data-tag="gcc" onclick="toggleTag('gcc')">gcc</span>
+<span class="card-tag" data-tag="makefile" onclick="toggleTag('makefile')">makefile</span>
+<span class="card-tag" data-tag="library" onclick="toggleTag('library')">library</span>
+<span class="card-tag" data-tag="static" onclick="toggleTag('static')">static</span>
+<span class="card-tag" data-tag="shared" onclick="toggleTag('shared')">shared</span>
+<span class="card-tag" data-tag="ipc" onclick="toggleTag('ipc')">ipc</span>
+<span class="card-tag" data-tag="pipe" onclick="toggleTag('pipe')">pipe</span>
+<span class="card-tag" data-tag="fifo" onclick="toggleTag('fifo')">fifo</span>
+<span class="card-tag" data-tag="message-queue" onclick="toggleTag('message-queue')">message-queue</span>
+<span class="card-tag" data-tag="shared-memory" onclick="toggleTag('shared-memory')">shared-memory</span>
+<span class="card-tag" data-tag="filesystem" onclick="toggleTag('filesystem')">filesystem</span>
+<span class="card-tag" data-tag="syscall" onclick="toggleTag('syscall')">syscall</span>
+</div>
+<div class="card-meta"><span class="file-badge">adoc</span> <a href="inzenerka_tech/linux.adoc">inzenerka_tech/linux.adoc</a>
+ · <span class="file-badge">pdf</span> <a href="inzenerka_tech/linux.pdf">open PDF</a>
 </div>
 </div>
 </div>
@@ -323,23 +354,6 @@ h1{font-size:1.8rem;margin-bottom:4px}
 </div>
 <div class="card-meta"><span class="file-badge">adoc</span> <a href="milandr/README.adoc">milandr/README.adoc</a>
  · <span class="file-badge">pdf</span> <a href="milandr/README.pdf">open PDF</a>
-</div>
-</div>
-</div>
-</div>
-<div class="section">
-<div class="section-title">test</div>
-<div class="cards">
-<div class="card" data-tags='["test","testttt","test23"]' data-search="test toc::[]">
-<div class="card-title"><a href="test/test.pdf" target="_blank">test</a></div>
-<div class="card-desc">toc::[]</div>
-<div class="card-tags">
-<span class="card-tag" data-tag="test" onclick="toggleTag('test')">test</span>
-<span class="card-tag" data-tag="testttt" onclick="toggleTag('testttt')">testttt</span>
-<span class="card-tag" data-tag="test23" onclick="toggleTag('test23')">test23</span>
-</div>
-<div class="card-meta"><span class="file-badge">adoc</span> <a href="test/test.adoc">test/test.adoc</a>
- · <span class="file-badge">pdf</span> <a href="test/test.pdf">open PDF</a>
 </div>
 </div>
 </div>

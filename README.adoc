@@ -42,6 +42,9 @@ toc::[]
 * xref:inzenerka_tech/driver linux_2.adoc[Разработка драйверов в Linux, 2] — Материал написан на основе курса "Разработка модулей ядра Linux (Linux Kernel developer)" от https://inzhenerka.tech/ и собраных данных в интернете.
   *Теги:* `kernel, driver, module, kernel_symvol, параметры_модуля`
 
+* xref:inzenerka_tech/linux.adoc[Теория по linux] — Включает в себя:
+  *Теги:* `linux, kernel, gcc, makefile, library, static, shared, ipc, pipe, fifo, message-queue, shared-memory, filesystem, syscall`
+
 === kernel
 
 * xref:kernel/read_documentation.adoc[Руководство по навигации и поиску в исходниках ядра Linux] — Разработка модулей ядра Linux требует умения эффективно работать с исходным кодом и документацией. Ядро содержит миллионы строк кода, тысячи функций и обширную документацию. Умение быстро находить нуж...
@@ -68,11 +71,6 @@ toc::[]
 
 * xref:milandr/README.adoc[Сборка и прошивка Миландр 1986ВЕ9х через Docker] — Проект предназначен для сборки и прошивки микроконтроллера *Миландр 1986ВЕ9х* (Cortex-M3) с использованием Docker-контейнера. Это обеспечивает:
   *Теги:* `milandr, 1986ve9x, cortex-m3, docker, openocd, jlink, firmware`
-
-=== test
-
-* xref:test/test.adoc[test] — toc::[]
-  *Теги:* `test, testttt, test23`
 
 ---
 
