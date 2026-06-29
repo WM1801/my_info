@@ -1,0 +1,113 @@
+= Измерение времение выполнения кода 
+:doctype: article
+:title-page:
+:toc:
+:toc-title: Оглавление
+:toclevels: 3
+:sectnums:
+:icons: font
+:source-highlighter: rouge
+:figure-caption: Рисунок
+:table-caption: Таблица
+:example-caption: Пример
+:listing-caption: Листинг
+:pdf-theme: default-with-fallback-font
+:author: Владислав Богданов
+:email: vla-bogdano@ya.ru
+:revdate: 2026-06-16
+:keywords: time, debug, performance 
+
+toc::[]
+
+== На микроконтроллерах 
+
+=== ARM Cortex-M 
+
+==== DWT cycle counter(самый точный)
+
+У cortex-M3/M4 есть регистр DWT_CYCCNT - 32-битный счетчик тактов ядра 
+[source,c]
+----
+// Включение счётчика (один раз при инициализации)
+CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
+DWT->CYCCNT = 0;
+DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
+
+// Измерение
+uint32_t start = DWT->CYCCNT;
+// ... твой код ...
+uint32_t end = DWT->CYCCNT;
+uint32_t cycles = end - start;
+
+// Перевод в микросекунды при частоте ядра 72 МГц
+float us = (float)cycles / 72.0f;
+----
+
+NOTE: счётчик 32-битный, при 72 МГц это ~60 секунд. Для длительных замеров считай переполнения.
+
+==== GPIO + Осцилограф / логический анализатор
+
+Самый наглядный метод — дёргаешь пин до и после:
+
+[source,c]
+----
+GPIO_SetBits(GPIOA, GPIO_Pin_5);   // маркер начала
+// ... измеряемый код ...
+GPIO_ResetBits(GPIOA, GPIO_Pin_5); // маркер конца
+----
+
+На осциллографе видишь прямоугольный импульс — его ширина = время выполнения. Идеально для проверки циклов и прерываний.
+
+
+==== SysTick или аппаратный таймер
+
+Если DWT недоступен, используй SysTick:
+[source,c]
+----
+uint32_t start = SysTick->VAL;
+// ... код ...
+uint32_t end = SysTick->VAL;
+// SysTick считает вниз!
+uint32_t ticks = (start > end) ? (start - end) : 
+                                 (SysTick->LOAD - end + start);
+----
+
+
+== На Linux (для драйверов и user-space кода)
+
+=== Clock_gettime - стандарт POSIX
+
+[source, c]
+----
+#include <time.h>
+
+struct timespec ts_start, ts_end;
+clock_gettime(CLOCK_MONOTONIC, &ts_start);
+// ... код ...
+clock_gettime(CLOCK_MONOTONIC, &ts_end);
+
+long ns = (ts_end.tv_sec - ts_start.tv_sec) * 1000000000L 
+        + (ts_end.tv_nsec - ts_start.tv_nsec);
+
+----
+
+
+=== rdtsc - для х86 (если драйвер на ПК)
+
+[source, c]
+----
+static inline unsigned long long rdtsc() {
+    unsigned int lo, hi;
+    __asm__ volatile ("rdtsc" : "=a" (lo), "=d" (hi));
+    return ((unsigned long long)hi << 32) | lo;
+}
+----
+
+
+=== Профилировщики
+
+*perf* — perf stat ./prog, perf record + perf report
+
+*gprof* — компилируй с -pg, смотри gmon.out
+
+*valgrind* --tool=callgrind + KCachegrind — детальный граф вызовов

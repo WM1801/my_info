@@ -23,6 +23,11 @@ toc::[]
 
 == Статьи
 
+=== debug/gost doc
+
+* xref:debug/gost_doc/Runtime_measurement.adoc[Измерение времение выполнения кода] — У cortex-M3/M4 есть регистр DWT_CYCCNT - 32-битный счетчик тактов ядра
+  *Теги:* `time, debug, performance `
+
 === device tree
 
 * xref:device_tree/Modification DTB on SD card.adoc[Модификация DTB на SD-карте] — Есть у нас образ и нужно нам поменять конфигурацию железа.
