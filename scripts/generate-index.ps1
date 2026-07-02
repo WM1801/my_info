@@ -168,10 +168,11 @@ foreach ($a in $articles) {
     $tagAttrs = ($a.Keywords | ForEach-Object { "`"$($_.ToLower())`"" }) -join ','
     $titleEscaped = $a.Title -replace "'", "&#39;"
     $descEscaped = $a.Description -replace "'", "&#39;"
+    $kwSearch = ($a.Keywords | ForEach-Object { $_.ToLower() }) -join ' '
 
     $link = if ($a.HasPdf) { $a.PdfPath } else { $a.Path }
 
-    $sb.AppendLine("<div class=""card"" data-tags='[$tagAttrs]' data-search=""$titleEscaped $descEscaped"">") | Out-Null
+    $sb.AppendLine("<div class=""card"" data-tags='[$tagAttrs]' data-search=""$titleEscaped $descEscaped $kwSearch"">") | Out-Null
     $sb.AppendLine("<div class=""card-title""><a href=""$link"" target=""_blank"">$titleEscaped</a></div>") | Out-Null
     $sb.AppendLine("<div class=""card-desc"">$descEscaped</div>") | Out-Null
 

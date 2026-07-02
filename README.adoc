@@ -23,10 +23,10 @@ toc::[]
 
 == Статьи
 
-=== debug/gost doc
+=== debug\gost doc
 
 * xref:debug/gost_doc/Runtime_measurement.adoc[Измерение времение выполнения кода] — У cortex-M3/M4 есть регистр DWT_CYCCNT - 32-битный счетчик тактов ядра
-  *Теги:* `time, debug, performance `
+  *Теги:* `time, debug, performance`
 
 === device tree
 
@@ -93,4 +93,4 @@ toc::[]
 
 ---
 
-Сгенерировано автоматически. Всего статей: 17.
+Сгенерировано автоматически. Всего статей: 18.
