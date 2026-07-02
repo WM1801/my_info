@@ -31,6 +31,14 @@ toc::[]
 * xref:device_tree/Device Tree Overlay.adoc[Создание  Device Tree Overlay] — Информация может быть и скорее всего не точна и даже может обманывать, получена из интернета и ИИ.
   *Теги:* `device-tree, overlay, dto, configfs, pinmux, dtc, sg2002`
 
+=== ideas
+
+* xref:ideas/haptic_struct.adoc[Гаптическая система] — ## Архитектура системы управления
+  *Теги:* `cls, ideas`
+
+* xref:ideas/haptic.adoc[Гаптическая система] — [subs="+macros,+attributes"]
+  *Теги:* `cls, ideas`
+
 === inzenerka tech
 
 * xref:inzenerka_tech/driver linux.adoc[Разработка драйверов в Linux] — Материал написан на основе курса "Разработка модулей ядра Linux (Linux Kernel developer)" от https://inzhenerka.tech/ и собраных данных в интернете.
@@ -48,6 +56,9 @@ toc::[]
 === kernel
 
 * xref:kernel/Module_symvers.adoc[Module.symvers] — Module.symvers (Symbol Versions)* — это глобальный реестр (словарь) всех функций и переменных ядра, которые разрешено использовать внешним модулям.
+  *Теги:* `driver, module, kernel_symvol, Module.symvers`
+
+* xref:kernel/How_use_module_symvers.adoc[Как задействовать Module.symvers из ядра] — На сколько я понимаю, ядро мы дополняем модулями, в каждом модуле есть некие функции, некоторые из этих функций мы можем вызывать снаружи.
   *Теги:* `driver, module, kernel_symvol, Module.symvers`
 
 * xref:kernel/read_documentation.adoc[Руководство по навигации и поиску в исходниках ядра Linux] — Разработка модулей ядра Linux требует умения эффективно работать с исходным кодом и документацией. Ядро содержит миллионы строк кода, тысячи функций и обширную документацию. Умение быстро находить нуж...
@@ -77,4 +88,4 @@ toc::[]
 
 ---
 
-Сгенерировано автоматически. Всего статей: 14.
+Сгенерировано автоматически. Всего статей: 17.

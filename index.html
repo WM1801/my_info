@@ -42,7 +42,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <body>
 <div class="container">
 <h1>Catalog of notes</h1>
-<p class="subtitle">14 articles - click tags to filter</p>
+<p class="subtitle">17 articles - click tags to filter</p>
 <div class="search-box">
 <input type="text" id="search" placeholder="Search by title, description or tag..." autocomplete="off">
 </div>
@@ -54,6 +54,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="busybox" onclick="toggleTag('busybox')">busybox (1)</span>
 <span class="tag-btn" data-tag="cfi" onclick="toggleTag('cfi')">cfi (1)</span>
 <span class="tag-btn" data-tag="char-device" onclick="toggleTag('char-device')">char-device (1)</span>
+<span class="tag-btn" data-tag="cls" onclick="toggleTag('cls')">cls (2)</span>
 <span class="tag-btn" data-tag="commands" onclick="toggleTag('commands')">commands (1)</span>
 <span class="tag-btn" data-tag="configfs" onclick="toggleTag('configfs')">configfs (1)</span>
 <span class="tag-btn" data-tag="cortex-m3" onclick="toggleTag('cortex-m3')">cortex-m3 (1)</span>
@@ -66,7 +67,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="devmem" onclick="toggleTag('devmem')">devmem (1)</span>
 <span class="tag-btn" data-tag="docker" onclick="toggleTag('docker')">docker (1)</span>
 <span class="tag-btn" data-tag="documentation" onclick="toggleTag('documentation')">documentation (1)</span>
-<span class="tag-btn" data-tag="driver" onclick="toggleTag('driver')">driver (4)</span>
+<span class="tag-btn" data-tag="driver" onclick="toggleTag('driver')">driver (5)</span>
 <span class="tag-btn" data-tag="dtb" onclick="toggleTag('dtb')">dtb (1)</span>
 <span class="tag-btn" data-tag="dtc" onclick="toggleTag('dtc')">dtc (2)</span>
 <span class="tag-btn" data-tag="dto" onclick="toggleTag('dto')">dto (1)</span>
@@ -78,6 +79,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="gcc" onclick="toggleTag('gcc')">gcc (1)</span>
 <span class="tag-btn" data-tag="gpio" onclick="toggleTag('gpio')">gpio (1)</span>
 <span class="tag-btn" data-tag="gpiochip" onclick="toggleTag('gpiochip')">gpiochip (1)</span>
+<span class="tag-btn" data-tag="ideas" onclick="toggleTag('ideas')">ideas (2)</span>
 <span class="tag-btn" data-tag="init" onclick="toggleTag('init')">init (1)</span>
 <span class="tag-btn" data-tag="input" onclick="toggleTag('input')">input (1)</span>
 <span class="tag-btn" data-tag="ipc" onclick="toggleTag('ipc')">ipc (1)</span>
@@ -85,7 +87,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="kallsyms" onclick="toggleTag('kallsyms')">kallsyms (1)</span>
 <span class="tag-btn" data-tag="kasan" onclick="toggleTag('kasan')">kasan (1)</span>
 <span class="tag-btn" data-tag="kernel" onclick="toggleTag('kernel')">kernel (6)</span>
-<span class="tag-btn" data-tag="kernel_symvol" onclick="toggleTag('kernel_symvol')">kernel_symvol (2)</span>
+<span class="tag-btn" data-tag="kernel_symvol" onclick="toggleTag('kernel_symvol')">kernel_symvol (3)</span>
 <span class="tag-btn" data-tag="kgdb" onclick="toggleTag('kgdb')">kgdb (1)</span>
 <span class="tag-btn" data-tag="kprobe" onclick="toggleTag('kprobe')">kprobe (1)</span>
 <span class="tag-btn" data-tag="libgpiod" onclick="toggleTag('libgpiod')">libgpiod (1)</span>
@@ -96,8 +98,8 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="memory" onclick="toggleTag('memory')">memory (1)</span>
 <span class="tag-btn" data-tag="message-queue" onclick="toggleTag('message-queue')">message-queue (1)</span>
 <span class="tag-btn" data-tag="milandr" onclick="toggleTag('milandr')">milandr (1)</span>
-<span class="tag-btn" data-tag="module" onclick="toggleTag('module')">module (5)</span>
-<span class="tag-btn" data-tag="module.symvers" onclick="toggleTag('module.symvers')">Module.symvers (2)</span>
+<span class="tag-btn" data-tag="module" onclick="toggleTag('module')">module (6)</span>
+<span class="tag-btn" data-tag="module.symvers" onclick="toggleTag('module.symvers')">Module.symvers (3)</span>
 <span class="tag-btn" data-tag="navigation" onclick="toggleTag('navigation')">navigation (1)</span>
 <span class="tag-btn" data-tag="oops" onclick="toggleTag('oops')">oops (1)</span>
 <span class="tag-btn" data-tag="openocd" onclick="toggleTag('openocd')">openocd (1)</span>
@@ -155,6 +157,33 @@ h1{font-size:1.8rem;margin-bottom:4px}
 </div>
 <div class="card-meta"><span class="file-badge">adoc</span> <a href="device_tree\Device Tree Overlay.adoc">device_tree\Device Tree Overlay.adoc</a>
  &middot; <span class="file-badge">pdf</span> <a href="device_tree\Device Tree Overlay.pdf">open PDF</a>
+</div>
+</div>
+</div>
+</div>
+<div class="section">
+<div class="section-title">ideas</div>
+<div class="cards">
+<div class="card" data-tags='["cls","ideas"]' data-search="Гаптическая система ## Архитектура системы управления">
+<div class="card-title"><a href="ideas\haptic_struct.pdf" target="_blank">Гаптическая система</a></div>
+<div class="card-desc">## Архитектура системы управления</div>
+<div class="card-tags">
+<span class="card-tag" data-tag="cls" onclick="toggleTag('cls')">cls</span>
+<span class="card-tag" data-tag="ideas" onclick="toggleTag('ideas')">ideas</span>
+</div>
+<div class="card-meta"><span class="file-badge">adoc</span> <a href="ideas\haptic_struct.adoc">ideas\haptic_struct.adoc</a>
+ &middot; <span class="file-badge">pdf</span> <a href="ideas\haptic_struct.pdf">open PDF</a>
+</div>
+</div>
+<div class="card" data-tags='["cls","ideas"]' data-search="Гаптическая система [subs="+macros,+attributes"]">
+<div class="card-title"><a href="ideas\haptic.pdf" target="_blank">Гаптическая система</a></div>
+<div class="card-desc">[subs="+macros,+attributes"]</div>
+<div class="card-tags">
+<span class="card-tag" data-tag="cls" onclick="toggleTag('cls')">cls</span>
+<span class="card-tag" data-tag="ideas" onclick="toggleTag('ideas')">ideas</span>
+</div>
+<div class="card-meta"><span class="file-badge">adoc</span> <a href="ideas\haptic.adoc">ideas\haptic.adoc</a>
+ &middot; <span class="file-badge">pdf</span> <a href="ideas\haptic.pdf">open PDF</a>
 </div>
 </div>
 </div>
@@ -252,6 +281,19 @@ h1{font-size:1.8rem;margin-bottom:4px}
 </div>
 <div class="card-meta"><span class="file-badge">adoc</span> <a href="kernel\Module_symvers.adoc">kernel\Module_symvers.adoc</a>
  &middot; <span class="file-badge">pdf</span> <a href="kernel\Module_symvers.pdf">open PDF</a>
+</div>
+</div>
+<div class="card" data-tags='["driver","module","kernel_symvol","module.symvers"]' data-search="Как задействовать Module.symvers из ядра На сколько я понимаю, ядро мы дополняем модулями, в каждом модуле есть некие функции, некоторые из этих функций мы можем вызывать снаружи.">
+<div class="card-title"><a href="kernel\How_use_module_symvers.pdf" target="_blank">Как задействовать Module.symvers из ядра</a></div>
+<div class="card-desc">На сколько я понимаю, ядро мы дополняем модулями, в каждом модуле есть некие функции, некоторые из этих функций мы можем вызывать снаружи.</div>
+<div class="card-tags">
+<span class="card-tag" data-tag="driver" onclick="toggleTag('driver')">driver</span>
+<span class="card-tag" data-tag="module" onclick="toggleTag('module')">module</span>
+<span class="card-tag" data-tag="kernel_symvol" onclick="toggleTag('kernel_symvol')">kernel_symvol</span>
+<span class="card-tag" data-tag="module.symvers" onclick="toggleTag('module.symvers')">Module.symvers</span>
+</div>
+<div class="card-meta"><span class="file-badge">adoc</span> <a href="kernel\How_use_module_symvers.adoc">kernel\How_use_module_symvers.adoc</a>
+ &middot; <span class="file-badge">pdf</span> <a href="kernel\How_use_module_symvers.pdf">open PDF</a>
 </div>
 </div>
 <div class="card" data-tags='["kernel","documentation","elixir","bootlin","ctags","cscope","navigation"]' data-search="Руководство по навигации и поиску в исходниках ядра Linux Разработка модулей ядра Linux требует умения эффективно работать с исходным кодом и документацией. Ядро содержит миллионы строк кода, тысячи функций и обширную документацию. Умение быстро находить нуж...">
