@@ -61,7 +61,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="cscope" onclick="toggleTag('cscope')">cscope (1)</span>
 <span class="tag-btn" data-tag="ctags" onclick="toggleTag('ctags')">ctags (1)</span>
 <span class="tag-btn" data-tag="daemon" onclick="toggleTag('daemon')">daemon (1)</span>
-<span class="tag-btn" data-tag="debug" onclick="toggleTag('debug')">debug (1)</span>
+<span class="tag-btn" data-tag="debug" onclick="toggleTag('debug')">debug (2)</span>
 <span class="tag-btn" data-tag="debugging" onclick="toggleTag('debugging')">debugging (1)</span>
 <span class="tag-btn" data-tag="device-tree" onclick="toggleTag('device-tree')">device-tree (2)</span>
 <span class="tag-btn" data-tag="devmem" onclick="toggleTag('devmem')">devmem (1)</span>
@@ -105,6 +105,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="openocd" onclick="toggleTag('openocd')">openocd (1)</span>
 <span class="tag-btn" data-tag="output" onclick="toggleTag('output')">output (1)</span>
 <span class="tag-btn" data-tag="overlay" onclick="toggleTag('overlay')">overlay (1)</span>
+<span class="tag-btn" data-tag="performance" onclick="toggleTag('performance')">performance (1)</span>
 <span class="tag-btn" data-tag="pinmux" onclick="toggleTag('pinmux')">pinmux (4)</span>
 <span class="tag-btn" data-tag="pipe" onclick="toggleTag('pipe')">pipe (1)</span>
 <span class="tag-btn" data-tag="printk" onclick="toggleTag('printk')">printk (1)</span>
@@ -121,9 +122,27 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="sysfs" onclick="toggleTag('sysfs')">sysfs (3)</span>
 <span class="tag-btn" data-tag="sysvinit" onclick="toggleTag('sysvinit')">sysvinit (1)</span>
 <span class="tag-btn" data-tag="tail" onclick="toggleTag('tail')">tail (1)</span>
+<span class="tag-btn" data-tag="time" onclick="toggleTag('time')">time (1)</span>
 <span class="tag-btn" data-tag="параметры_модуля" onclick="toggleTag('параметры_модуля')">параметры_модуля (1)</span>
 </div>
 <div id="sections">
+<div class="section">
+<div class="section-title">debug/gost doc</div>
+<div class="cards">
+<div class="card" data-tags='["time","debug","performance"]' data-search="Измерение времение выполнения кода У cortex-M3/M4 есть регистр DWT_CYCCNT - 32-битный счетчик тактов ядра">
+<div class="card-title"><a href="debug/gost_doc/Runtime_measurement.pdf" target="_blank">Измерение времение выполнения кода</a></div>
+<div class="card-desc">У cortex-M3/M4 есть регистр DWT_CYCCNT - 32-битный счетчик тактов ядра</div>
+<div class="card-tags">
+<span class="card-tag" data-tag="time" onclick="toggleTag('time')">time</span>
+<span class="card-tag" data-tag="debug" onclick="toggleTag('debug')">debug</span>
+<span class="card-tag" data-tag="performance" onclick="toggleTag('performance')">performance</span>
+</div>
+<div class="card-meta"><span class="file-badge">adoc</span> <a href="debug/gost_doc/Runtime_measurement.adoc">debug/gost_doc/Runtime_measurement.adoc</a>
+ · <span class="file-badge">pdf</span> <a href="debug/gost_doc/Runtime_measurement.pdf">open PDF</a>
+</div>
+</div>
+</div>
+</div>
 <div class="section">
 <div class="section-title">device tree</div>
 <div class="cards">
