@@ -1,0 +1,39 @@
+= Установка исходников
+:doctype: article
+:title-page:
+:toc:
+:toc-title: Оглавление
+:toclevels: 3
+:sectnums:
+:icons: font
+:source-highlighter: rouge
+:figure-caption: Рисунок
+:table-caption: Таблица
+:example-caption: Пример
+:listing-caption: Листинг
+:pdf-theme: default-with-fallback-font
+:author: Владислав Богданов
+:email: vla-bogdano@ya.ru
+:revdate: {localdate}
+:keywords: driver, module, kernel, source, install
+
+toc::[]
+
+
+Если тебе нужны полные исходники для поиска функций:
+[source, bash]
+----
+# Ubuntu/Debian:
+sudo apt update
+sudo apt install linux-source
+
+# Проверь, куда установилось:
+ls /usr/src/linux-source-*
+
+# Распакуй (если нужно):
+cd /usr/src
+sudo tar -xf linux-source-*.tar.xz
+
+# Теперь ищи:
+grep -r "get_random_u32" /usr/src/linux-source-*/include/linux/random.h
+----

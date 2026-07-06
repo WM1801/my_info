@@ -1,0 +1,128 @@
+= Module.symvers find function
+:doctype: article
+:title-page:
+:toc:
+:toc-title: Оглавление
+:toclevels: 3
+:sectnums:
+:icons: font
+:source-highlighter: rouge
+:figure-caption: Рисунок
+:table-caption: Таблица
+:example-caption: Пример
+:listing-caption: Листинг
+:pdf-theme: default-with-fallback-font
+:author: Владислав Богданов
+:email: vla-bogdano@ya.ru
+:revdate: {localdate}
+:keywords: driver, module, kernel_symvol, Module.symvers
+
+toc::[]
+
+
+== Алгоритм поиска любой функции (шпаргалка):
+
+Когда тебе нужна функция для какой-то задачи:
+
+. `Определи ключевые слова (например, "random", "memory", "network")`
+
+. `Поиск в /proc/kallsyms:`
+
++
+[source, bash]
+----
+   grep -i "ключевое_слово" /proc/kallsyms | grep " T "
+----
++
+. `Найди заголовочный файл:`
++
+[source, bash]
+----
+   grep -r "имя_функции" /usr/src/linux-headers-$(uname -r)/include/
+----
++
+*Если ни чего не показывает тогда, скорее всего стоят обрезанные исходники.*
++
+Признаки, что исходники обрезаны:
+
+- Название директории 
++
+----
+/usr/src/linux-headers-7.0.0-22
+----
+Ключевое слово — headers. Это уже подсказка. В Linux есть два типа пакетов:
+
+    *linux-headers* — только заголовки для сборки модулей (урезанная версия)
+
+    *linux-source* — полные исходники ядра
++
+Если бы у тебя были полные исходники, путь был бы:
++
+----
+/usr/src/linux-source-7.0.0
+----
++
+или 
++
+----
+/usr/src/linux-7.0.0
+---- 
++
+- Пустой результат grep
++
+*Почему grep ничего не нашел?*
++
+В пакете linux-headers заголовочные файлы обрезаны. Они содержат только:
++
+* Определения структур, необходимых для сборки модулей
+* Макросы и константы
+* НЕ содержат объявления всех функций ядра!
++
+К примеру функция get_random_u32() объявлена в <linux/random.h>, но этот файл в linux-headers либо отсутствует, либо содержит только часть определений.
++
+*Как это проверить?*
++
+Посмотри, какие файлы есть в директории:
++
+[source, bash]
+----
+ls -la /usr/src/linux-headers-$(uname -r)/include/linux/ | head -n 20
+find /usr/src/linux-headers-$(uname -r)/ -name "*.c" | wc -l
+----
++
+Ты увидишь ограниченный набор файлов. Отсутствие исходников (.c файлов)
+Ты получишь 0 или очень маленькое число (только примеры). В полных исходниках (linux-source) будет десятки тысяч .c файлов:
++
+[source, bash]
+----
+find /usr/src/linux-source-*/ -name "*.c" | wc -l
+# Результат: ~40000 файлов
+----
++
+*Как проверить точно? какие пакеты установлены?*
++
+[source, bash]
+----
+dpkg -l | grep linux-
+
+
+ii  linux-headers-7.0.0-22          # Урезанные заголовки
+ii  linux-headers-7.0.0-22-generic
+
+Если бы были полные исходники, было бы:
+ii  linux-source-7.0.0              # Полные исходники
+----
++
+. `Проверь документацию:`
++
+[source, bash]
+----
+   man 9 имя_функции  # Если установлены man-страницы ядра
+----
++
+. `Посмотри примеры использования в исходниках ядра:`
++
+[source, bash]
+----
+   grep -r "имя_функции" /usr/src/linux-headers-$(uname -r)/ --include="*.c" | head -n 10
+----

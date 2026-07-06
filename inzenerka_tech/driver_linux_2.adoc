@@ -31,6 +31,7 @@ toc::[]
 Список доступных имен
 ----
 cat /proc/kallsymbol
+cat /proc/kallsyms
 ----
 
 К примеру _cat /proc/kallsyms | grep printk_ выведет огромное количество имен. То есть когда мы используем printk мы используем не функцию из библиотеки а команду имя из модуля. 
@@ -194,6 +195,7 @@ _module_param(m_count, int, S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IOTH);_
 - m_count - переменная 
 
 - int - тип данных,  
+
 NOTE: Когда передаешь строку при загрузке модуля (например: insmod my_module.ko m_char="Hello Kernel"), ядро само выделяет память под эту строку в пространстве ядра.
 Из-за этого есть строгое правило: Никогда не вызывай kfree(m_char) в функции выгрузки модуля (module_exit).
 Ядро само освободит эту память при выгрузке модуля. Если ты попытаешься сделать kfree вручную, ты получишь kernel panic (ошибку double-free или повреждение структур ядра).
@@ -307,8 +309,19 @@ static int __init my_init(void)
     return 0;
 }
 
+/* Функция выгрузки (выполняется при rmmod)*/
+static void __exit my_exit(void)
+{
+    printk(KERN_INFO "Модуль выгружается. Освобождаем ресурсы...\n");
+    
+    // Здесь мы ОБЯЗАНЫ освободить всё, что выделили в my_init:
+    // kfree(), unregister_chrdev(), free_irq() и т.д.
+}
+
 module_init(my_init);
 MODULE_LICENSE("GPL");
+MODULE_AUTHOR("Твое Имя");
+MODULE_DESCRIPTION("Демонстрационный модуль с параметрами и выгрузкой");
 ----
 
 
