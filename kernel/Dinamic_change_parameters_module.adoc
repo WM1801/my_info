@@ -1,0 +1,1064 @@
+= Динамическое изменение параметров модуля ядра
+:doctype: article
+:title-page:
+:toc:
+:toc-title: Оглавление
+:toclevels: 3
+:sectnums:
+:icons: font
+:source-highlighter: rouge
+:figure-caption: Рисунок
+:table-caption: Таблица
+:example-caption: Пример
+:listing-caption: Листинг
+:pdf-theme: default-with-fallback-font
+:author: Владислав Богданов
+:email: vla-bogdano@ya.ru
+:revdate: {localdate}
+:keywords: driver, module, kernel_symvol, parameters, dinamic
+
+toc::[]
+
+
+== Введение 
+
+При загрузке модуля ядро автоматически создает файлы в /sys/module/<module_name>/parameters. Эти файлы просто хранят значения переменных. 
+Когда меняем значение через echo, переменная в памяти обновляется, но никакой код не выполяется. Для того что бы поменять параметры и перезапустить логику 
+модуля ядра есть несколько способов. 
+
+Способы: 
+[cols="1,1,1,3", options="header"]
+|===
+| Метод | Сложность | Гибкость | Когда использовать  
+| sysfs|Низкая| Средняя| Стандартный выбор для параметров
+| /proc|Низкая |Высокая |Устарел, но еще встречается
+| debugfs|Очень низкая |Низкая |Только для отладки
+| ioctl| Высокая|Очень высокая |Сложные структуры, бинарные данные
+| netlink|Очень высокая |Очень высокая |Сетевые подсистемы, уведомления
+| configfs|Очень высокая |Очень высокая |Конфигурация сложных объектов
+
+|=== 
+
+Возможно комбинирование спосоов. 
+
+
+== Sysfs
+
+=== Описание
+
+Создает файлы в /sys/kernel с callback-функциями при чтении/записи.
+
+[source, c]
+----
+#include <linux/module.h>
+#include <linux/kobject.h>
+#include <linux/sysfs.h>
+
+MODULE_LICENSE("GPL");
+
+static unsigned int my_value = 0;
+static struct kobject *my_kobj;
+
+// Вызывается при: cat /sys/kernel/my_module/value
+static ssize_t value_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf)
+{
+    return sprintf(buf, "%u\n", my_value);
+}
+
+// Вызывается при: echo 42 | sudo tee /sys/kernel/my_module/value
+static ssize_t value_store(struct kobject *kobj, struct kobj_attribute *attr, 
+                           const char *buf, size_t count)
+{
+    unsigned int new_val;
+    if (kstrtouint(buf, 10, &new_val) < 0)
+        return -EINVAL;
+    
+    my_value = new_val;
+    printk(KERN_INFO "Value changed to %u\n", my_value);
+    return count;
+}
+
+// Создаем атрибут (файл в sysfs)
+static struct kobj_attribute value_attr = __ATTR(value, 0644, value_show, value_store);
+
+static struct attribute *attrs[] = { &value_attr.attr, NULL };
+static struct attribute_group attr_group = { .attrs = attrs };
+
+static int __init my_init(void)
+{
+    my_kobj = kobject_create_and_add("my_module", kernel_kobj);
+    if (!my_kobj) return -ENOMEM;
+    
+    sysfs_create_group(my_kobj, &attr_group);
+    printk(KERN_INFO "Module loaded\n");
+    return 0;
+}
+
+static void __exit my_exit(void)
+{
+    sysfs_remove_group(my_kobj, &attr_group);
+    kobject_put(my_kobj);
+    printk(KERN_INFO "Module unloaded\n");
+}
+
+module_init(my_init);
+module_exit(my_exit);
+----
+
+=== Использование
+
+[source, bash]
+----
+sudo insmod my_module.ko
+cat /sys/kernel/my_module/value          # Чтение: 0
+echo 42 | sudo tee /sys/kernel/my_module/value  # Запись
+cat /sys/kernel/my_module/value          # Чтение: 42
+sudo rmmod my_module
+----
+
+== /proc файлы 
+
+=== Описание
+
+Создает файл в /proc/ для чтения/записи. Устаревший, но простой способ.
+[source, c]
+----
+#include <linux/module.h>
+#include <linux/proc_fs.h>
+#include <linux/uaccess.h>
+
+MODULE_LICENSE("GPL");
+
+static unsigned int my_value = 0;
+static struct proc_dir_entry *proc_file;
+
+// Вызывается при: cat /proc/my_module
+static ssize_t proc_read(struct file *file, char __user *buf, size_t count, loff_t *ppos)
+{
+    char tmp[32];
+    int len = sprintf(tmp, "%u\n", my_value);
+    
+    if (*ppos > 0 || count < len) return 0;
+    if (copy_to_user(buf, tmp, len)) return -EFAULT;
+    
+    *ppos = len;
+    return len;
+}
+
+// Вызывается при: echo 42 | sudo tee /proc/my_module
+static ssize_t proc_write(struct file *file, const char __user *buf, size_t count, loff_t *ppos)
+{
+    char tmp[32];
+    unsigned int new_val;
+    
+    if (count >= sizeof(tmp)) return -EINVAL;
+    if (copy_from_user(tmp, buf, count)) return -EFAULT;
+    
+    if (kstrtouint(tmp, 10, &new_val) < 0)
+        return -EINVAL;
+    
+    my_value = new_val;
+    printk(KERN_INFO "Value changed to %u\n", my_value);
+    return count;
+}
+
+static const struct proc_ops proc_fops = {
+    .proc_read = proc_read,
+    .proc_write = proc_write,
+};
+
+static int __init my_init(void)
+{
+    proc_file = proc_create("my_module", 0644, NULL, &proc_fops);
+    if (!proc_file) return -ENOMEM;
+    
+    printk(KERN_INFO "Module loaded\n");
+    return 0;
+}
+
+static void __exit my_exit(void)
+{
+    proc_remove(proc_file);
+    printk(KERN_INFO "Module unloaded\n");
+}
+
+module_init(my_init);
+module_exit(my_exit);
+----
+
+=== Использование
+
+[source, bash]
+----
+sudo insmod my_module.ko
+cat /proc/my_module                      # Чтение: 0
+echo 42 | sudo tee /proc/my_module       # Запись
+cat /proc/my_module                      # Чтение: 42
+sudo rmmod my_module
+----
+
+=== /proc файлы для нескольких параметров
+
+Есть два подхода к организации нескольких параметров через /proc.
+
+==== Поддиректория с отдельными файлами (рекомендуемый)
+Этот подход похож на sysfs — каждый параметр имеет свой файл в поддиректории /proc/my_module/.
+
+[source, c]
+----
+#include <linux/module.h>
+#include <linux/proc_fs.h>
+#include <linux/seq_file.h>
+#include <linux/uaccess.h>
+#include <linux/string.h>
+
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("user");
+MODULE_DESCRIPTION("/proc multiple parameters example");
+
+static unsigned int min_value = 0;
+static unsigned int max_value = 100;
+static int numbers[5] = {1, 2, 3, 4, 5};
+static int numbers_count = 5;
+static long long sum = 0;
+
+static struct proc_dir_entry *proc_dir;
+
+static void recalculate(void)
+{
+    sum = 0;
+    for (int i = 0; i < numbers_count; i++)
+        sum += numbers[i];
+    printk(KERN_INFO "Recalculated: sum = %lld\n", sum);
+}
+
+// ========== min_value ==========
+static int min_value_show(struct seq_file *m, void *v)
+{
+    seq_printf(m, "%u\n", min_value);
+    return 0;
+}
+
+static ssize_t min_value_write(struct file *file, const char __user *buf,
+                               size_t count, loff_t *ppos)
+{
+    char tmp[32];
+    unsigned int new_val;
+    
+    if (count >= sizeof(tmp))
+        return -EINVAL;
+    if (copy_from_user(tmp, buf, count))
+        return -EFAULT;
+    
+    tmp[count] = '\0';
+    if (kstrtouint(tmp, 10, &new_val) < 0)
+        return -EINVAL;
+    
+    if (new_val > max_value) {
+        printk(KERN_WARNING "min_value cannot be > max_value\n");
+        return -EINVAL;
+    }
+    
+    min_value = new_val;
+    printk(KERN_INFO "min_value changed to %u\n", min_value);
+    recalculate();
+    return count;
+}
+
+static int min_value_open(struct inode *inode, struct file *file)
+{
+    return single_open(file, min_value_show, NULL);
+}
+
+static const struct proc_ops min_value_fops = {
+    .proc_open    = min_value_open,
+    .proc_read    = seq_read,
+    .proc_write   = min_value_write,
+    .proc_lseek   = seq_lseek,
+    .proc_release = single_release,
+};
+
+// ========== max_value ==========
+static int max_value_show(struct seq_file *m, void *v)
+{
+    seq_printf(m, "%u\n", max_value);
+    return 0;
+}
+
+static ssize_t max_value_write(struct file *file, const char __user *buf,
+                               size_t count, loff_t *ppos)
+{
+    char tmp[32];
+    unsigned int new_val;
+    
+    if (count >= sizeof(tmp))
+        return -EINVAL;
+    if (copy_from_user(tmp, buf, count))
+        return -EFAULT;
+    
+    tmp[count] = '\0';
+    if (kstrtouint(tmp, 10, &new_val) < 0)
+        return -EINVAL;
+    
+    if (new_val < min_value) {
+        printk(KERN_WARNING "max_value cannot be < min_value\n");
+        return -EINVAL;
+    }
+    
+    max_value = new_val;
+    printk(KERN_INFO "max_value changed to %u\n", max_value);
+    recalculate();
+    return count;
+}
+
+static int max_value_open(struct inode *inode, struct file *file)
+{
+    return single_open(file, max_value_show, NULL);
+}
+
+static const struct proc_ops max_value_fops = {
+    .proc_open    = max_value_open,
+    .proc_read    = seq_read,
+    .proc_write   = max_value_write,
+    .proc_lseek   = seq_lseek,
+    .proc_release = single_release,
+};
+
+// ========== numbers (массив) ==========
+static int numbers_show(struct seq_file *m, void *v)
+{
+    seq_printf(m, "count=%d values=", numbers_count);
+    for (int i = 0; i < numbers_count; i++) {
+        seq_printf(m, "%d", numbers[i]);
+        if (i < numbers_count - 1)
+            seq_printf(m, ",");
+    }
+    seq_printf(m, "\n");
+    return 0;
+}
+
+static ssize_t numbers_write(struct file *file, const char __user *buf,
+                             size_t count, loff_t *ppos)
+{
+    char tmp[128];
+    char *token;
+    char *str_ptr;
+    int i = 0;
+    
+    if (count >= sizeof(tmp))
+        return -EINVAL;
+    if (copy_from_user(tmp, buf, count))
+        return -EFAULT;
+    
+    tmp[count] = '\0';
+    
+    // Убираем перевод строки
+    char *newline = strchr(tmp, '\n');
+    if (newline)
+        *newline = '\0';
+    
+    // Парсим строку вида: "10,20,30,40,50"
+    str_ptr = tmp;
+    numbers_count = 0;
+    
+    while ((token = strsep(&str_ptr, ",")) != NULL && i < 5) {
+        if (strlen(token) == 0)
+            continue;
+        if (kstrtoint(token, 10, &numbers[i]) < 0)
+            return -EINVAL;
+        i++;
+    }
+    numbers_count = i;
+    
+    printk(KERN_INFO "numbers updated, count=%d\n", numbers_count);
+    recalculate();
+    return count;
+}
+
+static int numbers_open(struct inode *inode, struct file *file)
+{
+    return single_open(file, numbers_show, NULL);
+}
+
+static const struct proc_ops numbers_fops = {
+    .proc_open    = numbers_open,
+    .proc_read    = seq_read,
+    .proc_write   = numbers_write,
+    .proc_lseek   = seq_lseek,
+    .proc_release = single_release,
+};
+
+// ========== result (только для чтения) ==========
+static int result_show(struct seq_file *m, void *v)
+{
+    seq_printf(m, "min=%u max=%u sum=%lld count=%d\n",
+               min_value, max_value, sum, numbers_count);
+    return 0;
+}
+
+static int result_open(struct inode *inode, struct file *file)
+{
+    return single_open(file, result_show, NULL);
+}
+
+static const struct proc_ops result_fops = {
+    .proc_open    = result_open,
+    .proc_read    = seq_read,
+    .proc_lseek   = seq_lseek,
+    .proc_release = single_release,
+};
+
+// ========== Инициализация ==========
+static int __init my_init(void)
+{
+    proc_dir = proc_mkdir("my_module", NULL);
+    if (!proc_dir) {
+        printk(KERN_ERR "Failed to create /proc/my_module\n");
+        return -ENOMEM;
+    }
+    
+    proc_create("min_value", 0644, proc_dir, &min_value_fops);
+    proc_create("max_value", 0644, proc_dir, &max_value_fops);
+    proc_create("numbers",   0644, proc_dir, &numbers_fops);
+    proc_create("result",    0444, proc_dir, &result_fops);
+    
+    printk(KERN_INFO "Module loaded. Use /proc/my_module/\n");
+    recalculate();
+    return 0;
+}
+
+static void __exit my_exit(void)
+{
+    remove_proc_entry("min_value", proc_dir);
+    remove_proc_entry("max_value", proc_dir);
+    remove_proc_entry("numbers",   proc_dir);
+    remove_proc_entry("result",    proc_dir);
+    remove_proc_entry("my_module", NULL);
+    
+    printk(KERN_INFO "Module unloaded\n");
+}
+
+module_init(my_init);
+module_exit(my_exit);
+----
+
+==== Использование
+
+[source, bash]
+----
+sudo insmod my_module.ko
+
+# Смотрим структуру
+ls /proc/my_module/
+# min_value  max_value  numbers  result
+
+# Читаем параметры
+cat /proc/my_module/min_value   # 0
+cat /proc/my_module/max_value   # 100
+cat /proc/my_module/numbers     # count=5 values=1,2,3,4,5
+cat /proc/my_module/result      # min=0 max=100 sum=15 count=5
+
+# Меняем параметры
+echo 10 | sudo tee /proc/my_module/min_value
+echo 200 | sudo tee /proc/my_module/max_value
+echo "10,20,30" | sudo tee /proc/my_module/numbers
+
+# Проверяем результат
+cat /proc/my_module/result      # min=10 max=200 sum=60 count=3
+
+sudo rmmod my_module
+----
+
+=== Один файл с командами (упрощенный)
+Все параметры управляются через один файл /proc/my_module. Команды передаются в формате ключ=значение.
+
+[source,c]
+----
+#include <linux/module.h>
+#include <linux/proc_fs.h>
+#include <linux/seq_file.h>
+#include <linux/uaccess.h>
+#include <linux/string.h>
+
+MODULE_LICENSE("GPL");
+
+static unsigned int min_value = 0;
+static unsigned int max_value = 100;
+static int numbers[5] = {1, 2, 3, 4, 5};
+static int numbers_count = 5;
+static long long sum = 0;
+static struct proc_dir_entry *proc_file;
+
+static void recalculate(void)
+{
+    sum = 0;
+    for (int i = 0; i < numbers_count; i++)
+        sum += numbers[i];
+}
+
+// Чтение: выводим ВСЕ параметры
+static int my_proc_show(struct seq_file *m, void *v)
+{
+    seq_printf(m, "min_value=%u\n", min_value);
+    seq_printf(m, "max_value=%u\n", max_value);
+    seq_printf(m, "numbers=");
+    for (int i = 0; i < numbers_count; i++) {
+        seq_printf(m, "%d", numbers[i]);
+        if (i < numbers_count - 1) seq_printf(m, ",");
+    }
+    seq_printf(m, "\n");
+    seq_printf(m, "sum=%lld\n", sum);
+    return 0;
+}
+
+// Запись: парсим команды вида "ключ=значение"
+static ssize_t my_proc_write(struct file *file, const char __user *buf,
+                             size_t count, loff_t *ppos)
+{
+    char tmp[256];
+    char *eq_sign;
+    
+    if (count >= sizeof(tmp))
+        return -EINVAL;
+    if (copy_from_user(tmp, buf, count))
+        return -EFAULT;
+    
+    tmp[count] = '\0';
+    // Убираем перевод строки
+    char *newline = strchr(tmp, '\n');
+    if (newline) *newline = '\0';
+    
+    // Ищем знак '='
+    eq_sign = strchr(tmp, '=');
+    if (!eq_sign) {
+        printk(KERN_WARNING "Format: key=value\n");
+        return -EINVAL;
+    }
+    
+    *eq_sign = '\0';  // Разделяем ключ и значение
+    char *key = tmp;
+    char *value = eq_sign + 1;
+    
+    // Обрабатываем команды
+    if (strcmp(key, "min_value") == 0) {
+        unsigned int val;
+        if (kstrtouint(value, 10, &val) < 0)
+            return -EINVAL;
+        if (val > max_value) return -EINVAL;
+        min_value = val;
+        printk(KERN_INFO "min_value = %u\n", min_value);
+        
+    } else if (strcmp(key, "max_value") == 0) {
+        unsigned int val;
+        if (kstrtouint(value, 10, &val) < 0)
+            return -EINVAL;
+        if (val < min_value) return -EINVAL;
+        max_value = val;
+        printk(KERN_INFO "max_value = %u\n", max_value);
+        
+    } else if (strcmp(key, "numbers") == 0) {
+        char *token, *saveptr;
+        int i = 0;
+        char *value_copy = kstrdup(value, GFP_KERNEL);
+        if (!value_copy) return -ENOMEM;
+        
+        numbers_count = 0;
+        while ((token = strsep(&value_copy, ",")) != NULL && i < 5) {
+            if (kstrtoint(token, 10, &numbers[i]) < 0) {
+                kfree(value_copy);
+                return -EINVAL;
+            }
+            i++;
+        }
+        numbers_count = i;
+        kfree(value_copy);
+        printk(KERN_INFO "numbers updated, count=%d\n", numbers_count);
+        
+    } else {
+        printk(KERN_WARNING "Unknown key: %s\n", key);
+        return -EINVAL;
+    }
+    
+    recalculate();
+    return count;
+}
+
+static int my_proc_open(struct inode *inode, struct file *file)
+{
+    return single_open(file, my_proc_show, NULL);
+}
+
+static const struct proc_ops my_proc_fops = {
+    .proc_open    = my_proc_open,
+    .proc_read    = seq_read,
+    .proc_write   = my_proc_write,
+    .proc_lseek   = seq_lseek,
+    .proc_release = single_release,
+};
+
+static int __init my_init(void)
+{
+    proc_file = proc_create("my_module", 0644, NULL, &my_proc_fops);
+    if (!proc_file) return -ENOMEM;
+    
+    printk(KERN_INFO "Module loaded. Use /proc/my_module\n");
+    recalculate();
+    return 0;
+}
+
+static void __exit my_exit(void)
+{
+    proc_remove(proc_file);
+    printk(KERN_INFO "Module unloaded\n");
+}
+
+module_init(my_init);
+module_exit(my_exit);
+----
+
+==== Использование 
+[source,bash]
+----
+sudo insmod my_module.ko
+
+# Читаем ВСЕ параметры сразу
+cat /proc/my_module
+# min_value=0
+# max_value=100
+# numbers=1,2,3,4,5
+# sum=15
+
+# Меняем параметры по одному
+echo "min_value=10" | sudo tee /proc/my_module
+echo "max_value=200" | sudo tee /proc/my_module
+echo "numbers=10,20,30" | sudo tee /proc/my_module
+
+# Проверяем
+cat /proc/my_module
+# min_value=10
+# max_value=200
+# numbers=10,20,30
+# sum=60
+
+sudo rmmod my_module
+
+----
+
+
+== debugfs (для отладки)
+
+=== Описание
+
+Простейший способ для отладочных целей. Автоматическое создание файлов.
+
+[source,c]
+----
+#include <linux/module.h>
+#include <linux/debugfs.h>
+
+MODULE_LICENSE("GPL");
+
+static unsigned int my_value = 0;
+static u32 my_counter = 0;
+static struct dentry *debug_dir;
+
+static int __init my_init(void)
+{
+    // Создаем директорию в /sys/kernel/debug/
+    debug_dir = debugfs_create_dir("my_module", NULL);
+    if (!debug_dir) return -ENOMEM;
+    
+    // Автоматически создаем файлы для переменных
+    debugfs_create_u32("value", 0644, debug_dir, &my_value);
+    debugfs_create_u32("counter", 0644, debug_dir, &my_counter);
+    
+    printk(KERN_INFO "Module loaded\n");
+    return 0;
+}
+
+static void __exit my_exit(void)
+{
+    debugfs_remove_recursive(debug_dir);
+    printk(KERN_INFO "Module unloaded\n");
+}
+
+module_init(my_init);
+module_exit(my_exit);
+
+----
+
+=== Использование
+
+[source, bash]
+----
+sudo insmod my_module.ko
+cat /sys/kernel/debug/my_module/value    # Чтение: 0
+echo 42 | sudo tee /sys/kernel/debug/my_module/value  # Запись
+cat /sys/kernel/debug/my_module/counter  # Чтение: 0
+sudo rmmod my_module
+----
+
+== Character Device + ioctl
+
+=== Описание
+Создает устройство /dev/my_device для обмена через системные вызовы ioctl().
+[source, c]
+----
+#include <linux/module.h>
+#include <linux/fs.h>
+#include <linux/cdev.h>
+#include <linux/uaccess.h>
+
+MODULE_LICENSE("GPL");
+
+#define IOCTL_SET_VALUE _IOW('M', 1, unsigned int)
+#define IOCTL_GET_VALUE _IOR('M', 2, unsigned int)
+
+static unsigned int my_value = 0;
+static dev_t dev_num;
+static struct cdev my_cdev;
+static struct class *my_class;
+
+// Обработка ioctl запросов
+static long device_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+{
+    switch(cmd) {
+        case IOCTL_SET_VALUE:
+            if (copy_from_user(&my_value, (void __user *)arg, sizeof(my_value)))
+                return -EFAULT;
+            printk(KERN_INFO "Value set to %u\n", my_value);
+            return 0;
+            
+        case IOCTL_GET_VALUE:
+            if (copy_to_user((void __user *)arg, &my_value, sizeof(my_value)))
+                return -EFAULT;
+            return 0;
+    }
+    return -EINVAL;
+}
+
+static const struct file_operations fops = {
+    .owner = THIS_MODULE,
+    .unlocked_ioctl = device_ioctl,
+};
+
+static int __init my_init(void)
+{
+    // Регистрируем символьное устройство
+    if (alloc_chrdev_region(&dev_num, 0, 1, "my_device"))
+        return -ENOMEM;
+    
+    my_class = class_create("my_class");
+    if (IS_ERR(my_class)) {
+        unregister_chrdev_region(dev_num, 1);
+        return PTR_ERR(my_class);
+    }
+    
+    device_create(my_class, NULL, dev_num, NULL, "my_device");
+    
+    cdev_init(&my_cdev, &fops);
+    cdev_add(&my_cdev, dev_num, 1);
+    
+    printk(KERN_INFO "Module loaded, use /dev/my_device\n");
+    return 0;
+}
+
+static void __exit my_exit(void)
+{
+    cdev_del(&my_cdev);
+    device_destroy(my_class, dev_num);
+    class_destroy(my_class);
+    unregister_chrdev_region(dev_num, 1);
+    printk(KERN_INFO "Module unloaded\n");
+}
+
+module_init(my_init);
+module_exit(my_exit);
+----
+
+=== Пользовательская программа
+
+[source, c]
+----
+#include <stdio.h>
+#include <fcntl.h>
+#include <sys/ioctl.h>
+
+#define IOCTL_SET_VALUE _IOW('M', 1, unsigned int)
+#define IOCTL_GET_VALUE _IOR('M', 2, unsigned int)
+
+int main()
+{
+    int fd = open("/dev/my_device", O_RDWR);
+    if (fd < 0) {
+        perror("open");
+        return 1;
+    }
+    
+    unsigned int value = 42;
+    ioctl(fd, IOCTL_SET_VALUE, &value);
+    
+    unsigned int read_value;
+    ioctl(fd, IOCTL_GET_VALUE, &read_value);
+    printf("Read value: %u\n", read_value);
+    
+    close(fd);
+    return 0;
+}
+----
+=== Использование
+
+[source, bash]
+----
+sudo insmod my_module.ko
+gcc user_program.c -o user_program
+sudo ./user_program              # Вывод: Read value: 42
+dmesg | tail                     # Value set to 42
+sudo rmmod my_module
+----
+
+
+== Netlink сокеты
+
+=== Описание
+
+
+[source, c]
+----
+#include <linux/module.h>
+#include <net/netlink.h>
+#include <net/sock.h>
+
+MODULE_LICENSE("GPL");
+
+#define MY_NETLINK_FAMILY 31  // Произвольный номер протокола
+
+static unsigned int my_value = 0;
+static struct sock *nl_sk;
+
+// Обработка входящих сообщений
+static void netlink_recv(struct sk_buff *skb)
+{
+    struct nlmsghdr *nlh;
+    unsigned int *new_val;
+    
+    nlh = nlmsg_hdr(skb);
+    new_val = (unsigned int *)nlmsg_data(nlh);
+    
+    my_value = *new_val;
+    printk(KERN_INFO "Received value: %u\n", my_value);
+    
+    // Отправляем ответ
+    nlh = nlmsg_new(NLMSG_ALIGN(sizeof(unsigned int)), GFP_KERNEL);
+    if (nlh) {
+        unsigned int *reply = nlmsg_data(nlmsg_put(nlh, 0, 0, 0, sizeof(unsigned int), 0));
+        *reply = my_value;
+        NETLINK_CB(nl_sk->sk_socket->sk).portid = nlh->nlmsg_pid;
+        netlink_unicast(nl_sk, skb, nlh->nlmsg_pid, MSG_DONTWAIT);
+    }
+}
+
+static int __init my_init(void)
+{
+    // Создаем netlink сокет
+    nl_sk = netlink_kernel_create(&init_net, MY_NETLINK_FAMILY, NULL);
+    if (!nl_sk) return -ENOMEM;
+    
+    printk(KERN_INFO "Netlink module loaded\n");
+    return 0;
+}
+
+static void __exit my_exit(void)
+{
+    netlink_kernel_release(nl_sk);
+    printk(KERN_INFO "Netlink module unloaded\n");
+}
+
+module_init(my_init);
+module_exit(my_exit);
+----
+
+=== Пользовательская программа
+
+[source, c]
+----
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/socket.h>
+#include <linux/netlink.h>
+
+#define MY_NETLINK_FAMILY 31
+
+int main()
+{
+    int sock;
+    struct sockaddr_nl src_addr, dest_addr;
+    struct nlmsghdr *nlh;
+    struct msghdr msg;
+    struct iovec iov;
+    unsigned int value = 42;
+    
+    sock = socket(AF_NETLINK, SOCK_RAW, MY_NETLINK_FAMILY);
+    
+    memset(&src_addr, 0, sizeof(src_addr));
+    src_addr.nl_family = AF_NETLINK;
+    src_addr.nl_pid = getpid();
+    bind(sock, (struct sockaddr*)&src_addr, sizeof(src_addr));
+    
+    memset(&dest_addr, 0, sizeof(dest_addr));
+    dest_addr.nl_family = AF_NETLINK;
+    dest_addr.nl_pid = 0;  // Ядро
+    dest_addr.nl_groups = 0;
+    
+    nlh = (struct nlmsghdr *)malloc(NLMSG_SPACE(sizeof(unsigned int)));
+    memset(nlh, 0, NLMSG_SPACE(sizeof(unsigned int)));
+    nlh->nlmsg_len = NLMSG_SPACE(sizeof(unsigned int));
+    nlh->nlmsg_pid = getpid();
+    nlh->nlmsg_flags = 0;
+    *(unsigned int *)NLMSG_DATA(nlh) = value;
+    
+    iov.iov_base = (void *)nlh;
+    iov.iov_len = nlh->nlmsg_len;
+    
+    memset(&msg, 0, sizeof(msg));
+    msg.msg_name = (void *)&dest_addr;
+    msg.msg_namelen = sizeof(dest_addr);
+    msg.msg_iov = &iov;
+    msg.msg_iovlen = 1;
+    
+    sendmsg(sock, &msg, 0);
+    printf("Sent value: %u\n", value);
+    
+    close(sock);
+    free(nlh);
+    return 0;
+}
+----
+
+=== Использование
+
+[source, bash]
+----
+sudo insmod my_module.ko
+gcc user_program.c -o user_program
+sudo ./user_program              # Sent value: 42
+dmesg | tail                     # Received value: 42
+sudo rmmod my_module
+----
+
+
+
+== configfs (для сложной конфигурации)
+
+=== Описание
+
+Позволяет создавать/удалять объекты через файловую систему. Используется для сложных конфигураций.
+[source, c]
+----
+#include <linux/module.h>
+#include <linux/configfs.h>
+
+MODULE_LICENSE("GPL");
+
+// Структура для хранения конфигурации
+struct my_config {
+    struct config_group group;
+    unsigned int value;
+};
+
+// Макрос для получения my_config из config_group
+#define to_my_config(group) container_of(group, struct my_config, group)
+
+// Атрибуты конфигурации
+struct my_attr {
+    struct configfs_attribute attr;
+    ssize_t (*show)(struct my_config *, char *);
+    ssize_t (*store)(struct my_config *, const char *, size_t);
+};
+
+static ssize_t my_value_show(struct config_item *item, char *page)
+{
+    struct my_config *cfg = container_of(to_config_group(item), struct my_config, group);
+    return sprintf(page, "%u\n", cfg->value);
+}
+
+static ssize_t my_value_store(struct config_item *item, const char *page, size_t count)
+{
+    struct my_config *cfg = container_of(to_config_group(item), struct my_config, group);
+    unsigned int val;
+    
+    if (kstrtouint(page, 10, &val) < 0)
+        return -EINVAL;
+    
+    cfg->value = val;
+    printk(KERN_INFO "Config value set to %u\n", val);
+    return count;
+}
+
+static struct my_attr my_value_attr = {
+    .attr = { .ca_name = "value", .ca_mode = 0644, .ca_owner = THIS_MODULE },
+    .show = my_value_show,
+    .store = my_value_store,
+};
+
+static struct configfs_attribute *my_attrs[] = {
+    &my_value_attr.attr,
+    NULL,
+};
+
+// Операции для подгрупп
+static struct configfs_group_operations my_group_ops = {
+    // Можно добавить создание/удаление подгрупп
+};
+
+static struct config_item_type my_item_type = {
+    .ct_group_ops = &my_group_ops,
+    .ct_attrs = my_attrs,
+    .ct_owner = THIS_MODULE,
+};
+
+static struct configfs_subsystem my_subsys = {
+    .su_group = {
+        .cg_item = {
+            .ci_namebuf = "my_module",
+            .ci_type = &my_item_type,
+        },
+    },
+};
+
+static int __init my_init(void)
+{
+    config_group_init(&my_subsys.su_group);
+    mutex_init(&my_subsys.su_mutex);
+    
+    if (configfs_register_subsystem(&my_subsys)) {
+        printk(KERN_ERR "Failed to register configfs\n");
+        return -ENOMEM;
+    }
+    
+    printk(KERN_INFO "Configfs module loaded\n");
+    return 0;
+}
+
+static void __exit my_exit(void)
+{
+    configfs_unregister_subsystem(&my_subsys);
+    printk(KERN_INFO "Configfs module unloaded\n");
+}
+
+module_init(my_init);
+module_exit(my_exit);
+----
+
+=== Использование
+
+[source, bash]
+----
+sudo insmod my_module.ko
+ls /sys/kernel/config/my_module/     # Просмотр структуры
+cat /sys/kernel/config/my_module/value  # Чтение: 0
+echo 42 | sudo tee /sys/kernel/config/my_module/value  # Запись
+cat /sys/kernel/config/my_module/value  # Чтение: 42
+sudo rmmod my_module
+----

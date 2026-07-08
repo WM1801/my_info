@@ -23,6 +23,10 @@ toc::[]
 
 == Статьи
 
+=== AsciiDoc
+
+* xref:AsciiDoc/example.adoc[Полное руководство по AsciiDoc: Шпаргалка разработчика] — Иван Иванов <ivan@example.com>
+
 === debug\gost doc
 
 * xref:debug/gost_doc/Runtime_measurement.adoc[Измерение времение выполнения кода] — У cortex-M3/M4 есть регистр DWT_CYCCNT - 32-битный счетчик тактов ядра
@@ -35,6 +39,11 @@ toc::[]
 
 * xref:device_tree/Device Tree Overlay.adoc[Создание  Device Tree Overlay] — Информация может быть и скорее всего не точна и даже может обманывать, получена из интернета и ИИ.
   *Теги:* `device-tree, overlay, dto, configfs, pinmux, dtc, sg2002`
+
+=== driver
+
+* xref:driver/commands.adoc[Команды для работы с модулями ядра] — Назначение: загрузка модуля по горячему
+  *Теги:* `kernel, driver, module, commands, udevadm`
 
 === ideas
 
@@ -55,6 +64,9 @@ toc::[]
 * xref:inzenerka_tech/driver_linux_2.adoc[Разработка драйверов в Linux, 2] — Материал написан на основе курса "Разработка модулей ядра Linux (Linux Kernel developer)" от https://inzhenerka.tech/ и собраных данных в интернете.
   *Теги:* `kernel, driver, module, kernel_symvol, параметры_модуля, Module.symvers`
 
+* xref:inzenerka_tech/driver_linux_3.adoc[Разработка драйверов в Linux, 3] — Три Unix, Linux основных типа устройств
+  *Теги:* `kernel, driver, module, kernel_symvol, параметры_модуля, Module.symvers`
+
 * xref:inzenerka_tech/linux.adoc[Теория по linux] —  `nm` - позволяет посмотреть функции и тп. в бинарном файле, стоит смотреть флаги `T-что то типа внутрених функций`, `U-сторонние функции`
   *Теги:* `linux, kernel, gcc, makefile, library, static, shared, ipc, pipe, fifo, message-queue, shared-memory, filesystem, syscall`
 
@@ -65,6 +77,9 @@ toc::[]
 
 * xref:kernel/Module_symvers_find_funct.adoc[Module.symvers find function] — Когда тебе нужна функция для какой-то задачи:
   *Теги:* `driver, module, kernel_symvol, Module.symvers`
+
+* xref:kernel/Dinamic_change_parameters_module.adoc[Динамическое изменение параметров модуля ядра] — При загрузке модуля ядро автоматически создает файлы в /sys/module/<module_name>/parameters. Эти файлы просто хранят значения переменных.
+  *Теги:* `driver, module, kernel_symvol, parameters, dinamic`
 
 * xref:kernel/How_use_module_symvers.adoc[Как задействовать Module.symvers из ядра] — На сколько я понимаю, ядро мы дополняем модулями, в каждом модуле есть некие функции, некоторые из этих функций мы можем вызывать снаружи.
   *Теги:* `driver, module, kernel_symvol, Module.symvers`
@@ -80,7 +95,7 @@ toc::[]
 
 === licheerv nano
 
-* xref:licheerv_nano/commands.adoc[Полезные команды] — # 1. Проверяем права доступа к /dev/mem
+* xref:licheerv_nano/commands.adoc[Полезные команды] — . Проверяем права доступа к /dev/mem
   *Теги:* `licheerv_nano, commands, devmem, memory, debug, tail`
 
 * xref:licheerv_nano/gpio_output.adoc[Работа с GPIO в Linux] — Данные заметки созданы как дополнительная напоминалка и могут нести ошибки и неверное понимание автором как теории, так и практических полученых данных, а потому если выпытаетесь повторить необходимо ...
@@ -99,4 +114,4 @@ toc::[]
 
 ---
 
-Сгенерировано автоматически. Всего статей: 20.
+Сгенерировано автоматически. Всего статей: 24.

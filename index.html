@@ -42,7 +42,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <body>
 <div class="container">
 <h1>Catalog of notes</h1>
-<p class="subtitle">20 articles - click tags to filter</p>
+<p class="subtitle">24 articles - click tags to filter</p>
 <div class="search-box">
 <input type="text" id="search" placeholder="Search by title, description or tag..." autocomplete="off">
 </div>
@@ -55,7 +55,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="cfi" onclick="toggleTag('cfi')">cfi (1)</span>
 <span class="tag-btn" data-tag="char-device" onclick="toggleTag('char-device')">char-device (1)</span>
 <span class="tag-btn" data-tag="cls" onclick="toggleTag('cls')">cls (2)</span>
-<span class="tag-btn" data-tag="commands" onclick="toggleTag('commands')">commands (1)</span>
+<span class="tag-btn" data-tag="commands" onclick="toggleTag('commands')">commands (2)</span>
 <span class="tag-btn" data-tag="configfs" onclick="toggleTag('configfs')">configfs (1)</span>
 <span class="tag-btn" data-tag="cortex-m3" onclick="toggleTag('cortex-m3')">cortex-m3 (1)</span>
 <span class="tag-btn" data-tag="cscope" onclick="toggleTag('cscope')">cscope (1)</span>
@@ -65,9 +65,10 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="debugging" onclick="toggleTag('debugging')">debugging (1)</span>
 <span class="tag-btn" data-tag="device-tree" onclick="toggleTag('device-tree')">device-tree (2)</span>
 <span class="tag-btn" data-tag="devmem" onclick="toggleTag('devmem')">devmem (1)</span>
+<span class="tag-btn" data-tag="dinamic" onclick="toggleTag('dinamic')">dinamic (1)</span>
 <span class="tag-btn" data-tag="docker" onclick="toggleTag('docker')">docker (1)</span>
 <span class="tag-btn" data-tag="documentation" onclick="toggleTag('documentation')">documentation (1)</span>
-<span class="tag-btn" data-tag="driver" onclick="toggleTag('driver')">driver (7)</span>
+<span class="tag-btn" data-tag="driver" onclick="toggleTag('driver')">driver (10)</span>
 <span class="tag-btn" data-tag="dtb" onclick="toggleTag('dtb')">dtb (1)</span>
 <span class="tag-btn" data-tag="dtc" onclick="toggleTag('dtc')">dtc (2)</span>
 <span class="tag-btn" data-tag="dto" onclick="toggleTag('dto')">dto (1)</span>
@@ -87,8 +88,8 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="jlink" onclick="toggleTag('jlink')">jlink (1)</span>
 <span class="tag-btn" data-tag="kallsyms" onclick="toggleTag('kallsyms')">kallsyms (1)</span>
 <span class="tag-btn" data-tag="kasan" onclick="toggleTag('kasan')">kasan (1)</span>
-<span class="tag-btn" data-tag="kernel" onclick="toggleTag('kernel')">kernel (7)</span>
-<span class="tag-btn" data-tag="kernel_symvol" onclick="toggleTag('kernel_symvol')">kernel_symvol (4)</span>
+<span class="tag-btn" data-tag="kernel" onclick="toggleTag('kernel')">kernel (9)</span>
+<span class="tag-btn" data-tag="kernel_symvol" onclick="toggleTag('kernel_symvol')">kernel_symvol (6)</span>
 <span class="tag-btn" data-tag="kgdb" onclick="toggleTag('kgdb')">kgdb (1)</span>
 <span class="tag-btn" data-tag="kprobe" onclick="toggleTag('kprobe')">kprobe (1)</span>
 <span class="tag-btn" data-tag="libgpiod" onclick="toggleTag('libgpiod')">libgpiod (1)</span>
@@ -99,13 +100,14 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="memory" onclick="toggleTag('memory')">memory (1)</span>
 <span class="tag-btn" data-tag="message-queue" onclick="toggleTag('message-queue')">message-queue (1)</span>
 <span class="tag-btn" data-tag="milandr" onclick="toggleTag('milandr')">milandr (1)</span>
-<span class="tag-btn" data-tag="module" onclick="toggleTag('module')">module (8)</span>
-<span class="tag-btn" data-tag="module.symvers" onclick="toggleTag('module.symvers')">Module.symvers (4)</span>
+<span class="tag-btn" data-tag="module" onclick="toggleTag('module')">module (11)</span>
+<span class="tag-btn" data-tag="module.symvers" onclick="toggleTag('module.symvers')">Module.symvers (5)</span>
 <span class="tag-btn" data-tag="navigation" onclick="toggleTag('navigation')">navigation (1)</span>
 <span class="tag-btn" data-tag="oops" onclick="toggleTag('oops')">oops (1)</span>
 <span class="tag-btn" data-tag="openocd" onclick="toggleTag('openocd')">openocd (1)</span>
 <span class="tag-btn" data-tag="output" onclick="toggleTag('output')">output (1)</span>
 <span class="tag-btn" data-tag="overlay" onclick="toggleTag('overlay')">overlay (1)</span>
+<span class="tag-btn" data-tag="parameters" onclick="toggleTag('parameters')">parameters (1)</span>
 <span class="tag-btn" data-tag="performance" onclick="toggleTag('performance')">performance (1)</span>
 <span class="tag-btn" data-tag="pinmux" onclick="toggleTag('pinmux')">pinmux (4)</span>
 <span class="tag-btn" data-tag="pipe" onclick="toggleTag('pipe')">pipe (1)</span>
@@ -125,9 +127,22 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="sysvinit" onclick="toggleTag('sysvinit')">sysvinit (1)</span>
 <span class="tag-btn" data-tag="tail" onclick="toggleTag('tail')">tail (1)</span>
 <span class="tag-btn" data-tag="time" onclick="toggleTag('time')">time (1)</span>
-<span class="tag-btn" data-tag="параметры_модуля" onclick="toggleTag('параметры_модуля')">параметры_модуля (1)</span>
+<span class="tag-btn" data-tag="udevadm" onclick="toggleTag('udevadm')">udevadm (1)</span>
+<span class="tag-btn" data-tag="параметры_модуля" onclick="toggleTag('параметры_модуля')">параметры_модуля (2)</span>
 </div>
 <div id="sections">
+<div class="section">
+<div class="section-title">AsciiDoc</div>
+<div class="cards">
+<div class="card" data-tags='[]' data-search="Полное руководство по AsciiDoc: Шпаргалка разработчика Иван Иванов <ivan@example.com> ">
+<div class="card-title"><a href="AsciiDoc\example.pdf" target="_blank">Полное руководство по AsciiDoc: Шпаргалка разработчика</a></div>
+<div class="card-desc">Иван Иванов <ivan@example.com></div>
+<div class="card-meta"><span class="file-badge">adoc</span> <a href="AsciiDoc\example.adoc">AsciiDoc\example.adoc</a>
+ &middot; <span class="file-badge">pdf</span> <a href="AsciiDoc\example.pdf">open PDF</a>
+</div>
+</div>
+</div>
+</div>
 <div class="section">
 <div class="section-title">debug\gost doc</div>
 <div class="cards">
@@ -178,6 +193,25 @@ h1{font-size:1.8rem;margin-bottom:4px}
 </div>
 <div class="card-meta"><span class="file-badge">adoc</span> <a href="device_tree\Device Tree Overlay.adoc">device_tree\Device Tree Overlay.adoc</a>
  &middot; <span class="file-badge">pdf</span> <a href="device_tree\Device Tree Overlay.pdf">open PDF</a>
+</div>
+</div>
+</div>
+</div>
+<div class="section">
+<div class="section-title">driver</div>
+<div class="cards">
+<div class="card" data-tags='["kernel","driver","module","commands","udevadm"]' data-search="Команды для работы с модулями ядра Назначение: загрузка модуля по горячему kernel driver module commands udevadm">
+<div class="card-title"><a href="driver\commands.pdf" target="_blank">Команды для работы с модулями ядра</a></div>
+<div class="card-desc">Назначение: загрузка модуля по горячему</div>
+<div class="card-tags">
+<span class="card-tag" data-tag="kernel" onclick="toggleTag('kernel')">kernel</span>
+<span class="card-tag" data-tag="driver" onclick="toggleTag('driver')">driver</span>
+<span class="card-tag" data-tag="module" onclick="toggleTag('module')">module</span>
+<span class="card-tag" data-tag="commands" onclick="toggleTag('commands')">commands</span>
+<span class="card-tag" data-tag="udevadm" onclick="toggleTag('udevadm')">udevadm</span>
+</div>
+<div class="card-meta"><span class="file-badge">adoc</span> <a href="driver\commands.adoc">driver\commands.adoc</a>
+ &middot; <span class="file-badge">pdf</span> <a href="driver\commands.pdf">open PDF</a>
 </div>
 </div>
 </div>
@@ -263,6 +297,21 @@ h1{font-size:1.8rem;margin-bottom:4px}
  &middot; <span class="file-badge">pdf</span> <a href="inzenerka_tech\driver_linux_2.pdf">open PDF</a>
 </div>
 </div>
+<div class="card" data-tags='["kernel","driver","module","kernel_symvol","параметры_модуля","module.symvers"]' data-search="Разработка драйверов в Linux, 3 Три Unix, Linux основных типа устройств kernel driver module kernel_symvol параметры_модуля module.symvers">
+<div class="card-title"><a href="inzenerka_tech\driver_linux_3.pdf" target="_blank">Разработка драйверов в Linux, 3</a></div>
+<div class="card-desc">Три Unix, Linux основных типа устройств</div>
+<div class="card-tags">
+<span class="card-tag" data-tag="kernel" onclick="toggleTag('kernel')">kernel</span>
+<span class="card-tag" data-tag="driver" onclick="toggleTag('driver')">driver</span>
+<span class="card-tag" data-tag="module" onclick="toggleTag('module')">module</span>
+<span class="card-tag" data-tag="kernel_symvol" onclick="toggleTag('kernel_symvol')">kernel_symvol</span>
+<span class="card-tag" data-tag="параметры_модуля" onclick="toggleTag('параметры_модуля')">параметры_модуля</span>
+<span class="card-tag" data-tag="module.symvers" onclick="toggleTag('module.symvers')">Module.symvers</span>
+</div>
+<div class="card-meta"><span class="file-badge">adoc</span> <a href="inzenerka_tech\driver_linux_3.adoc">inzenerka_tech\driver_linux_3.adoc</a>
+ &middot; <span class="file-badge">pdf</span> <a href="inzenerka_tech\driver_linux_3.pdf">open PDF</a>
+</div>
+</div>
 <div class="card" data-tags='["linux","kernel","gcc","makefile","library","static","shared","ipc","pipe","fifo","message-queue","shared-memory","filesystem","syscall"]' data-search="Теория по linux  `nm` - позволяет посмотреть функции и тп. в бинарном файле, стоит смотреть флаги `T-что то типа внутрених функций`, `U-сторонние функции` linux kernel gcc makefile library static shared ipc pipe fifo message-queue shared-memory filesystem syscall">
 <div class="card-title"><a href="inzenerka_tech\linux.pdf" target="_blank">Теория по linux</a></div>
 <div class="card-desc"> `nm` - позволяет посмотреть функции и тп. в бинарном файле, стоит смотреть флаги `T-что то типа внутрених функций`, `U-сторонние функции`</div>
@@ -315,6 +364,20 @@ h1{font-size:1.8rem;margin-bottom:4px}
 </div>
 <div class="card-meta"><span class="file-badge">adoc</span> <a href="kernel\Module_symvers_find_funct.adoc">kernel\Module_symvers_find_funct.adoc</a>
  &middot; <span class="file-badge">pdf</span> <a href="kernel\Module_symvers_find_funct.pdf">open PDF</a>
+</div>
+</div>
+<div class="card" data-tags='["driver","module","kernel_symvol","parameters","dinamic"]' data-search="Динамическое изменение параметров модуля ядра При загрузке модуля ядро автоматически создает файлы в /sys/module/<module_name>/parameters. Эти файлы просто хранят значения переменных. driver module kernel_symvol parameters dinamic">
+<div class="card-title"><a href="kernel\Dinamic_change_parameters_module.pdf" target="_blank">Динамическое изменение параметров модуля ядра</a></div>
+<div class="card-desc">При загрузке модуля ядро автоматически создает файлы в /sys/module/<module_name>/parameters. Эти файлы просто хранят значения переменных.</div>
+<div class="card-tags">
+<span class="card-tag" data-tag="driver" onclick="toggleTag('driver')">driver</span>
+<span class="card-tag" data-tag="module" onclick="toggleTag('module')">module</span>
+<span class="card-tag" data-tag="kernel_symvol" onclick="toggleTag('kernel_symvol')">kernel_symvol</span>
+<span class="card-tag" data-tag="parameters" onclick="toggleTag('parameters')">parameters</span>
+<span class="card-tag" data-tag="dinamic" onclick="toggleTag('dinamic')">dinamic</span>
+</div>
+<div class="card-meta"><span class="file-badge">adoc</span> <a href="kernel\Dinamic_change_parameters_module.adoc">kernel\Dinamic_change_parameters_module.adoc</a>
+ &middot; <span class="file-badge">pdf</span> <a href="kernel\Dinamic_change_parameters_module.pdf">open PDF</a>
 </div>
 </div>
 <div class="card" data-tags='["driver","module","kernel_symvol","module.symvers"]' data-search="Как задействовать Module.symvers из ядра На сколько я понимаю, ядро мы дополняем модулями, в каждом модуле есть некие функции, некоторые из этих функций мы можем вызывать снаружи. driver module kernel_symvol module.symvers">
@@ -379,9 +442,9 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <div class="section">
 <div class="section-title">licheerv nano</div>
 <div class="cards">
-<div class="card" data-tags='["licheerv_nano","commands","devmem","memory","debug","tail"]' data-search="Полезные команды # 1. Проверяем права доступа к /dev/mem licheerv_nano commands devmem memory debug tail">
+<div class="card" data-tags='["licheerv_nano","commands","devmem","memory","debug","tail"]' data-search="Полезные команды . Проверяем права доступа к /dev/mem licheerv_nano commands devmem memory debug tail">
 <div class="card-title"><a href="licheerv_nano\commands.pdf" target="_blank">Полезные команды</a></div>
-<div class="card-desc"># 1. Проверяем права доступа к /dev/mem</div>
+<div class="card-desc">. Проверяем права доступа к /dev/mem</div>
 <div class="card-tags">
 <span class="card-tag" data-tag="licheerv_nano" onclick="toggleTag('licheerv_nano')">licheerv_nano</span>
 <span class="card-tag" data-tag="commands" onclick="toggleTag('commands')">commands</span>

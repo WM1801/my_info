@@ -1,0 +1,80 @@
+= Команды для работы с модулями ядра 
+:doctype: article
+:title-page:
+:toc:
+:toc-title: Оглавление
+:toclevels: 3
+:sectnums:
+:icons: font
+:source-highlighter: rouge
+:figure-caption: Рисунок
+:table-caption: Таблица
+:example-caption: Пример
+:listing-caption: Листинг
+:pdf-theme: default-with-fallback-font
+:author: Владислав Богданов
+:email: vla-bogdano@ya.ru
+:revdate: 2026-06-16
+:keywords: kernel, driver, module, commands, udevadm
+
+toc::[]
+
+== Полезные команды 
+
+=== `insmod` 
+Назначение: загрузка модуля по горячему 
+
+=== `rmmod` 
+Назначение: убрать из системы 
+
+=== `lsmod` 
+Назначение: список устройств в системе
+
+=== `depmod` 
+Назначение: устанавливает зависимости модулей в системе 
+в папке _/lib/modules/7.0.0-22-generic_ расположены модули загружаемые системой, создаем там каталог _misc_ в него копируем свои модули, после запуска depmod он перестраивает зависимости и данные модули прекрасно запускаются с помощью modprobe. depmod нужно вызывать после того, как модули скопированы в системную папку модулей (например, lib/modules//misc).
+
+=== `modprobe` 
+Назначение: позволяет мягким образом работать с модулями. 
+Загружает/Выгружает модули с зависимостями. 
+
+----
+//load module 
+sudo modprobe hello
+//delete module 
+sudo modprobe -rf hello
+----
+
+=== `modinfo` 
+Назначение: показывает информацию о модуле 
+
+----
+modinfo param_demo1.ko
+filename:       /home/user/prj/linux/param_demo1/param_demo1.ko
+author:         user
+license:        GPL
+srcversion:     23D76AE67C80B7BE8692A2F
+depends:        
+name:           param_demo1
+retpoline:      Y
+vermagic:       7.0.0-22-generic SMP preempt mod_unload modversions 
+parm:           m_count:module_counter (int)
+parm:           m_char:module_string (charp)
+----
+
+=== `cat /proc/devices` 
+Назначение: можно посмотреть старшие номера устройств
+
+
+=== `udevadm` 
+Назначение: показывает полное дерево путей (DEVPATH).
+
+----
+# Смотрим физический порт (пример для ttyS0 или ttyAMA0)
+udevadm info -q path -n /dev/ttyS0
+# Вывод: /devices/platform/soc/serial@.../tty/ttyS0
+
+# Смотрим виртуальный терминал
+udevadm info -q path -n /dev/tty1
+# Вывод: /devices/virtual/tty/tty1
+----
