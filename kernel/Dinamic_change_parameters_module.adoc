@@ -30,6 +30,7 @@ toc::[]
 [cols="1,1,1,3", options="header"]
 |===
 | Метод | Сложность | Гибкость | Когда использовать  
+| param_set/param_get|Низкая|Низкая| Простые данные
 | sysfs|Низкая| Средняя| Стандартный выбор для параметров
 | /proc|Низкая |Высокая |Устарел, но еще встречается
 | debugfs|Очень низкая |Низкая |Только для отладки
@@ -41,6 +42,365 @@ toc::[]
 
 Возможно комбинирование спосоов. 
 
+== param_set/param_get
+=== Описание
+Это функции ядра, которые на самом деле стоят за каждым module_param.
+Когда пишем 
+----
+module_param(my_value, uint, 0644);
+----
+
+Ядро разворачивает это в структуру с указателями на функции param_set_uint и param_get_uint. Эти функции вызываются:
+
+* param_set — когда ты пишешь в /sys/module/.../parameters/...
+* param_get — когда ты читаешь из /sys/module/.../parameters/...
+
+В ядре уже есть готовые функции для базовых типов:
+|===
+|Тип|set функция|get функция
+|bool |param_set_bool |param_get_bool
+|int  |param_set_int |param_get_int
+|uint |param_set_uint |param_get_uint
+|long |param_set_long |param_get_long
+|ulong |param_set_ulong |param_get_ulong
+|short |param_set_short |param_get_short
+|ushort |param_set_ushort |param_get_ushort
+|charp |param_set_charp |param_get_charp
+|invbool |param_set_invbool |param_get_invbool
+|===
+*Структура kernel_param*
+Когда ты используешь module_param, ядро создает структуру:
+[source, c]
+----
+struct kernel_param {
+    const char *name;           // Имя параметра
+    const struct kernel_param_ops *ops;  // Указатель на функции
+    u16 perm;                   // Права доступа (0644)
+    s16 level;                  // Уровень для -EPROBE_DEFER
+    union {
+        void *arg;              // Указатель на переменную
+        const struct kparam_string *str;
+        const struct kparam_array *arr;
+    };
+};
+
+struct kernel_param_ops {
+    u16 flags;
+    int (*set)(const char *val, const struct kernel_param *kp);
+    int (*get)(char *buffer, const struct kernel_param *kp);
+    void (*free)(void *arg);    // Для освобождения памяти (charp)
+};
+----
+
+=== Как написать свои param_set и param_get
+
+==== Параметр с валидацией диапазона
+----
+#include <linux/module.h>
+#include <linux/kernel.h>
+#include <linux/string.h>
+
+MODULE_LICENSE("GPL");
+
+static unsigned int my_value = 50;
+
+// Наша функция установки (set)
+static int param_set_my_value(const char *val, const struct kernel_param *kp)
+{
+    unsigned int new_val;
+    int ret;
+    
+    // Используем стандартную функцию для парсинга числа
+    ret = kstrtouint(val, 0, &new_val);
+    if (ret < 0)
+        return ret;
+    
+    // Валидация диапазона
+    if (new_val < 10 || new_val > 100) {
+        printk(KERN_WARNING "Value must be between 10 and 100, got %u\n", new_val);
+        return -EINVAL;
+    }
+    
+    // Если всё ок, записываем значение
+    *(unsigned int *)kp->arg = new_val;
+    printk(KERN_INFO "my_value set to %u\n", new_val);
+    
+    return 0;
+}
+
+// Наша функция чтения (get)
+static int param_get_my_value(char *buffer, const struct kernel_param *kp)
+{
+    return sprintf(buffer, "%u\n", *(unsigned int *)kp->arg);
+}
+
+// Создаем свои операции
+static const struct kernel_param_ops my_value_ops = {
+    .set = param_set_my_value,
+    .get = param_get_my_value,
+};
+
+// Используем module_param_cb вместо module_param
+module_param_cb(my_value, &my_value_ops, &my_value, 0644);
+MODULE_PARM_DESC(my_value, "Value between 10 and 100 (default: 50)");
+
+static int __init my_init(void)
+{
+    printk(KERN_INFO "Module loaded, my_value = %u\n", my_value);
+    return 0;
+}
+
+static void __exit my_exit(void)
+{
+    printk(KERN_INFO "Module unloaded\n");
+}
+
+module_init(my_init);
+module_exit(my_exit);
+----
+*Использование*
+[source, bash]
+----
+sudo insmod my_module.ko my_value=75    # OK
+sudo insmod my_module.ko my_value=200   # Ошибка!
+cat /sys/module/my_module/parameters/my_value  # 75
+echo 50 | sudo tee /sys/module/my_module/parameters/my_value  # OK
+echo 200 | sudo tee /sys/module/my_module/parameters/my_value  # Ошибка!
+----
+
+==== Параметр с callback'ом (реакция на изменение)
+[source, c]
+----
+#include <linux/module.h>
+#include <linux/kernel.h>
+#include <linux/random.h>
+
+MODULE_LICENSE("GPL");
+
+static unsigned int min_value = 0;
+static unsigned int max_value = 100;
+static u32 last_random = 0;
+
+// Функция пересчета
+static void recalculate(void)
+{
+    if (min_value > max_value) {
+        printk(KERN_WARNING "Invalid range: min > max\n");
+        return;
+    }
+    
+    if (!rng_is_initialized())
+        wait_for_random_bytes();
+    
+    last_random = get_random_u32_inclusive(min_value, max_value);
+    printk(KERN_INFO "Recalculated: random = %u (range %u..%u)\n", 
+           last_random, min_value, max_value);
+}
+
+// Callback для min_value
+static int set_min_value(const char *val, const struct kernel_param *kp)
+{
+    unsigned int new_val;
+    int ret = kstrtouint(val, 0, &new_val);
+    if (ret < 0)
+        return ret;
+    
+    if (new_val > max_value) {
+        printk(KERN_WARNING "min_value cannot be > max_value (%u)\n", max_value);
+        return -EINVAL;
+    }
+    
+    *(unsigned int *)kp->arg = new_val;
+    printk(KERN_INFO "min_value changed to %u, recalculating...\n", new_val);
+    
+    // ЗАПУСКАЕМ ПЕРЕСЧЕТ!
+    recalculate();
+    
+    return 0;
+}
+
+static int get_min_value(char *buffer, const struct kernel_param *kp)
+{
+    return sprintf(buffer, "%u\n", *(unsigned int *)kp->arg);
+}
+
+static const struct kernel_param_ops min_value_ops = {
+    .set = set_min_value,
+    .get = get_min_value,
+};
+
+// Callback для max_value
+static int set_max_value(const char *val, const struct kernel_param *kp)
+{
+    unsigned int new_val;
+    int ret = kstrtouint(val, 0, &new_val);
+    if (ret < 0)
+        return ret;
+    
+    if (new_val < min_value) {
+        printk(KERN_WARNING "max_value cannot be < min_value (%u)\n", min_value);
+        return -EINVAL;
+    }
+    
+    *(unsigned int *)kp->arg = new_val;
+    printk(KERN_INFO "max_value changed to %u, recalculating...\n", new_val);
+    
+    // ЗАПУСКАЕМ ПЕРЕСЧЕТ!
+    recalculate();
+    
+    return 0;
+}
+
+static int get_max_value(char *buffer, const struct kernel_param *kp)
+{
+    return sprintf(buffer, "%u\n", *(unsigned int *)kp->arg);
+}
+
+static const struct kernel_param_ops max_value_ops = {
+    .set = set_max_value,
+    .get = get_max_value,
+};
+
+// Регистрируем параметры с кастомными ops
+module_param_cb(min_value, &min_value_ops, &min_value, 0644);
+MODULE_PARM_DESC(min_value, "Minimum value (default: 0)");
+
+module_param_cb(max_value, &max_value_ops, &max_value, 0644);
+MODULE_PARM_DESC(max_value, "Maximum value (default: 100)");
+
+// Обычный параметр для результата (только чтение через get)
+static int get_result(char *buffer, const struct kernel_param *kp)
+{
+    return sprintf(buffer, "%u\n", last_random);
+}
+
+static const struct kernel_param_ops result_ops = {
+    .set = param_set_uint,  // Стандартный set (хотя мы не дадим писать)
+    .get = get_result,
+};
+
+static u32 dummy_result = 0;
+module_param_cb(result, &result_ops, &dummy_result, 0444);  // Только чтение!
+MODULE_PARM_DESC(result, "Last calculated random value (read-only)");
+
+static int __init my_init(void)
+{
+    printk(KERN_INFO "Module loaded\n");
+    recalculate();
+    return 0;
+}
+
+static void __exit my_exit(void)
+{
+    printk(KERN_INFO "Module unloaded\n");
+}
+
+module_init(my_init);
+module_exit(my_exit);
+----
+*Использование*
+[source,bash]
+----
+# Загружаем с начальными параметрами
+sudo insmod my_module.ko min_value=10 max_value=50
+# dmesg: Recalculated: random = 37 (range 10..50)
+
+# Меняем параметр — пересчет запускается АВТОМАТИЧЕСКИ!
+echo 20 | sudo tee /sys/module/my_module/parameters/min_value
+# dmesg: min_value changed to 20, recalculating...
+# dmesg: Recalculated: random = 42 (range 20..50)
+
+# Читаем результат
+cat /sys/module/my_module/parameters/result
+# 42
+
+# Пытаемся установить невалидное значение
+echo 100 | sudo tee /sys/module/my_module/parameters/min_value
+# dmesg: min_value cannot be > max_value (50)
+# bash: echo: write error: Invalid argument
+----
+
+
+==== Когда использовать param_set/param_get
+
+* Нужна валидация значений при установке
+* Нужна реакция на изменение параметра (callback)
+* Хочешь остаться в стандартном /sys/module/.../parameters/
+* Не нужно создавать дополнительные файлы в sysfs
+
+*Не используй, когда:*
+
+* Нужны сложные структуры данных
+* Нужны иерархические конфигурации
+* Нужна двусторонняя связь с user-space
+
+==== Ключевые моменты
+
+* module_param_cb(name, ops, arg, perm) — макрос для регистрации параметра с кастомными функциями
+* kp->arg — указатель на твою переменную, его нужно приводить к нужному типу
+* set функция возвращает 0 при успехе или отрицательный код ошибки
+* get функция должна вернуть количество записанных байт
+* Можно комбинировать — часть параметров через module_param, часть через module_param_cb
+
+==== Продвинутый трюк: массив с callback'ом
+
+[source, c]
+----
+static int my_array[5];
+static int array_count;
+
+static int set_my_array(const char *val, const struct kernel_param *kp)
+{
+    // kp->arr указывает на struct kparam_array
+    const struct kparam_array *arr = kp->arr;
+    int *array = (int *)arr->elem;
+    char *tmp, *token, *saveptr;
+    int i = 0;
+    
+    tmp = kstrdup(val, GFP_KERNEL);
+    if (!tmp) return -ENOMEM;
+    
+    while ((token = strsep(&tmp, ",")) != NULL && i < arr->max) {
+        if (kstrtoint(token, 0, &array[i]) < 0) {
+            kfree(tmp);
+            return -EINVAL;
+        }
+        i++;
+    }
+    
+    *(int *)arr->num = i;  // Обновляем счетчик
+    kfree(tmp);
+    
+    printk(KERN_INFO "Array updated, count=%d\n", i);
+    recalculate();
+    return 0;
+}
+
+static int get_my_array(char *buffer, const struct kernel_param *kp)
+{
+    const struct kparam_array *arr = kp->arr;
+    int *array = (int *)arr->elem;
+    int count = *(int *)arr->num;
+    int len = 0;
+    
+    for (int i = 0; i < count; i++) {
+        len += sprintf(buffer + len, "%d", array[i]);
+        if (i < count - 1)
+            len += sprintf(buffer + len, ",");
+    }
+    len += sprintf(buffer + len, "\n");
+    
+    return len;
+}
+
+static const struct kernel_param_ops my_array_ops = {
+    .set = set_my_array,
+    .get = get_my_array,
+};
+
+// Используем module_param_array_cb
+module_param_array_cb(my_array, int, &array_count, &my_array_ops, 0644);
+----
 
 == Sysfs
 

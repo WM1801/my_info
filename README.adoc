@@ -90,6 +90,9 @@ toc::[]
 * xref:kernel/kernel_symvol.adoc[Символы ядра (Kernel Symbols)] — Когда разработчики Linux пишут код ядра, они пишут его на языке C. Там есть тысячи функций: sys_read, do_fork, tcp_sendmsg и переменные. Когда этот код компилируется, он превращается в машинные нули и...
   *Теги:* `kernel, symbols, kallsyms, module, cfi`
 
+* xref:kernel/create_device_in_dev.adoc[Создание устройства в /dev при загрузке модуля ядра] — Что такое файл устройства на самом деле
+  *Теги:* `driver, module, dev`
+
 * xref:kernel/Install_full_source_linux.adoc[Установка исходников] — Если тебе нужны полные исходники для поиска функций:
   *Теги:* `driver, module, kernel, source, install`
 
@@ -114,4 +117,4 @@ toc::[]
 
 ---
 
-Сгенерировано автоматически. Всего статей: 24.
+Сгенерировано автоматически. Всего статей: 25.

@@ -42,7 +42,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <body>
 <div class="container">
 <h1>Catalog of notes</h1>
-<p class="subtitle">24 articles - click tags to filter</p>
+<p class="subtitle">25 articles - click tags to filter</p>
 <div class="search-box">
 <input type="text" id="search" placeholder="Search by title, description or tag..." autocomplete="off">
 </div>
@@ -63,12 +63,13 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="daemon" onclick="toggleTag('daemon')">daemon (1)</span>
 <span class="tag-btn" data-tag="debug" onclick="toggleTag('debug')">debug (2)</span>
 <span class="tag-btn" data-tag="debugging" onclick="toggleTag('debugging')">debugging (1)</span>
+<span class="tag-btn" data-tag="dev" onclick="toggleTag('dev')">dev (1)</span>
 <span class="tag-btn" data-tag="device-tree" onclick="toggleTag('device-tree')">device-tree (2)</span>
 <span class="tag-btn" data-tag="devmem" onclick="toggleTag('devmem')">devmem (1)</span>
 <span class="tag-btn" data-tag="dinamic" onclick="toggleTag('dinamic')">dinamic (1)</span>
 <span class="tag-btn" data-tag="docker" onclick="toggleTag('docker')">docker (1)</span>
 <span class="tag-btn" data-tag="documentation" onclick="toggleTag('documentation')">documentation (1)</span>
-<span class="tag-btn" data-tag="driver" onclick="toggleTag('driver')">driver (10)</span>
+<span class="tag-btn" data-tag="driver" onclick="toggleTag('driver')">driver (11)</span>
 <span class="tag-btn" data-tag="dtb" onclick="toggleTag('dtb')">dtb (1)</span>
 <span class="tag-btn" data-tag="dtc" onclick="toggleTag('dtc')">dtc (2)</span>
 <span class="tag-btn" data-tag="dto" onclick="toggleTag('dto')">dto (1)</span>
@@ -100,7 +101,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="memory" onclick="toggleTag('memory')">memory (1)</span>
 <span class="tag-btn" data-tag="message-queue" onclick="toggleTag('message-queue')">message-queue (1)</span>
 <span class="tag-btn" data-tag="milandr" onclick="toggleTag('milandr')">milandr (1)</span>
-<span class="tag-btn" data-tag="module" onclick="toggleTag('module')">module (11)</span>
+<span class="tag-btn" data-tag="module" onclick="toggleTag('module')">module (12)</span>
 <span class="tag-btn" data-tag="module.symvers" onclick="toggleTag('module.symvers')">Module.symvers (5)</span>
 <span class="tag-btn" data-tag="navigation" onclick="toggleTag('navigation')">navigation (1)</span>
 <span class="tag-btn" data-tag="oops" onclick="toggleTag('oops')">oops (1)</span>
@@ -421,6 +422,18 @@ h1{font-size:1.8rem;margin-bottom:4px}
 </div>
 <div class="card-meta"><span class="file-badge">adoc</span> <a href="kernel\kernel_symvol.adoc">kernel\kernel_symvol.adoc</a>
  &middot; <span class="file-badge">pdf</span> <a href="kernel\kernel_symvol.pdf">open PDF</a>
+</div>
+</div>
+<div class="card" data-tags='["driver","module","dev"]' data-search="Создание устройства в /dev при загрузке модуля ядра Что такое файл устройства на самом деле driver module dev">
+<div class="card-title"><a href="kernel\create_device_in_dev.pdf" target="_blank">Создание устройства в /dev при загрузке модуля ядра</a></div>
+<div class="card-desc">Что такое файл устройства на самом деле</div>
+<div class="card-tags">
+<span class="card-tag" data-tag="driver" onclick="toggleTag('driver')">driver</span>
+<span class="card-tag" data-tag="module" onclick="toggleTag('module')">module</span>
+<span class="card-tag" data-tag="dev" onclick="toggleTag('dev')">dev</span>
+</div>
+<div class="card-meta"><span class="file-badge">adoc</span> <a href="kernel\create_device_in_dev.adoc">kernel\create_device_in_dev.adoc</a>
+ &middot; <span class="file-badge">pdf</span> <a href="kernel\create_device_in_dev.pdf">open PDF</a>
 </div>
 </div>
 <div class="card" data-tags='["driver","module","kernel","source","install"]' data-search="Установка исходников Если тебе нужны полные исходники для поиска функций: driver module kernel source install">
