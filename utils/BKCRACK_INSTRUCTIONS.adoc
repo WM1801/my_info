@@ -1,0 +1,143 @@
+= Инструкция: Расшифровка ZIP архива (ZipCrypto) с помощью bkcrack
+:doctype: article
+:title-page:
+:toc:
+:toc-title: Оглавление
+:toclevels: 3
+:sectnums:
+:icons: font
+:source-highlighter: rouge
+:figure-caption: Рисунок
+:table-caption: Таблица
+:example-caption: Пример
+:listing-caption: Листинг
+:pdf-theme: default-with-fallback-font
+:author: Владислав Богданов
+:email: vla-bogdano@ya.ru
+:revdate: 2026-07-02
+:keywords: bkcrack, zip
+
+
+== Шаг 1 — Подготовка
+
+1. Скачать bkcrack: https://github.com/milardovitch/bkcrack/releases
+2. Распаковать в рабочую папку
+3. Положить целевой архив рядом с `bkcrack.exe`
+
+== Шаг 2 — Найти known plaintext
+
+Нужно найти файл в архиве, содержимое которого вы *точно знаете* (или можете угадать начало).
+
+Просмотреть содержимое архива:
+
+[source,bash]
+----
+bkcrack.exe --list archive.zip
+----
+
+Ищите файлы с *Store* (без сжатия) или маленькие *Deflate* файлы.
+
+=== Хорошие кандидаты
+
+* Makefile, конфиги, скрипты с предсказуемым началом
+* Файлы с лицензией (GPL, MIT и т.д.)
+* Файлы с известным хедером (`#!/bin/bash`, `#include`, `// SPDX-License`)
+
+== Шаг 3 — Создать файл известного содержимого
+
+Создайте текстовый файл с тем содержимым, которое *должно* быть в начале файла в архиве.
+
+Пример для Makefile:
+
+[source,makefile]
+----
+# SPDX-License-Identifier: GPL-2.0-only
+obj-$(CONFIG_A11Y_BRAILLE_CONSOLE)		+= braille_console.o
+----
+
+[IMPORTANT]
+Размер файла должен точно совпадать с размером в архиве (проверяйте!).
+Перевод строки должен совпадать с оригиналом (LF для Linux-архивов, CRLF для Windows).
+Если архив создан в Linux — файл `-p` должен использовать *LF* (Unix), не CRLF (Windows).
+
+В Notepad++: Format → End of Line → Unix (LF).
+
+Проверить размер локального файла (PowerShell):
+
+[source,powershell]
+----
+[System.IO.File]::ReadAllBytes("path\to\file.txt").Length
+----
+
+В выводе `bkcrack --list` размер указан в колонке *Uncompressed*. Значения должны совпадать.
+
+== Шаг 4 — Запустить атаку
+
+[source,bash]
+----
+bkcrack.exe -C archive.zip -c "путь/к/файлу/в/архиве" -p known_plaintext.txt
+----
+
+=== Пример
+
+[source,bash]
+----
+bkcrack.exe -C mcp_data_300626.zip -c "bsp/kernel/drivers/accessibility/braille/Makefile" -p makefile_plain.txt
+
+пример 2
+
+.\bkcrack.exe -C "C:\Users\vladb\Downloads\bkcrack-1.8.1-win64\bkcrack-1.8.1-win64\mcp_data_300626.zip" -c "bsp/kernel/drivers/accessibility/braille/Makefile" -p "C:\Users\vladb\Downloads\bkcrack-1.8.1-win64\bkcrack-1.8.1-win64\kernel\drivers\accessibility\braille\Makefile"
+----
+
+=== Результат
+
+----
+Keys: e101c0c1 221c7af8 ee3ae57d
+----
+
+== Шаг 5 — Расшифровать архив
+
+[source,bash]
+----
+bkcrack.exe -C archive.zip -k e101c0c1 221c7af8 ee3ae57d -D archive_decrypted.zip
+----
+
+== Шаг 6 — Распаковать
+
+Обычной утилитой (7-Zip, WinRAR и т.д.) распакуйте `archive_decrypted.zip` — пароль больше не нужен.
+
+== Полезные параметры
+
+[cols="1,2", options="header"]
+|===
+| Параметр | Описание
+
+| `-C`
+| Путь к зашифрованному архиву
+
+| `-c`
+| Путь к файлу внутри архива (цель атаки)
+
+| `-p`
+| Файл с известным содержимым (plaintext)
+
+| `-k`
+| Известные ключи (для расшифровки)
+
+| `-D`
+| Выходной расшифрованный архив
+
+| `--list`
+| Просмотр содержимого архива
+
+| `--continue-attack N`
+| Продолжить атаку с позиции N
+|===
+
+== Советы
+
+* Чем *больше известного plaintext*, тем быстрее атака
+* Store-файлы проще атаковать, чем Deflate
+* Если атака долгая — попробуйте другой файл или больше известных байт
+* Пароль из ключей *не восстанавливается*, но архив расшифровывается без него
+* Ключи работают для *всех файлов* в архиве — расшифровывайте целиком

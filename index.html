@@ -42,20 +42,22 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <body>
 <div class="container">
 <h1>Catalog of notes</h1>
-<p class="subtitle">25 articles - click tags to filter</p>
+<p class="subtitle">27 articles - click tags to filter</p>
 <div class="search-box">
 <input type="text" id="search" placeholder="Search by title, description or tag..." autocomplete="off">
 </div>
 <div class="tags-cloud" id="tagsCloud">
 <span class="reset-btn" id="resetBtn" onclick="resetFilter()">x reset</span>
 <span class="tag-btn" data-tag="1986ve9x" onclick="toggleTag('1986ve9x')">1986ve9x (1)</span>
+<span class="tag-btn" data-tag="bkcrack" onclick="toggleTag('bkcrack')">bkcrack (1)</span>
 <span class="tag-btn" data-tag="boot" onclick="toggleTag('boot')">boot (1)</span>
 <span class="tag-btn" data-tag="bootlin" onclick="toggleTag('bootlin')">bootlin (1)</span>
 <span class="tag-btn" data-tag="busybox" onclick="toggleTag('busybox')">busybox (1)</span>
 <span class="tag-btn" data-tag="cfi" onclick="toggleTag('cfi')">cfi (1)</span>
+<span class="tag-btn" data-tag="char device" onclick="toggleTag('char device')">char device (1)</span>
 <span class="tag-btn" data-tag="char-device" onclick="toggleTag('char-device')">char-device (1)</span>
 <span class="tag-btn" data-tag="cls" onclick="toggleTag('cls')">cls (2)</span>
-<span class="tag-btn" data-tag="commands" onclick="toggleTag('commands')">commands (2)</span>
+<span class="tag-btn" data-tag="commands" onclick="toggleTag('commands')">commands (3)</span>
 <span class="tag-btn" data-tag="configfs" onclick="toggleTag('configfs')">configfs (1)</span>
 <span class="tag-btn" data-tag="cortex-m3" onclick="toggleTag('cortex-m3')">cortex-m3 (1)</span>
 <span class="tag-btn" data-tag="cscope" onclick="toggleTag('cscope')">cscope (1)</span>
@@ -69,11 +71,12 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="dinamic" onclick="toggleTag('dinamic')">dinamic (1)</span>
 <span class="tag-btn" data-tag="docker" onclick="toggleTag('docker')">docker (1)</span>
 <span class="tag-btn" data-tag="documentation" onclick="toggleTag('documentation')">documentation (1)</span>
-<span class="tag-btn" data-tag="driver" onclick="toggleTag('driver')">driver (11)</span>
+<span class="tag-btn" data-tag="driver" onclick="toggleTag('driver')">driver (12)</span>
 <span class="tag-btn" data-tag="dtb" onclick="toggleTag('dtb')">dtb (1)</span>
 <span class="tag-btn" data-tag="dtc" onclick="toggleTag('dtc')">dtc (2)</span>
 <span class="tag-btn" data-tag="dto" onclick="toggleTag('dto')">dto (1)</span>
 <span class="tag-btn" data-tag="elixir" onclick="toggleTag('elixir')">elixir (1)</span>
+<span class="tag-btn" data-tag="example" onclick="toggleTag('example')">example (1)</span>
 <span class="tag-btn" data-tag="fifo" onclick="toggleTag('fifo')">fifo (1)</span>
 <span class="tag-btn" data-tag="filesystem" onclick="toggleTag('filesystem')">filesystem (1)</span>
 <span class="tag-btn" data-tag="firmware" onclick="toggleTag('firmware')">firmware (1)</span>
@@ -89,7 +92,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="jlink" onclick="toggleTag('jlink')">jlink (1)</span>
 <span class="tag-btn" data-tag="kallsyms" onclick="toggleTag('kallsyms')">kallsyms (1)</span>
 <span class="tag-btn" data-tag="kasan" onclick="toggleTag('kasan')">kasan (1)</span>
-<span class="tag-btn" data-tag="kernel" onclick="toggleTag('kernel')">kernel (9)</span>
+<span class="tag-btn" data-tag="kernel" onclick="toggleTag('kernel')">kernel (10)</span>
 <span class="tag-btn" data-tag="kernel_symvol" onclick="toggleTag('kernel_symvol')">kernel_symvol (6)</span>
 <span class="tag-btn" data-tag="kgdb" onclick="toggleTag('kgdb')">kgdb (1)</span>
 <span class="tag-btn" data-tag="kprobe" onclick="toggleTag('kprobe')">kprobe (1)</span>
@@ -101,7 +104,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="memory" onclick="toggleTag('memory')">memory (1)</span>
 <span class="tag-btn" data-tag="message-queue" onclick="toggleTag('message-queue')">message-queue (1)</span>
 <span class="tag-btn" data-tag="milandr" onclick="toggleTag('milandr')">milandr (1)</span>
-<span class="tag-btn" data-tag="module" onclick="toggleTag('module')">module (12)</span>
+<span class="tag-btn" data-tag="module" onclick="toggleTag('module')">module (13)</span>
 <span class="tag-btn" data-tag="module.symvers" onclick="toggleTag('module.symvers')">Module.symvers (5)</span>
 <span class="tag-btn" data-tag="navigation" onclick="toggleTag('navigation')">navigation (1)</span>
 <span class="tag-btn" data-tag="oops" onclick="toggleTag('oops')">oops (1)</span>
@@ -129,6 +132,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="tail" onclick="toggleTag('tail')">tail (1)</span>
 <span class="tag-btn" data-tag="time" onclick="toggleTag('time')">time (1)</span>
 <span class="tag-btn" data-tag="udevadm" onclick="toggleTag('udevadm')">udevadm (1)</span>
+<span class="tag-btn" data-tag="zip" onclick="toggleTag('zip')">zip (1)</span>
 <span class="tag-btn" data-tag="параметры_модуля" onclick="toggleTag('параметры_модуля')">параметры_модуля (2)</span>
 </div>
 <div id="sections">
@@ -213,6 +217,21 @@ h1{font-size:1.8rem;margin-bottom:4px}
 </div>
 <div class="card-meta"><span class="file-badge">adoc</span> <a href="driver\commands.adoc">driver\commands.adoc</a>
  &middot; <span class="file-badge">pdf</span> <a href="driver\commands.pdf">open PDF</a>
+</div>
+</div>
+<div class="card" data-tags='["kernel","driver","module","commands","example","char device"]' data-search="Шаблон символьного драйвера [source, code] kernel driver module commands example char device">
+<div class="card-title"><a href="driver\example_char_device.pdf" target="_blank">Шаблон символьного драйвера</a></div>
+<div class="card-desc">[source, code]</div>
+<div class="card-tags">
+<span class="card-tag" data-tag="kernel" onclick="toggleTag('kernel')">kernel</span>
+<span class="card-tag" data-tag="driver" onclick="toggleTag('driver')">driver</span>
+<span class="card-tag" data-tag="module" onclick="toggleTag('module')">module</span>
+<span class="card-tag" data-tag="commands" onclick="toggleTag('commands')">commands</span>
+<span class="card-tag" data-tag="example" onclick="toggleTag('example')">example</span>
+<span class="card-tag" data-tag="char device" onclick="toggleTag('char device')">char device</span>
+</div>
+<div class="card-meta"><span class="file-badge">adoc</span> <a href="driver\example_char_device.adoc">driver\example_char_device.adoc</a>
+ &middot; <span class="file-badge">pdf</span> <a href="driver\example_char_device.pdf">open PDF</a>
 </div>
 </div>
 </div>
@@ -535,6 +554,22 @@ h1{font-size:1.8rem;margin-bottom:4px}
 </div>
 <div class="card-meta"><span class="file-badge">adoc</span> <a href="milandr\README.adoc">milandr\README.adoc</a>
  &middot; <span class="file-badge">pdf</span> <a href="milandr\README.pdf">open PDF</a>
+</div>
+</div>
+</div>
+</div>
+<div class="section">
+<div class="section-title">utils</div>
+<div class="cards">
+<div class="card" data-tags='["bkcrack","zip"]' data-search="Инструкция: Расшифровка ZIP архива (ZipCrypto) с помощью bkcrack 1. Скачать bkcrack: https://github.com/milardovitch/bkcrack/releases bkcrack zip">
+<div class="card-title"><a href="utils\BKCRACK_INSTRUCTIONS.pdf" target="_blank">Инструкция: Расшифровка ZIP архива (ZipCrypto) с помощью bkcrack</a></div>
+<div class="card-desc">1. Скачать bkcrack: https://github.com/milardovitch/bkcrack/releases</div>
+<div class="card-tags">
+<span class="card-tag" data-tag="bkcrack" onclick="toggleTag('bkcrack')">bkcrack</span>
+<span class="card-tag" data-tag="zip" onclick="toggleTag('zip')">zip</span>
+</div>
+<div class="card-meta"><span class="file-badge">adoc</span> <a href="utils\BKCRACK_INSTRUCTIONS.adoc">utils\BKCRACK_INSTRUCTIONS.adoc</a>
+ &middot; <span class="file-badge">pdf</span> <a href="utils\BKCRACK_INSTRUCTIONS.pdf">open PDF</a>
 </div>
 </div>
 </div>
