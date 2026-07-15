@@ -13,7 +13,7 @@ $adocFiles = Get-ChildItem -Path $root -Recurse -Filter *.adoc | Where-Object {
 
 foreach ($file in $adocFiles) {
     $path = $file.FullName
-    $relDir = $file.DirectoryName.Substring($root.Length).TrimStart('\')
+    $relDir = $file.DirectoryName.Substring($root.Length).TrimStart('/', '\')
     $lines = Get-Content -Path $path -Encoding UTF8
 
     $title = $null
@@ -61,7 +61,7 @@ foreach ($file in $adocFiles) {
     if (-not $description) { $description = 'No description' }
 
     $hasPdf = Test-Path (Join-Path $file.DirectoryName ($file.BaseName + '.pdf'))
-    $relPath = $file.FullName.Substring($root.Length).TrimStart('\')
+    $relPath = $file.FullName.Substring($root.Length).TrimStart('/', '\')
 
     foreach ($tag in $keywords) {
         if (-not $allTags.ContainsKey($tag)) { $allTags[$tag] = 0 }

@@ -8,7 +8,7 @@
                 "command": "cmd",
                 "args": [
                     "/c",
-                    "\"C:\\Ruby40-x64\\bin\\asciidoctor-pdf.bat\" -a \"pdf-theme=default-with-fallback-font\" -a \"pdf-fontsdir=GEM_FONTS_DIR\" -a \"encoding=UTF-8\" \"${relativeFile}\" ; powershell -File \"${workspaceFolder}\\scripts\\generate-index.ps1\""
+                    "for %I in (\"${relativeFile}\") do @del /f /q \"%~dpnI.pdf\" 2>nul & \"C:\\Ruby40-x64\\bin\\asciidoctor-pdf.bat\" --trace -a \"pdf-theme=default-with-fallback-font\" -a \"pdf-fontsdir=GEM_FONTS_DIR\" -a \"encoding=UTF-8\" \"%I\" & powershell -File \"${workspaceFolder}\\scripts\\generate-index.ps1\""
                 ]
             },
             "linux": {

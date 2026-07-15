@@ -118,6 +118,11 @@ toc::[]
 * xref:milandr/README.adoc[Сборка и прошивка Миландр 1986ВЕ9х через Docker] — Проект предназначен для сборки и прошивки микроконтроллера *Миландр 1986ВЕ9х* (Cortex-M3) с использованием Docker-контейнера. Это обеспечивает:
   *Теги:* `milandr, 1986ve9x, cortex-m3, docker, openocd, jlink, firmware`
 
+=== user layers
+
+* xref:user_layers/write_read_device_file.adoc[Работа с устройствами в Linux «с нуля»] — Цель:* Написать надежную программу на C, которая общается с устройством (например, /dev/radio0), не зависает и корректно обрабатывает все возможные ситуации.
+  *Теги:* `user, device, file`
+
 === utils
 
 * xref:utils/BKCRACK_INSTRUCTIONS.adoc[Инструкция: Расшифровка ZIP архива (ZipCrypto) с помощью bkcrack] — 1. Скачать bkcrack: https://github.com/milardovitch/bkcrack/releases
@@ -125,4 +130,4 @@ toc::[]
 
 ---
 
-Сгенерировано автоматически. Всего статей: 27.
+Сгенерировано автоматически. Всего статей: 28.
