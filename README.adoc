@@ -43,7 +43,7 @@ toc::[]
 === driver
 
 * xref:driver/commands.adoc[Команды для работы с модулями ядра] — Назначение: загрузка модуля по горячему
-  *Теги:* `kernel, driver, module, commands, udevadm`
+  *Теги:* `kernel, driver, module, commands, udevadm, kmalloc, vmalloc, mmap`
 
 * xref:driver/example_char_device.adoc[Шаблон символьного драйвера] — [source, code]
   *Теги:* `kernel, driver, module, commands, example, char device`
@@ -86,6 +86,9 @@ toc::[]
 
 * xref:kernel/How_use_module_symvers.adoc[Как задействовать Module.symvers из ядра] — На сколько я понимаю, ядро мы дополняем модулями, в каждом модуле есть некие функции, некоторые из этих функций мы можем вызывать снаружи.
   *Теги:* `driver, module, kernel_symvol, Module.symvers`
+
+* xref:kernel/thread.adoc[Потоки] — Windows
+  *Теги:* `driver, thread, Module.symvers`
 
 * xref:kernel/read_documentation.adoc[Руководство по навигации и поиску в исходниках ядра Linux] — Разработка модулей ядра Linux требует умения эффективно работать с исходным кодом и документацией. Ядро содержит миллионы строк кода, тысячи функций и обширную документацию. Умение быстро находить нуж...
   *Теги:* `kernel, documentation, elixir, bootlin, ctags, cscope, navigation`
@@ -130,4 +133,4 @@ toc::[]
 
 ---
 
-Сгенерировано автоматически. Всего статей: 28.
+Сгенерировано автоматически. Всего статей: 29.

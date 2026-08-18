@@ -42,7 +42,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <body>
 <div class="container">
 <h1>Catalog of notes</h1>
-<p class="subtitle">28 articles - click tags to filter</p>
+<p class="subtitle">29 articles - click tags to filter</p>
 <div class="search-box">
 <input type="text" id="search" placeholder="Search by title, description or tag..." autocomplete="off">
 </div>
@@ -72,7 +72,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="dinamic" onclick="toggleTag('dinamic')">dinamic (1)</span>
 <span class="tag-btn" data-tag="docker" onclick="toggleTag('docker')">docker (1)</span>
 <span class="tag-btn" data-tag="documentation" onclick="toggleTag('documentation')">documentation (1)</span>
-<span class="tag-btn" data-tag="driver" onclick="toggleTag('driver')">driver (12)</span>
+<span class="tag-btn" data-tag="driver" onclick="toggleTag('driver')">driver (13)</span>
 <span class="tag-btn" data-tag="dtb" onclick="toggleTag('dtb')">dtb (1)</span>
 <span class="tag-btn" data-tag="dtc" onclick="toggleTag('dtc')">dtc (2)</span>
 <span class="tag-btn" data-tag="dto" onclick="toggleTag('dto')">dto (1)</span>
@@ -97,6 +97,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="kernel" onclick="toggleTag('kernel')">kernel (10)</span>
 <span class="tag-btn" data-tag="kernel_symvol" onclick="toggleTag('kernel_symvol')">kernel_symvol (6)</span>
 <span class="tag-btn" data-tag="kgdb" onclick="toggleTag('kgdb')">kgdb (1)</span>
+<span class="tag-btn" data-tag="kmalloc" onclick="toggleTag('kmalloc')">kmalloc (1)</span>
 <span class="tag-btn" data-tag="kprobe" onclick="toggleTag('kprobe')">kprobe (1)</span>
 <span class="tag-btn" data-tag="libgpiod" onclick="toggleTag('libgpiod')">libgpiod (1)</span>
 <span class="tag-btn" data-tag="library" onclick="toggleTag('library')">library (1)</span>
@@ -106,8 +107,9 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="memory" onclick="toggleTag('memory')">memory (1)</span>
 <span class="tag-btn" data-tag="message-queue" onclick="toggleTag('message-queue')">message-queue (1)</span>
 <span class="tag-btn" data-tag="milandr" onclick="toggleTag('milandr')">milandr (1)</span>
+<span class="tag-btn" data-tag="mmap" onclick="toggleTag('mmap')">mmap (1)</span>
 <span class="tag-btn" data-tag="module" onclick="toggleTag('module')">module (13)</span>
-<span class="tag-btn" data-tag="module.symvers" onclick="toggleTag('module.symvers')">Module.symvers (5)</span>
+<span class="tag-btn" data-tag="module.symvers" onclick="toggleTag('module.symvers')">Module.symvers (6)</span>
 <span class="tag-btn" data-tag="navigation" onclick="toggleTag('navigation')">navigation (1)</span>
 <span class="tag-btn" data-tag="oops" onclick="toggleTag('oops')">oops (1)</span>
 <span class="tag-btn" data-tag="openocd" onclick="toggleTag('openocd')">openocd (1)</span>
@@ -132,9 +134,11 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="tag-btn" data-tag="sysfs" onclick="toggleTag('sysfs')">sysfs (3)</span>
 <span class="tag-btn" data-tag="sysvinit" onclick="toggleTag('sysvinit')">sysvinit (1)</span>
 <span class="tag-btn" data-tag="tail" onclick="toggleTag('tail')">tail (1)</span>
+<span class="tag-btn" data-tag="thread" onclick="toggleTag('thread')">thread (1)</span>
 <span class="tag-btn" data-tag="time" onclick="toggleTag('time')">time (1)</span>
 <span class="tag-btn" data-tag="udevadm" onclick="toggleTag('udevadm')">udevadm (1)</span>
 <span class="tag-btn" data-tag="user" onclick="toggleTag('user')">user (1)</span>
+<span class="tag-btn" data-tag="vmalloc" onclick="toggleTag('vmalloc')">vmalloc (1)</span>
 <span class="tag-btn" data-tag="zip" onclick="toggleTag('zip')">zip (1)</span>
 <span class="tag-btn" data-tag="параметры_модуля" onclick="toggleTag('параметры_модуля')">параметры_модуля (2)</span>
 </div>
@@ -208,7 +212,7 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <div class="section">
 <div class="section-title">driver</div>
 <div class="cards">
-<div class="card" data-tags='["kernel","driver","module","commands","udevadm"]' data-search="Команды для работы с модулями ядра Назначение: загрузка модуля по горячему kernel driver module commands udevadm">
+<div class="card" data-tags='["kernel","driver","module","commands","udevadm","kmalloc","vmalloc","mmap"]' data-search="Команды для работы с модулями ядра Назначение: загрузка модуля по горячему kernel driver module commands udevadm kmalloc vmalloc mmap">
 <div class="card-title"><a href="driver\commands.pdf" target="_blank">Команды для работы с модулями ядра</a></div>
 <div class="card-desc">Назначение: загрузка модуля по горячему</div>
 <div class="card-tags">
@@ -217,6 +221,9 @@ h1{font-size:1.8rem;margin-bottom:4px}
 <span class="card-tag" data-tag="module" onclick="toggleTag('module')">module</span>
 <span class="card-tag" data-tag="commands" onclick="toggleTag('commands')">commands</span>
 <span class="card-tag" data-tag="udevadm" onclick="toggleTag('udevadm')">udevadm</span>
+<span class="card-tag" data-tag="kmalloc" onclick="toggleTag('kmalloc')">kmalloc</span>
+<span class="card-tag" data-tag="vmalloc" onclick="toggleTag('vmalloc')">vmalloc</span>
+<span class="card-tag" data-tag="mmap" onclick="toggleTag('mmap')">mmap</span>
 </div>
 <div class="card-meta"><span class="file-badge">adoc</span> <a href="driver\commands.adoc">driver\commands.adoc</a>
  &middot; <span class="file-badge">pdf</span> <a href="driver\commands.pdf">open PDF</a>
@@ -414,6 +421,18 @@ h1{font-size:1.8rem;margin-bottom:4px}
 </div>
 <div class="card-meta"><span class="file-badge">adoc</span> <a href="kernel\How_use_module_symvers.adoc">kernel\How_use_module_symvers.adoc</a>
  &middot; <span class="file-badge">pdf</span> <a href="kernel\How_use_module_symvers.pdf">open PDF</a>
+</div>
+</div>
+<div class="card" data-tags='["driver","thread","module.symvers"]' data-search="Потоки Windows driver thread module.symvers">
+<div class="card-title"><a href="kernel\thread.pdf" target="_blank">Потоки</a></div>
+<div class="card-desc">Windows</div>
+<div class="card-tags">
+<span class="card-tag" data-tag="driver" onclick="toggleTag('driver')">driver</span>
+<span class="card-tag" data-tag="thread" onclick="toggleTag('thread')">thread</span>
+<span class="card-tag" data-tag="module.symvers" onclick="toggleTag('module.symvers')">Module.symvers</span>
+</div>
+<div class="card-meta"><span class="file-badge">adoc</span> <a href="kernel\thread.adoc">kernel\thread.adoc</a>
+ &middot; <span class="file-badge">pdf</span> <a href="kernel\thread.pdf">open PDF</a>
 </div>
 </div>
 <div class="card" data-tags='["kernel","documentation","elixir","bootlin","ctags","cscope","navigation"]' data-search="Руководство по навигации и поиску в исходниках ядра Linux Разработка модулей ядра Linux требует умения эффективно работать с исходным кодом и документацией. Ядро содержит миллионы строк кода, тысячи функций и обширную документацию. Умение быстро находить нуж... kernel documentation elixir bootlin ctags cscope navigation">
