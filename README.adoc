@@ -102,6 +102,9 @@ toc::[]
 * xref:kernel/Install_full_source_linux.adoc[Установка исходников] — Если тебе нужны полные исходники для поиска функций:
   *Теги:* `driver, module, kernel, source, install`
 
+* xref:kernel/template_driver.adoc[Шаблон драйвера от ИИ] — Создано на основе диалога о adt7140.c драйвере из исходников linux
+  *Теги:* `driver, thread, Module.symvers`
+
 === licheerv nano
 
 * xref:licheerv_nano/commands.adoc[Полезные команды] — . Проверяем права доступа к /dev/mem
@@ -133,4 +136,4 @@ toc::[]
 
 ---
 
-Сгенерировано автоматически. Всего статей: 29.
+Сгенерировано автоматически. Всего статей: 30.
