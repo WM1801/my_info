@@ -18,7 +18,126 @@
 :keywords: driver, thread, Module.symvers
 
 toc::[]
+Ниже тожэ есть косяки вот переписано получше 
+----
+#include <linux/module.h>
+#include <linux/kthread.h>
+#include <linux/delay.h>
+#include <linux/wait.h>
+#include <linux/mutex.h>
 
+#define STEPS 10
+
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("user");
+MODULE_DESCRIPTION("Tick-Tack State Machine (Fixed)");
+
+static DEFINE_MUTEX(tick_mutex);
+static DECLARE_WAIT_QUEUE_HEAD(tick_wq);
+static int current_turn = 1;
+static int value = 0; 
+
+static struct task_struct *thread1;
+static struct task_struct *thread2;
+
+static int thread_func_tick(void *data)
+{
+    int step = 0;
+
+    pr_info("Thread TICK started\n");
+
+    while (!kthread_should_stop() && step < STEPS) {
+        wait_event(tick_wq, READ_ONCE(current_turn) == 1 || kthread_should_stop());
+        if (kthread_should_stop())
+            break;
+
+        mutex_lock(&tick_mutex);
+        pr_info("TICK  [%d/%d] value = %d\n", step + 1, STEPS, value);
+        value++;
+        WRITE_ONCE(current_turn, 2);
+        mutex_unlock(&tick_mutex);
+        wake_up(&tick_wq);
+
+        step++;
+
+        if (step < STEPS && !kthread_should_stop()) {
+            set_current_state(TASK_INTERRUPTIBLE);
+            schedule_timeout(msecs_to_jiffies(500));
+            __set_current_state(TASK_RUNNING);
+        }
+    }
+
+    pr_info("Thread TICK exiting cleanly\n");
+    return 0;
+}
+
+static int thread_func_tack(void *data)
+{
+    int step = 0;
+
+    pr_info("Thread TACK started\n");
+
+    while (!kthread_should_stop() && step < STEPS) {
+        wait_event(tick_wq, READ_ONCE(current_turn) == 2 || kthread_should_stop());
+        if (kthread_should_stop())
+            break;
+
+        mutex_lock(&tick_mutex);
+        pr_info("TACK  [%d/%d] value = %d\n", step + 1, STEPS, value);
+        value++;
+        WRITE_ONCE(current_turn, 1);
+        mutex_unlock(&tick_mutex);
+        wake_up(&tick_wq);
+
+        step++;
+
+        if (step < STEPS && !kthread_should_stop()) {
+            set_current_state(TASK_INTERRUPTIBLE);
+            schedule_timeout(msecs_to_jiffies(500));
+            __set_current_state(TASK_RUNNING);
+        }
+    }
+
+    pr_info("Thread TACK exiting cleanly\n");
+    return 0;
+}
+
+static int __init my_module_init(void)
+{
+    pr_info("Module loading...\n");
+
+    thread1 = kthread_run(thread_func_tick, NULL, "tick_thread");
+    if (IS_ERR(thread1))
+        return PTR_ERR(thread1);
+    get_task_struct(thread1); // 🔒 Удерживаем ссылку
+
+    thread2 = kthread_run(thread_func_tack, NULL, "tack_thread");
+    if (IS_ERR(thread2)) {
+        kthread_stop(thread1);
+        put_task_struct(thread1);
+        return PTR_ERR(thread2);
+    }
+    get_task_struct(thread2); // 🔒 Удерживаем ссылку
+
+    return 0;
+}
+
+static void __exit my_module_exit(void)
+{
+    pr_info("Module unloading...\n");
+
+    kthread_stop(thread1);
+    put_task_struct(thread1); // 🔓 Освобождаем ссылку
+
+    kthread_stop(thread2);
+    put_task_struct(thread2); // 🔓 Освобождаем ссылку
+
+    pr_info("Module exited cleanly\n");
+}
+
+module_init(my_module_init);
+module_exit(my_module_exit);
+----
 
 
 Создано на основе диалога о adt7140.c драйвере из исходников linux 
@@ -377,7 +496,7 @@ MODULE_LICENSE("GPL");
 == Вариант синхронизации доступа через мьютекс 
 
 [source, c]
-====
+----
 #include <linux/module.h>
 #include <linux/kthread.h>
 #include <linux/delay.h>
@@ -595,4 +714,4 @@ static void __exit my_module_exit(void)
 
 module_init(my_module_init);
 module_exit(my_module_exit);
-====
+----
