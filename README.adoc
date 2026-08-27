@@ -1,4 +1,4 @@
-﻿= Каталог заметок
+= Каталог заметок
 :doctype: article
 :toc:
 :toc-placement!:
@@ -19,7 +19,7 @@ toc::[]
 
 . Создай `.adoc` файл в нужной папке, обязательно укажи `:keywords:` с тегами в заголовке
 . (опционально) Сгенерируй PDF: Ctrl+Shift+B в VS Code (asciidoctor-pdf)
-. Обнови каталог: `powershell -File scripts/generate-index.ps1` — автоматически обновятся README.adoc и index.html
+. Обнови каталог: `./scripts/generate-index.sh` — автоматически обновятся README.adoc и index.html
 
 == Статьи
 
@@ -27,10 +27,10 @@ toc::[]
 
 * xref:AsciiDoc/example.adoc[Полное руководство по AsciiDoc: Шпаргалка разработчика] — Иван Иванов <ivan@example.com>
 
-=== debug\gost doc
+=== debug/gost doc
 
 * xref:debug/gost_doc/Runtime_measurement.adoc[Измерение времение выполнения кода] — У cortex-M3/M4 есть регистр DWT_CYCCNT - 32-битный счетчик тактов ядра
-  *Теги:* `time, debug, performance`
+  *Теги:* `time, debug, performance `
 
 === device tree
 
@@ -43,17 +43,17 @@ toc::[]
 === driver
 
 * xref:driver/commands.adoc[Команды для работы с модулями ядра] — Назначение: загрузка модуля по горячему
-  *Теги:* `kernel, driver, module, commands, udevadm, kmalloc, vmalloc, mmap`
+  *Теги:* `kernel, driver, module, commands, udevadm, kmalloc, vmalloc, mmap `
 
 * xref:driver/example_char_device.adoc[Шаблон символьного драйвера] — [source, code]
   *Теги:* `kernel, driver, module, commands, example, char device`
 
 === ideas
 
-* xref:ideas/haptic_struct.adoc[Гаптическая система] — ## Архитектура системы управления
+* xref:ideas/haptic.adoc[Гаптическая система] — [subs="+macros,+attributes"]
   *Теги:* `cls, ideas`
 
-* xref:ideas/haptic.adoc[Гаптическая система] — [subs="+macros,+attributes"]
+* xref:ideas/haptic_struct.adoc[Гаптическая система] — ## Архитектура системы управления
   *Теги:* `cls, ideas`
 
 === inzenerka tech
@@ -70,12 +70,12 @@ toc::[]
 * xref:inzenerka_tech/driver_linux_3.adoc[Разработка драйверов в Linux, 3] — Три Unix, Linux основных типа устройств
   *Теги:* `kernel, driver, module, kernel_symvol, параметры_модуля, Module.symvers`
 
-* xref:inzenerka_tech/linux.adoc[Теория по linux] —  `nm` - позволяет посмотреть функции и тп. в бинарном файле, стоит смотреть флаги `T-что то типа внутрених функций`, `U-сторонние функции`
+* xref:inzenerka_tech/linux.adoc[Теория по linux] — Включает в себя:
   *Теги:* `linux, kernel, gcc, makefile, library, static, shared, ipc, pipe, fifo, message-queue, shared-memory, filesystem, syscall`
 
 === kernel
 
-* xref:kernel/Module_symvers.adoc[Module.symvers] — Module.symvers (Symbol Versions)* — это глобальный реестр (словарь) всех функций и переменных ядра, которые разрешено использовать внешним модулям.
+* xref:kernel/Module_symvers.adoc[Module.symvers] — Если открыть этот файл (он обычный текстовый), то увидим строки, разделенные табуляцией. Вот его типичная структура:
   *Теги:* `driver, module, kernel_symvol, Module.symvers`
 
 * xref:kernel/Module_symvers_find_funct.adoc[Module.symvers find function] — Когда тебе нужна функция для какой-то задачи:
@@ -87,7 +87,7 @@ toc::[]
 * xref:kernel/How_use_module_symvers.adoc[Как задействовать Module.symvers из ядра] — На сколько я понимаю, ядро мы дополняем модулями, в каждом модуле есть некие функции, некоторые из этих функций мы можем вызывать снаружи.
   *Теги:* `driver, module, kernel_symvol, Module.symvers`
 
-* xref:kernel/thread.adoc[Потоки] — Windows
+* xref:kernel/thread.adoc[Потоки] — Приложение контейнер для потоков
   *Теги:* `driver, thread, Module.symvers`
 
 * xref:kernel/read_documentation.adoc[Руководство по навигации и поиску в исходниках ядра Linux] — Разработка модулей ядра Linux требует умения эффективно работать с исходным кодом и документацией. Ядро содержит миллионы строк кода, тысячи функций и обширную документацию. Умение быстро находить нуж...
@@ -96,13 +96,13 @@ toc::[]
 * xref:kernel/kernel_symvol.adoc[Символы ядра (Kernel Symbols)] — Когда разработчики Linux пишут код ядра, они пишут его на языке C. Там есть тысячи функций: sys_read, do_fork, tcp_sendmsg и переменные. Когда этот код компилируется, он превращается в машинные нули и...
   *Теги:* `kernel, symbols, kallsyms, module, cfi`
 
-* xref:kernel/create_device_in_dev.adoc[Создание устройства в /dev при загрузке модуля ядра] — Что такое файл устройства на самом деле
+* xref:kernel/create_device_in_dev.adoc[Создание устройства в /dev при загрузке модуля ядра] — Файл устройства в /dev — это интерфейс или точка входа в драйвер ядра. Это как "дверь", через которую userspace-программы обращаются к драйверу.
   *Теги:* `driver, module, dev`
 
 * xref:kernel/Install_full_source_linux.adoc[Установка исходников] — Если тебе нужны полные исходники для поиска функций:
   *Теги:* `driver, module, kernel, source, install`
 
-* xref:kernel/template_driver.adoc[Шаблон драйвера от ИИ] — Создано на основе диалога о adt7140.c драйвере из исходников linux
+* xref:kernel/template_driver.adoc[Шаблон драйвера от ИИ] — Ниже тожэ есть косяки вот переписано получше
   *Теги:* `driver, thread, Module.symvers`
 
 === licheerv nano
@@ -126,7 +126,7 @@ toc::[]
 
 === user layers
 
-* xref:user_layers/write_read_device_file.adoc[Работа с устройствами в Linux «с нуля»] — Цель:* Написать надежную программу на C, которая общается с устройством (например, /dev/radio0), не зависает и корректно обрабатывает все возможные ситуации.
+* xref:user_layers/write_read_device_file.adoc[Работа с устройствами в Linux «с нуля»] — В Linux нет специального набора команд для работы с «железом». Для операционной системы ваше устройство (радиомодуль, датчик, мотор) выглядит как обычный файл в папке _/dev/_.
   *Теги:* `user, device, file`
 
 === utils
